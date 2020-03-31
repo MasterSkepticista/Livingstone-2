@@ -8,6 +8,8 @@ Livingstone 2 (System for Automated Diagnosis and Discrete Control of Complex Sy
 
 Source repo: http://ti.arc.nasa.gov/opensource/projects/livingstone2/
 
+Note: jdk has to be installed manually. Simply extract jdk folder to the root of L2. I used jdk1.6.x
+
 ## Installing Livingstone 2 and Oliver Package(s)
 
 You only need to add one line to the PATH of System Environment Variables
