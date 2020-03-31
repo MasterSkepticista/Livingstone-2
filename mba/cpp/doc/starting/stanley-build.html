@@ -1,0 +1,522 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+<meta name="Microsoft Theme 2.00" content="expeditn 001">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./history_files/filelist.xml">
+<link rel=Edit-Time-Data href="./history_files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>Building Stanley on Unix/Linux</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>James Kurien</o:Author>
+  <o:LastAuthor>James Kurien</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>29</o:TotalTime>
+  <o:Created>2000-06-20T01:01:00Z</o:Created>
+  <o:LastSaved>2000-06-20T01:01:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>154</o:Words>
+  <o:Characters>879</o:Characters>
+  <o:Company>NASA Ames Research Center</o:Company>
+  <o:Lines>7</o:Lines>
+  <o:Paragraphs>1</o:Paragraphs>
+  <o:CharactersWithSpaces>1079</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:"Book Antiqua";
+	panose-1:2 4 6 2 5 3 5 3 3 4;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:647 0 0 0 159 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Book Antiqua";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	color:black;}
+h1
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:24.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	mso-font-kerning:16.0pt;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h2
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:18.0pt;
+	font-family:"Book Antiqua";
+	mso-bidi-font-family:Arial;
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;
+	mso-bidi-font-style:italic;}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:14.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h4
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	font-size:12.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h5
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:5;
+	font-size:10.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-style:italic;}
+h6
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:8.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:#993300;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:#666600;
+	text-decoration:underline;
+	text-underline:single;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:571085181;
+	mso-list-type:hybrid;
+	mso-list-template-ids:935350034 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l0:level1
+	{mso-level-tab-stop:1.25in;
+	mso-level-number-position:left;
+	margin-left:1.25in;
+	text-indent:-.25in;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1030"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=white background="../images/background.jpg" lang=EN-US
+link="#993300" vlink="#666600" style='tab-interval:.5in'>
+<!--[if gte mso 9]><xml>
+ <v:background id="_x0000_s1028" o:bwmode="white" o:targetscreensize="800,600">
+  <v:fill src="" o:title="exptextb" type="frame"/>
+ </v:background></xml><![endif]-->
+
+<div class=Section1>
+
+<p class=MsoNormal><a name="_top"></a><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Building Stanley & Oliver on Unix/Linux</h1>
+
+<p> <a href="../index.html">Back to Main Page</a></p>
+
+
+<h3>Contents</h3>
+<ul>
+<li> Build Requirements
+<li> Checking Out Stanley VJMPL, Livingstone, L2 Tools, & Oliver Source Files
+<li> Untarring Support, Livingstone, L2 Tools, & Oliver Tar Source Files
+<li> Building & Installing Stanley VJMPL (and Livingstone, L2 Tools, & Oliver Too)
+<li> .cshrc & .login Files
+</ul>
+
+
+<pre>
+
+<h3>
+Build Requirements 
+</h3>
+<hr size=2 width="70%" align="left">
+Solaris --
+  C/C++ Compiler & Assembler
+    SunOS 5.6:
+        GNU gcc version >= 3.2.2 (not 2.96 or 3.0)
+          Specify "--enable-shared" (which by default is NOT enabled) 
+          when building gcc. 
+        GNU as version >= 2.9.1
+        GNU ld version >= 2.9.5
+        (SunWorkshop native assembler does not work)
+    SunOS 5.8:
+        GNU gcc version >= 3.2.2 (not 2.96 or 3.0)
+          Specify "--enable-shared" (which by default is NOT enabled) 
+          when building gcc. 
+        SunWorkshop native assembler (Sun WorkShop 6 99/08/18)
+        SunWorkshop native linker (Solaris-ELF (4.0))
+        (GNU assembler & linker do not work:
+         undefined reference to `towupper@@SUNW_0.7')
+
+  GNU make version 3.78 or better (version 3.77 does not work under Solaris)
+      http://www.gnu.org/software/make/make.html
+
+  CVS
+
+  Java Development Kit - JDK 1.4 (actually Oliver & L2 Tools use this)
+      http://www.java.sun.com/j2se/1.4/
+
+  X windows window manager ctwm is known not to work, use CDE or fvwm.
+
+At Ames, the Solaris build is done for you and is located at
+/home/serengeti/id0/taylor/released_&lt;version_num&gt;
+
+Linux --
+  Mandrake version 7.1 or better
+  RedHat version 6.2 or better
+
+  GNU gcc version >= 3.2.2 (not 2.96 or 3.0)
+    Specify "--enable-shared" (which by default is NOT enabled) 
+    when building gcc. 
+  GNU as >= 2.9.1 (assembler); GNU ld >= 2.9.5
+      http://www.gnu.org/software/gcc/gcc.html
+
+  CVS 
+
+  ssh
+
+  Java Development Kit - JDK 1.4 (actually Oliver & L2 Tools use this)
+      http://www.java.sun.com/j2se/1.4/
+
+  X windows window manager ctwm is known not to work; use fvwm, or KDE.
+
+All Linux hosts must build L2/L2 Tools/Stanley.
+
+
+<h3>
+Checking Out Stanley VJMPL, Livingstone,L2 Tools, & Oliver Source Files 
+</h3>
+<hr size=2 width="70%" align="left">
+You must be inside Ames to checkout files from CVS.  Otherwise
+source "tar balls" are available from <a href="mailto:william.m.taylor@nasa.gov">Will Taylor.</a>
+
+Solaris 5.8 -- 
+% setenv CVSROOT &lt;user_name&gt;@ids:/home/cvs/ISG-Repository
+% setenv CVS_RSH /opt/ssh/bin/ssh
+
+Linux --
+% setenv CVSROOT &lt;user_name&gt;@ids.arc.nasa.gov:/home/cvs/ISG-Repository
+% setenv CVS_RSH /usr/bin/ssh
+
+% cd &lt;your-root-dir&gt;
+
+To checkout Stanley and tcl/Tk & CORBA support:
+% cvs checkout stanley-support-unix   (gcc2.95.2/3)      # a CVS "module"
+% cvs checkout stanley-support-unix-gcc3.2 (gcc3.2.2)    # a CVS "module"
+% cvs checkout -r L2_2_7_8_2 stanley-vjmpl               # a CVS "module"
+
+
+To checkout C++-Livingstone
+% cvs checkout xml-solaris-gcc                      # a CVS "module"
+% cvs checkout -r L2_2_7_8_2 L2                     # a CVS "module"
+
+
+To checkout L2 Tools compiled Java code and data:
+% cvs checkout -r L2_2_7_8_2 l2tools-jars        # (usually checked out as a part of L2)
+% cvs checkout -r L2_2_7_8_2 l2tools-data        # (usually checked out as a part of L2)
+
+
+To checkout Oliver (Stanley II):
+% cvs checkout -r L2_2_7_8_2 oliver
+
+
+
+<h3>
+Untarring Support, Livingstone, L2 Tools, & Oliver Tar Source Files
+</h3>
+<hr size=2 width="70%" align="left">
+Remote (to Ames) users will be e-mailed four gzipped tar files:
+support-src-unix-gcc3.2.tar.gz, l2-src_2.7.8.1.tar.gz, l2tools-src_2.7.8.1.tar.gz,
+and groundworks-src_2.7.8.1.tar.gz which comprise the source file hierarchy.  
+They should be unpacked in the same directory to produce:
+% cd &lt;your-root-dir&gt;
+% ls
+l2-regress mba l2-tools support
+
+NOTE: These tar files are built using GNU gtar and GNU gzip.
+      Unpack them with GNU gunzip and GNU gtar, not unix tar, 
+      or checksum errors may occur.  Also CR/LF issues between
+      unix/linux and windows are handled properly by gunzip/
+      gtar.
+
+Follow the directions below 
+(l2-tools/stanley-jmpl/README-STANLEY-VJMPL.txt)
+or from our division web server:
+http://ic.arc.nasa.gov/projects/L2/doc/starting/stanley-build.html
+
+The support files will not change with new L2/L2 Tools releases,
+except for version 2.7.8.1. (MICO-2.3.11, compatible with GNU gcc-3.2.2).
+
+However, with each new release, you will be e-mailed new tar files:
+l2-src_&lt;n.m.o&gt;.tar.gz, l2tools-src_&lt;n.m.o&gt;.tar.gz, &
+groundworks-src_&lt;n.m.o&gt;.tar.gz.
+Discard all the top directories, except for support:
+% /bin/rm -rf  mba l2-regress l2-tools
+Unpack the new tar files and re-build.
+
+NOTE: If you have received this software under the NASA Open Source Agreement,
+      support-src-unix.tar.gz will be replaced by support-src-unix-no-mico.tar.gz.
+      See <a href="install-mico-combat.html">instructions</a> for installing MICO on your system.
+
+
+<h3>
+Building & Installing Stanley VJMPL (and Livingstone, L2 Tools, & Oliver Too)
+</h3>
+<hr size=2 width="70%" align="left">
+To build Stanley:
+=================
+
+% cd &lt;your-root-dir&gt;/l2-tools/stanley-jmpl
+
+The first time that Stanley is built, its support applications
+(tcl/Tk, itcl, tkTable, mico, and combat) are built.
+
+Solaris -- 
+-------
+% ./configure 
+
+Linux --
+-----
+% ./configure 
+
+
+% make                           # build interpreted Stanley VJMPL
+                                 # => stanley-jmpl/bin/stanley-bin
+
+To build C++-Livingstone and L2 Tools/Stanley/Oliver Compatible L2 Shared Library
+===================================================================================
+
+% cd &lt;your-root-dir&gt;/mba/cpp
+% ./l2_update -t  # make sure generated files have the right timestamp
+
+Solaris -- 
+-------
+% ./configure --prefix=`pwd` --no-recur --enable-xmpl2l2 --enable-apigen \
+     --enable-rti --enable-names2ids --enable-l2flight --enable-recovery
+
+Linux --
+-----
+% ./configure --prefix=`pwd` --enable-xmpl2l2 --enable-apigen \
+     --enable-rti --enable-names2ids --enable-l2flight --enable-recovery
+
+% make install
+
+
+L2Test Regression Tests
+-----------------------
+
+% cd ../../l2-regress
+% touch configure
+% ./configure
+
+Run the regression tests:
+% ./runtests checkin
+
+To run the recovery tests, you must have built L2 with
+--enable-recovery specified in configure
+% ./runtests recovery
+
+# executables api_gen, api_scr, l2flight, l2test, names2ids, 
+# scr2names, and xmpl2l2 will reside in &lt;your-root-dir&gt;/mba/cpp/bin
+see &lt;your-root-dir&gt;/mba/cpp/BUILD for further details
+
+L2 Tools & Oliver
+-------------------
+No build operation is required for L2 Tools or Oliver.
+
+
+<h3>
+.cshrc & .login Files
+</h3>
+<hr size=2 width="70%" align="left">
+
+The user's login environment requires certain declarations.  Here are example
+files from a Linux RedHat Enterprise Linux WS release 3 (Taroon Update 4) system.
+
+.cshrc
+-----------------------------
+#!/bin/tcsh
+
+# Every shell sources .cshrc on startup. Login shells source .login also.
+# =======================================================================
+
+# this echo breaks scp from another host to this one
+# echo ".cshrc"
+
+# Set default file protection of files created by editors to rw-rw-r-- :
+umask 002
+
+setenv HOST_SHORT `hostname | awk -F. '{print $1}' `
+
+# /usr/X11R6/bin not set on remote login
+if ($PATH !~ *X11R6*) then
+  set path=( $path /usr/X11R6/bin )
+endif
+
+# /sbin contains ldconfig needed when building mico
+if ($PATH !~ *sbin*) then
+  set path=( $path /sbin )
+endif
+
+# .login is not called automatically by Linux
+# if (! ${?JAVA_HOME}) then
+  # call it only for new top-level xterm
+  ### call it all the time to get up to date CLASSPATH without having to
+  ### source ~/.login or logout/login
+  source $HOME/.login
+  # echo ".login"
+# endif
+----------------------------------------------------------------------
+
+.login
+------------------------------
+#!/bin/tcsh
+
+# echo ".login"
+
+# .login 
+#  it is called by cshrc 
+#  what it sets is applied to all shells/windows opened on the host r/login'ed to 
+#  whereas cshrc is called for each shell started, and by certain unix functions
+
+setenv FONTPATH /usr/X11R6/lib/X11/fonts/misc
+
+setenv MANPATH /usr/man:/usr/local/man:/usr/X11R6/man:/usr/share/man
+
+setenv LD_LIBRARY_PATH /usr/X11R6/lib:/usr/lib:/usr/local/lib
+
+setenv JAVA_HOME /usr/java/j2sdk1.4.2_05
+
+# default to native threads - required by Tcl
+setenv THREADS_FLAG native
+
+setenv CC gcc               # configure uses path to find proper version
+setenv CXX g++              # configure uses path to find proper version
+
+setenv TERM xterm
+------------------------------------------------------------------------------------
+
+<p> <a href="../index.html">Back to Main Page</a></p>
+
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+<I>
+Last updated April 20, 2006.  Direct feedback to 
+<A HREF="mailto:william.m.taylor@nasa.gov">william.m.taylor@nasa.gov</A>
+</I>
+
+</body>
+
+</html>

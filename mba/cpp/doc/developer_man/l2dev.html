@@ -1,0 +1,1108 @@
+<html lang="en">
+
+<head>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+<title>Doing development work on L2 v2.5</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name=description content="Doing development work on L2 v2.5">
+<meta name=generator content="makeinfo 4.0">
+<link href="http://texinfo.org/" rel=generator-home>
+</head><body>
+
+<p><hr>
+Node:<a name="Top">Top</a>,
+Previous:<a rel=previous href="#(dir)">(dir)</a>,
+Up:<a rel=up href="#(dir)">(dir)</a>
+<br>
+
+<h1>Livingstone</h1>
+
+<p>This file documents Livingstone v2.5 ; this is the July 27, 2001 edition of
+the manual.
+
+<p>If you're looking for a user manual (or for acknowledgments), see
+<a href="../user_man/l2.html">the L2 user manual</a>. 
+Benoit Hudson wrote this manual largely as a document to help out later
+developers like Lee Brownston who was taking over from him.  It contains
+many of my personal opinions.  Keep in mind that this manual is free.  Free
+advice is worth every penny.
+
+<ul>
+<li><a href="#Philosophy">Philosophy</a>: 
+<li><a href="#File%20layout">File layout</a>: 
+<li><a href="#Software%20components">Software components</a>: 
+<li><a href="#Configuration">Configuration</a>: 
+</ul>
+
+
+<h1>Table of Contents</h1>
+<ul>
+<li><a href="#Top">Livingstone</a>
+<ul>
+<li><a href="#Philosophy">Design Philosophy and Coding Standards</a>
+<ul>
+<li><a href="#Flight%20code">About flight code</a>
+<li><a href="#Naming%20conventions">Naming conventions</a>
+<li><a href="#Coding%20conventions">Coding conventions</a>
+<ul>
+<li><a href="#Coding%20-%20safety">Safety first!</a>
+<li><a href="#Coding%20-%20maintainability">Maintainability</a>
+<li><a href="#Coding%20-%20minimalism">Pay only for what you use!</a>
+<li><a href="#Coding%20-%20porting">Easy porting to new platforms</a>
+</ul>
+</ul>
+<li><a href="#File%20layout">How files are laid out</a>
+<li><a href="#Software%20components">Major software components of L2</a>
+<ul>
+<li><a href="#Components%20-%20Engine">The L2 engine</a>
+<ul>
+<li><a href="#class%20LTMS">LTMS</a>
+<li><a href="#class%20Conflict_db">Conflict_db</a>
+<li><a href="#class%20T_system">T_system</a>
+<li><a href="#class%20Tracker">Candidate tracker and search methods</a>
+</ul>
+<li><a href="#Components%20-%20Readers">The model readers</a>
+<ul>
+<li><a href="#Readers%20-%20readers">Readers</a>
+<li><a href="#Readers%20-%20translators">Translators</a>
+<li><a href="#Readers%20-%20writers">Writers</a>
+<li><a href="#Readers%20-%20L2_file">The L2_file representation.</a>
+<li><a href="#Readers%20-%20configuration">How to configure the readers</a>
+</ul>
+<li><a href="#Components%20-%20Debuggers">Support for model debugging</a>
+</ul>
+<li><a href="#Configuration">Configuration</a>
+</ul>
+</ul>
+
+<p><hr>
+Node:<a name="Philosophy">Philosophy</a>,
+Next:<a rel=next href="#File%20layout">File layout</a>,
+Previous:<a rel=previous href="#Top">Top</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h2>Design Philosophy and Coding Standards</h2>
+
+<p>I took the overarching principle in the design of L2 from Stroustrup
+(<cite>Stroustrup 1994: The Design and Evolution of C++</cite>):  "you only pay
+for what you use."  The metric for cost is in terms of any kind of
+performance: CPU time, memory, compiled code size, and even compile time.
+
+<p>This is mostly controlled by the configuration system
+(see <a href="#Configuration">Configuration</a>); when running <code>configure</code>, the user
+specifies what features L2 should include in this compiled instance.  Any
+files, or parts of files, not needed for the selected set of features,
+should not be compiled; any data structures not used should not even be
+available.  Perhaps departing from Stroustrup's ideals, L2 uses a
+combination of Makefile trickery and preprocessor defines to achieve this
+goal.
+
+<p>To easily handle this, the design of L2 must be quite modular
+(see <a href="#Software%20components">Software components</a>).  The readers need not have the engine around
+to be useful (indeed, <code>xmpl2l2</code> doesn't require the engine). 
+Although the API assumes the readers are available, this isn't fundamental:
+nowhere else in the engine is that assumption made.  The debuggers are more
+intrusive and require the readers and engine, but they impose little cost
+on either if not enabled (it's in the TODO list to make the cost be zero).
+
+<p>X-37 pushed me to take this philosophy to a bit of an extreme.  In
+several class in the reader, for instance, I have destructors defined as
+virtual if at configure-time the user allows debugging information in the
+model files, and non-virtual otherwise, since I know that the class will
+only have a subclass if we have debugging information.  This saves some on
+code size, and in avoiding the need for a virtual function table for the
+class, but not very much at all; it hardly saves anything at all on CPU
+time.  But I wrote that code at a time when it seemed doubtful we could fit
+everything within our stringent performance requirements.  This is a
+warning that the tradeoff should be calculated more carefully in the
+future.
+
+<ul>
+<li><a href="#Flight%20code">Flight code</a>: 
+<li><a href="#Naming%20conventions">Naming conventions</a>: 
+<li><a href="#Coding%20conventions">Coding conventions</a>: 
+</ul>
+
+<p><hr>
+Node:<a name="Flight%20code">Flight code</a>,
+Next:<a rel=next href="#Naming%20conventions">Naming conventions</a>,
+Up:<a rel=up href="#Philosophy">Philosophy</a>
+<br>
+
+<h3>About flight code</h3>
+
+<p>Code that is meant to be flown on an autonomous system is termed `flight
+code' (since, this being NASA, we think of putting L2 on spacecraft) and
+has extra requirements placed on it as compared with the rest of the
+codebase - something akin to the difference between kosher and pareve
+foods.   In general, all features of the engine should be made flyable.  At
+least one path through the readers should also be flyable.  Any other code
+(debuggers, skunkworks, etc) needn't fly.
+
+<p>Flight code must not:
+<ul>
+<li>use dynamic allocation except for L2_alloc/L2_free (or Pooled,
+L2_alloc_array, and other wrappers around it).  The worry is that
+L2 could allocate all the memory in the system, and cause other
+software on the flight box to crash. 
+<li>use recursive function invocation.  Infinite recursion would
+overflow the stack, a condition many operating systems don't handle
+well. 
+<li>use strings.  The system is autonomous: no one will read the strings. 
+<li>use stdio or iostreams.  Many flight boxes will not have a file
+system. 
+<li>access any array without checking that we're in bounds.  In fact,
+this is a generally good idea, but absolutely critical for flight
+code. 
+<li>use the C++ exception mechanism.  Many C++ compilers miscompile
+exceptions; and exceptions semantics are very complicated. 
+<li>be slow, big, or take lots of run-time memory.  If it will
+make the flight code less expensive, shift work to non-flight code
+- even if the total cost increases as a result. 
+</ul>
+
+<p>In addition, other projects (like X-37) may have extra requirements.  These
+should be added to the main L2 branch only if either (a) they actually ward
+away potential bugs or (b) many projects have the requirement.  They should
+not be merged into the main branch if they reduce code legibility,
+significantly affect performance, or reduce the ability to easily change
+the implementation (here I'm thinking mainly of iterators).
+
+<p>Given limited development time, L2 developers should spend the bulk of
+their time making the flight code perfect, and only a small amount cleaning
+up the debuggers in particular, and other non-flight code in general.  That
+said, the debuggers are used for model development, so that if users
+complain of sluggish behaviour which is traced to the debuggers, that
+should be fixed.  But only enough that model developers stop complaining.
+
+<p>A note about the <code>l2flight</code> front-end.  Clearly, this is not flight
+code; however, it should be treated as if it were with the exception that
+file (and terminal) access is ok.  The goal of this executable is to test
+the API as changes are made to it or as it is ported to new platforms; and
+to size L2 in terms of code size, memory usage, and CPU time.  It is also a
+good target for profiling, since it does not include the debuggers which
+historically have shifted the execution costs quite dramatically.
+
+<p><hr>
+Node:<a name="Naming%20conventions">Naming conventions</a>,
+Next:<a rel=next href="#Coding%20conventions">Coding conventions</a>,
+Previous:<a rel=previous href="#Flight%20code">Flight code</a>,
+Up:<a rel=up href="#Philosophy">Philosophy</a>
+<br>
+
+<h3>Naming conventions</h3>
+
+<p>The current standard for naming conventions is mix-and-match, mostly taken
+from the table below.  Often they are consistent within a file, but not
+always.  This reflects the fact that several developers have put their paws
+in the pot without a coherent naming convention having been imposed
+beforehand.  My personal preference is the one marked with a pound sign
+(#), two if I feel strongly about it.
+
+<p><table><tr align="left"><td>class name        <td>Class_name <td>ClassName# <td>pfx_class_name
+<br></tr><tr align="left"><td>function name     <td>fn_name    <td>fnName   # <td>
+<br></tr><tr align="left"><td>instance variables<td>i_var      <td>iVar       <td>iVar_## (note 1)
+<br></tr><tr align="left"><td>args (reference)  <td>T&lt;space&gt;&amp;  <td>T&amp;&lt;space&gt;# <td>
+<br></tr><tr align="left"><td>args (pointer)    <td>T&lt;space&gt;*# <td>T*&lt;space&gt;  <td>
+<br></tr><tr align="left"><td>args (const)      <td>const T *# <td>T const *  <td>(note 2)
+<br></tr><tr align="left"><td>accessors         <td>get_X()#   <td>x()        <td>(note 3)
+<br></tr><tr align="left"><td>predicate         <td>is_p()##   <td>p()        <td>(note 4)
+<br></tr><tr align="left"><td>iterator type     <td>x_iterator#<td>iterator   <td>(note 5)
+<br></tr><tr align="left"><td>iterator function <td>begin_X()##<td>X_begin()  <td>begin()  (note 5)
+<br></tr></table>
+
+<p>Note 1.  I find this makes it much clearer whether something it an argument
+or local variable, or whether it's an instance variable.  It also clears up
+the name <code>iVar</code> for the accessor function that returns <code>iVar_</code>,
+but see note 3.
+
+<p>Note 2.  With multiple const and pointer specifications, I prefer the
+second form as being somewhat more parallel: <code>T const* const*</code> rather
+than <code>const T * const *</code>.
+
+<p>Note 3.  I don't care so much about this one; and certainly, I prefer
+<code>size()</code> to <code>get_size()</code> since it's much shorter, and just as
+clear.  Many instances of the second form are my fault, I must admit.
+
+<p>Note 4.  Typically, a predicate could be a verb: for instance,
+<code>empty()</code> is a query "is the list empty" but could easily be
+interpreted as a command "make the list empty."
+
+<p>Note 5.  Iterator types and functions should have some version of the name
+of what they're iterating over, except in the definition of an abstract
+data type like <code>Slist</code>.  Otherwise, it's confusing (what is being
+iterated over), and non-extensible (can't easily add another list).
+
+<p><hr>
+Node:<a name="Coding%20conventions">Coding conventions</a>,
+Previous:<a rel=previous href="#Naming%20conventions">Naming conventions</a>,
+Up:<a rel=up href="#Philosophy">Philosophy</a>
+<br>
+
+<h3>Coding conventions</h3>
+
+<p>The L2 coding conventions are intented to allow a few things:  safety,
+maintainability, "pay only for what you use," and ease of porting. 
+As with naming conventions, the current code-base does not follow all of
+these rules, but it's moving in that direction.
+
+<ul>
+<li><a href="#Coding%20-%20safety">Coding - safety</a>: 
+<li><a href="#Coding%20-%20maintainability">Coding - maintainability</a>: 
+<li><a href="#Coding%20-%20minimalism">Coding - minimalism</a>: 
+<li><a href="#Coding%20-%20porting">Coding - porting</a>: 
+</ul>
+
+<p><hr>
+Node:<a name="Coding%20-%20safety">Coding - safety</a>,
+Next:<a rel=next href="#Coding%20-%20maintainability">Coding - maintainability</a>,
+Up:<a rel=up href="#Coding%20conventions">Coding conventions</a>
+<br>
+
+<h4>Safety first!</h4>
+
+<p>The usual rules apply here.  Most of what I have to add is to <i>always</i>
+check array bounds - never skip on the check!  Note that I do consider
+checking against the end iterator of an array to be an array bounds check,
+as long as you only use forward iterators (it's far too easy to screw up
+using forward-and-back iterators).
+
+<p>The configure option <code>--with-purify</code> helps a lot to discover what's
+going on.  The code should have no errors at all, except if you fully
+understand what the error is, why it's happening, and why it's a spurious
+error.
+
+<p>Similarly, enable <code>--with-Wall</code> (the default) and
+<code>--with-Werror</code>.  This turns on all compiler warnings, and calls them
+errors.  Compiler warnings often reveal potential problems; don't allow any
+of them.  Currently, <code>--with-Wall</code> turns off warnings about
+non-virtual destructors, and does not turn on the <code>-W</code> switch; this
+should be fixed.
+
+<p>Use the C++ <code>static_cast</code> and <code>const_cast</code> instead of the C cast
+syntax, and use these sparingly (especially <code>const_cast</code> which I'm
+guilty of overusing).  These are more restrictive than the C-style cast,
+which should ward off some silly errors.
+
+<p>Finally, it is critically important to use the tab character meaning 8
+spaces (or just don't use the tab character), and to indent to the tune of
+4 characters.  I wrote this in jest (and since I couldn't find a better
+place for it), but I actually have been stung by some bugs because I
+misinterpreted which scope I was in due to poorly done indenting.
+
+<p><hr>
+Node:<a name="Coding%20-%20maintainability">Coding - maintainability</a>,
+Next:<a rel=next href="#Coding%20-%20minimalism">Coding - minimalism</a>,
+Previous:<a rel=previous href="#Coding%20-%20safety">Coding - safety</a>,
+Up:<a rel=up href="#Coding%20conventions">Coding conventions</a>
+<br>
+
+<h4>Maintainability</h4>
+
+<p>It should be as easy as possible to make changes to the implementation to
+fix performance issues as they crop up.  This section has a few random
+thoughts on how to achieve that.
+
+<p><a name="maintainability%20-%20data%20structures"></a>
+Use the <b>generic data structures</b> in <code>mba_utils</code>: classes <code>Slist</code>,
+<code>Array</code>, and <code>Hash_table</code>.  <code>BinaryHeap</code> should probably be
+moved to there as well (it's currently just in CBFS).  This saves
+development time (no need to reinvent the wheel in every class).
+
+<p><a name="maintainability%20-%20iterators"></a>
+Also, use <b>iterators</b> as much as possible.  These free the code from knowing
+what kind of data structure over which they iterate - instead, we just use
+operators ++, !=, and * to do all the work.  It becomes very easy to
+substitute a hash table for a linked list, or an array, etc.
+
+<p><a name="maintainability%20-%20typedefs"></a>
+Use <b>typedefs</b> if you want to return an iterator to something so that the
+client needn't know what kind of thing it's iterating over.  For instance,
+class <code>Variable</code> allows access to its propositions using
+<code>Variable::prop_iterator</code>.  Client code can then declare iterators as
+such, and not need to worry about how class <code>Variable</code> stores its
+propositions (in an <code>Slist</code>, <code>Array</code>, or other).  In particular,
+the client code need only be recompiled - not modified - if the
+<code>Variable</code> class changes the storage class, as long as it updates the
+typedef correctly, or even changes from a typedef to a class of the same
+name.
+
+<p><a name="maintainability%20-%20loops"></a>
+<b>Loops over a data structure</b> should take the following form:
+<pre>
+
+{
+    Variable::prop_iterator it = v.begin_props();
+    for( ; it != v.end_props() ; ++it) {
+        Proposition *p = *it;
+        /* code in here acts on p */
+    }
+}
+</pre>
+
+<p>Open a new scope so that <code>it</code> falls out of scope after the loop.  It
+doesn't work to put <code>it</code> in the <code>for</code> initialization section,
+since in older C++ compilers (VC6.0 and gcc-2.7.2) the scope extends to the
+entire function.
+
+<p>Always use <code>it</code> for the loop iterator; uniformity makes it easier to
+figure out what is going on.  If you have nested loops, make the inner loop
+a function in its own right.  If you absolutely must have nested loops (and
+I can't really see why), rename <i>both</i> loop iterators to something very
+obvious.
+
+<p><hr>
+Node:<a name="Coding%20-%20minimalism">Coding - minimalism</a>,
+Next:<a rel=next href="#Coding%20-%20porting">Coding - porting</a>,
+Previous:<a rel=previous href="#Coding%20-%20maintainability">Coding - maintainability</a>,
+Up:<a rel=up href="#Coding%20conventions">Coding conventions</a>
+<br>
+
+<h4>Pay only for what you use!</h4>
+
+<p>Whenever practical, make it possible to disable everything related to any
+particular feature.
+
+<p>The best way to do this is to put all that in a file or directory of its
+own, and have configure simply not include the file in the library (using
+the <code>NOLIB_FEATURE_DIRS</code> and <code>FEATURE_DIRS</code> ; see the
+<code>configure.in</code> file).  This method tends to produce the cleanest code:
+the fewest files are affected by the feature.
+
+<p>A distant second is to provide a preprocessor macro (using <code>AC_DEFINE</code>
+in <code>configure.in</code>) and protect the code in <code>ifdef</code>s.
+
+<p>Most features use a hybrid of the two approaches.
+
+<p>Currently, there is no good way to add a feature that should be enabled by
+default if certain other components are enabled, but disabled if the user
+doesn't want it to be included.  There's a partial solution for the
+readers, but it's not perfect.  The code used to create the graph in the
+section on configuration (see <a href="#Configuration">Configuration</a>) might be a starting point.
+
+<p><hr>
+Node:<a name="Coding%20-%20porting">Coding - porting</a>,
+Previous:<a rel=previous href="#Coding%20-%20minimalism">Coding - minimalism</a>,
+Up:<a rel=up href="#Coding%20conventions">Coding conventions</a>
+<br>
+
+<h4>Easy porting to new platforms</h4>
+
+<p>L2 is essentially structured like a GNU program, in large part because of
+the need to port to a large number of platforms.  To that end, we are aware
+and follow some of the <a href="http://www.gnu.org/prep/standards_toc.html">GNU coding standards</a>.  Obviously we ignore some of the advice about
+language choice (we use C++) and porting to non-Unix platforms (Unix
+doesn't run spacecraft).
+
+<p>L2 should run out of the box on the following platforms:
+<ul>
+<li>GNU/Linux with gcc-2.95.x
+<li>Solaris with gcc-2.95.x and native binutils
+</ul>
+
+<p>Hopefully, it should also work on other Unix and Unix-like platforms (irix
+or cygwin, for instance).
+
+<p>In addition, it should be easy (less than an hour) to make any given
+release work on the following:
+<ul>
+<li>VxWorks with gcc-2.7.2.2
+<li>Win32 with VC++ 6.0
+</ul>
+
+<p>In particular, it should compile on those platforms.  The time should be
+entirely spent on generating the <code>gnu_conf.h</code> file and setting up
+projects in their development environments.  The requirement to compile on
+those means we need to work around bugs in those compilers, and we're
+limited to the subset of C++ they recognize.
+
+<p>To achieve this goal, follow these rules of thumb:
+<ul>
+<li>In general, try not to use any system headers at all. 
+If you must, limit yourself to <code>&lt;stdlib.h&gt;</code>, <code>&lt;stddef.h&gt;</code>,
+<code>&lt;assert.h&gt;</code> and a few other similarly extremly standard files.
+
+<li>Similarly, don't use non-standard executables.  The standard ones
+are listed in a short list in the GNU coding standards. 
+Notably, perl is not a standard program.  If you must use such an
+executable, you have two options depending on what that executable is
+doing:
+<ul>
+<li>if it's creating a file needed for the build, include the
+file in CVS.  Whenever you change the source file, update
+the generated file and check it in as well.  This is the
+approach we take with the manuals, and with configure. 
+Add the file to <code>l2_update</code> in the
+<code>FILES_TO_CHECK</code> variable. 
+<li>if it's needed for a feature, allow the user not to use that
+feature.  This is the approach we take with to_graphviz and
+the l2-regress regression test suite (which is perl). 
+</ul>
+
+<li>Don't write ifdefs on the system type, but instead, make a configure
+test for the condition.  This will make it easier to port to new
+platforms that have similar characteristics to a previously-ported-to
+platform.  An exception is made for tests for compiler extensions;
+for instance, the <code>__attribute__</code> mechanism in gcc after 2.5,
+or various pragmas for VC6.0. 
+</ul>
+
+<p><hr>
+Node:<a name="File%20layout">File layout</a>,
+Next:<a rel=next href="#Software%20components">Software components</a>,
+Previous:<a rel=previous href="#Philosophy">Philosophy</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h2>How files are laid out</h2>
+
+<p>All files needed to develop or use L2, Skunkworks, and Stanley are under
+CVS.  That includes the source, the build system, non-standard software
+packages (a C++ CORBA implementation, for instance; and the Xerces XML
+parser), and documentation.  It does not include a C/C++ compiler, or a
+Java Virtual Machine: these are assumed to be present on any reasonable
+system.
+
+<p>Some files require non-standard software packages to build them (for
+instance, configure or the HTML version of this manual) but are required
+for any build.  Such files in general are included in the CVS repository
+and any distribution.  The makefiles know how to generate them if
+necessary, so to work on them, the developer will have to ensure the tools
+are available.  This allows people to use L2 without having all the tools
+needed to work on the implementation.
+
+<p>The CVS repository is at /home/cvs/ISG-Repository on the NASA Ames code IC
+Solaris 8 system.
+
+<p>The following modules are defined:
+<dl>
+<dt><code>mba/cpp</code>
+<dd>Holds the source for L2, along with this and other documentation. 
+<br><dt><code>l2-regress</code>
+<dd>Regression tests for L2, along with documentation for the test
+suite.  Before checking in any change, run the tests. 
+<br><dt><code>support/xerces-unix-src</code>
+<dd>An XML parser that L2 uses to parse the XMPL format.  This comes
+from Apache and is covered by the Artistic License.  Not needed
+if XMPL isn't needed (i.e. in flight). 
+<br><dt><code>skunkworks</code>
+<dd>The Java Skunkworks interface and Tcl/Tk Stanley interface, used in
+model development. 
+</dl>
+
+<p>This documentation mostly talks about <code>mba/cpp</code>, which is organized as
+follows:
+<dl>
+<dt><code>.</code>
+<dd>The top-level directory holds build and other read-me files,
+and the configuration scripts (though part of the build system
+is scattered elsewhere as well). 
+<br><dt><code>doc</code>
+<dd>Holds the L2 web page, including this documentation.
+
+<br><dt><code>include</code>
+<dd>Stores all the header (<code>.h</code>) files for L2.
+
+<br><dt><code>src</code>
+<dd>Stores all the source (<code>.cpp</code>) files for L2. 
+</dl>
+
+<p><hr>
+Node:<a name="Software%20components">Software components</a>,
+Next:<a rel=next href="#Configuration">Configuration</a>,
+Previous:<a rel=previous href="#File%20layout">File layout</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h2>Major software components of L2</h2>
+
+<p>L2 has three major software components:
+<img src="components_image.png" alt="components_image.png">
+<dl>
+<dt><b>engine</b>
+<dd>The engine refers to the code that does the diagnosis and/or
+recovery, along with the bookkeeping to make that task easier. 
+<br><dt><b>readers</b>
+<dd>The readers isolate the task of translating the model from one
+format into another, in particular of loading the model from file
+and issuing the calls to the engine to build the appropriate data
+structures. 
+<br><dt><b>debuggers</b>
+<dd>The debuggers are non-flight code used in model development. 
+They are isolated in order to make it very easy to separate them
+from the flight code. 
+</dl>
+
+<p>In addition, three APIs are provided; one talks only to the readers,
+another to the readers and the engine, and a third to all three components.
+
+<p>Data flows as follows:
+<img src="dataflow_image.png" alt="dataflow_image.png">
+<ul>
+<li>The flight software issues commands and queries to the API, and
+gets data back in response. 
+<li>The API sends commands and data to the readers and the engine,
+and gets data back from the engine. 
+<li>The readers read data disk or memory, package it up and send
+it to the engine. 
+<li>The engine gets commands and data from both the readers (at
+initialization time) and the API, and sends data to the API. 
+<li>Non-flight: The human user can issue commands and queries to the
+debuggers, and get data back. 
+<li>Non-flight: The debuggers get callbacks from the readers and
+the engine; can query the engine; and can issue commands to the
+engine. 
+</ul>
+
+<ul>
+<li><a href="#Components%20-%20Engine">Components - Engine</a>: 
+<li><a href="#Components%20-%20Readers">Components - Readers</a>: 
+<li><a href="#Components%20-%20Debuggers">Components - Debuggers</a>: 
+</ul>
+
+<p><hr>
+Node:<a name="Components%20-%20Engine">Components - Engine</a>,
+Next:<a rel=next href="#Components%20-%20Readers">Components - Readers</a>,
+Up:<a rel=up href="#Software%20components">Software components</a>
+<br>
+
+<h3>The L2 engine</h3>
+
+<p>The engine has four main levels.  Each level has a set of classes
+that implement the functionality in that level.
+
+<img src="engine_classes.png" alt="engine_classes.png">
+
+<p>The four main engine data types:
+<ul>
+<li><a href="#class%20LTMS">class LTMS</a>: 
+<li><a href="#class%20Conflict_db">class Conflict_db</a>: 
+<li><a href="#class%20T_system">class T_system</a>: 
+<li><a href="#class%20Tracker">class Tracker</a>: 
+</ul>
+
+<p><hr>
+Node:<a name="class%20LTMS">class LTMS</a>,
+Next:<a rel=next href="#class%20Conflict_db">class Conflict_db</a>,
+Up:<a rel=up href="#Components%20-%20Engine">Components - Engine</a>
+<br>
+
+<h4>LTMS</h4>
+
+<p><a name="class%20Proposition"></a>
+<a name="class%20Clause"></a>
+
+<p>The LTMS (logic-based truth maintenance system) is responsible for
+propagating values through the model <cite>de Kleer</cite>.  At this level, we use a
+propositional theory: we have propositions (see <a href="#class%20Proposition">class Proposition</a>)
+which can be true or false ; and clauses (see <a href="#class%20Clause">class Clause</a>) in CNF. 
+The system is satisfied by satisfying all clauses ; a clause is satisfied
+when any of its literals is true (that is, a proposition that appears as
+literals is true, or one that appears negated is false).  We use unit
+propagation, which is imcomplete but very fast (linear-time) and in
+practice adequate.
+
+<p>Clauses can be volatile or non-volatile.  This is a nod to the fact that
+some clauses will be added once and only removed in truncation, while
+others - those that implement assignable variables (see <a href="#class%20Assignable">class Assignable</a>) - will change often.  The propagation prefers to use
+non-volatile clauses to volatile ones, so that de-asserting a volatile
+clause will undo less of the inference.
+
+<p>The LTMS class inherits from Ptheory.  This is intended to allow easily
+changing the propagation algorithms.  However, the evolution of the classes
+means that this is no longer a practical proposition; most likely, the two
+should be melded for a slight improvement in all aspects (code clarity,
+code size, CPU time, memory usage).
+
+<p><hr>
+Node:<a name="class%20Conflict_db">class Conflict_db</a>,
+Next:<a rel=next href="#class%20T_system">class T_system</a>,
+Previous:<a rel=previous href="#class%20LTMS">class LTMS</a>,
+Up:<a rel=up href="#Components%20-%20Engine">Components - Engine</a>
+<br>
+
+<h4>Conflict_db</h4>
+
+<p><a name="class%20Assignment"></a>
+<a name="class%20Conflict"></a>
+
+<p>The conflict database has a notion of variables and values; it translates
+from that view to the propositional view by having a proposition for each
+variable=value assignment.  It name comes from the fact that it discovers
+and stores conflicts between assignments - in particular, it stores them
+as a list of assignments to variables marked as being assumed variables
+(see <a href="#class%20Assumption">class Assumption</a>).
+
+<p><a name="class%20Candidate"></a>
+Candidates are probably misplaced.  These store the result of a diagnosis,
+and thus should be more closely affiliated with the Tracker (see <a href="#class%20Tracker">class Tracker</a>).
+
+<p><a name="class%20Variable"></a>
+<a name="class%20Dependent"></a>
+<a name="class%20Assignable"></a>
+<a name="class%20Assumption"></a>
+
+<p>The Conflict_db stores several types of variables; they are related to each
+other through the common base class Variable which is sufficiently
+functional to be used in most places.
+
+<p>Note that the Variable class holds a datum, which can be used by
+higher-level data structures (and is in fact used by the T_system) to hold
+extra information with a variable.  However, before starting to actually
+use this, we sullied the separation between the conflict_db level and the
+T_system level by adding time, previous, and next fields to the variables. 
+The Conflict_db does not itself use these, and the variable merely keeps
+them up to date when variables are destroyed.  These fields should be moved
+to the datum that the T_system attaches.
+
+<p><hr>
+Node:<a name="class%20T_system">class T_system</a>,
+Next:<a rel=next href="#class%20Tracker">class Tracker</a>,
+Previous:<a rel=previous href="#class%20Conflict_db">class Conflict_db</a>,
+Up:<a rel=up href="#Components%20-%20Engine">Components - Engine</a>
+<br>
+
+<h4>T_system</h4>
+
+<p>The T_system is the system that handles transitions across time.  The class
+implements both the <a href="../L2_refman/progress.html">progress algorithm</a> which moves time forward and the
+<a href="../L2_refman/truncate.html">truncate algorithm</a> which ensures we
+only store a constant-size time window.
+
+<p>The T_system also maps from the modeler's perspective on variable types to
+the conflict database's types.  Commands and observables are mapped to
+assignable variables ; modes become transitioned variables ; everything
+else becomes dependent variables.
+
+<p><a name="class%20Transitioned"></a>
+
+<p>The <code>Transitioned</code> class implements the mechanism by which modes work. 
+Each component has a current mode variable, which is an instance of this
+class.  Historical mode variables are represented by instances of the
+Dependent class.  In addition to having a mode variable, each mode variable
+has an assumption variable, which corresponds to whether the transition
+was nominal or off-nominal; these are refered to as mode-transition
+variables (see <a href="#CBFS">CBFS</a>, see <a href="#Cover">Cover</a>).
+
+<p><hr>
+Node:<a name="class%20Tracker">class Tracker</a>,
+Previous:<a rel=previous href="#class%20T_system">class T_system</a>,
+Up:<a rel=up href="#Components%20-%20Engine">Components - Engine</a>
+<br>
+
+<h4>Candidate tracker and search methods</h4>
+
+<p><a name="Cover"></a>
+<a name="CBFS"></a>
+
+<p>The Tracker class is essentially a list of candidates.  It also intercepts
+attempts to create new timesteps (with progress), and calls truncate if the
+history table is full.
+
+<p>The CBFS_tracker and Cover_tracker classes are subclasses of Tracker, and
+implement CBFS or conflict coverage search, respectively.  Most likely,
+these could be melded in with Tracker, and the search methods separated
+out from the data structure.
+
+<p><hr>
+Node:<a name="Components%20-%20Readers">Components - Readers</a>,
+Next:<a rel=next href="#Components%20-%20Debuggers">Components - Debuggers</a>,
+Previous:<a rel=previous href="#Components%20-%20Engine">Components - Engine</a>,
+Up:<a rel=up href="#Software%20components">Software components</a>
+<br>
+
+<h3>The model readers</h3>
+
+<p>The name 'readers' is a bit of a misnomer.  The readers directory includes
+all of the following:
+<dl>
+<dt><b>readers</b>
+<dd>Classes that load a model from file (or an array of char) into an
+internal representation.  Name starts with <code>from_</code>. 
+<br><dt><b>translators</b>
+<dd>Classes that copy a loaded model, modifying it according to some
+function.  Optimizers fit in this category.  Name starts with
+<code>xlate_</code>. 
+<br><dt><b>writers</b>
+<dd>Classes that use a loaded model and write it in a different
+representation, for instance into a file according to one file
+format or another ; or into the representation of the L2 engine. 
+Name starts with <code>to_</code>. 
+</dl>
+
+<p>All three share an in-memory representation, <code>L2_file</code>, that is fairly
+easy to manipulate.  The goal is that we can share a single representation,
+yet optimize for the code needed for flight.  The ideal is to have a small
+on-disk (or the flight equivalent thereof) representation, simple code to
+read it into our in-memory representation, minimal memory overhead to store
+it there, and simple code to put it into the representation the engine
+expects.
+
+<p>Note that to minimize the amount of read-only storage, we need to trade off
+code size and model size: since the model size is on the same order of
+magnitude as the code to read it, it may not save space to have a much
+smaller storage mechanism that is more complicated to read - in
+particular, it does not seem to be wortwhile to use compression techniques
+like gzip.
+
+<p>The executable
+<a href="../user_man/l2.html#xmpl2l2">xmpl2l2</a>
+can translate from one format to another (although it can't write XMPL).
+
+<p>In the discussion that follows, only <code>from_memory</code>,
+<code>to_t_system</code>, and the <code>L2_file</code> classes that are not prefixed
+with <code>dbg_</code> are flight code.  The rest is ground-only.
+
+<ul>
+<li><a href="#Readers%20-%20readers">Readers - readers</a>:          Load a model into an internal representation. 
+<li><a href="#Readers%20-%20translators">Readers - translators</a>:      Optimize or otherwise modify a model. 
+<li><a href="#Readers%20-%20writers">Readers - writers</a>:          Write to file or to the engine's representation. 
+<li><a href="#Readers%20-%20L2_file">Readers - L2_file</a>:          The internal representation. 
+<li><a href="#Readers%20-%20configuration">Readers - configuration</a>:    Use configure to decide which ones to use. 
+</ul>
+
+<p><hr>
+Node:<a name="Readers%20-%20readers">Readers - readers</a>,
+Next:<a rel=next href="#Readers%20-%20translators">Readers - translators</a>,
+Up:<a rel=up href="#Components%20-%20Readers">Components - Readers</a>
+<br>
+
+<h4>Readers</h4>
+
+<p>Readers are the intermediary between some model representation, typically
+on disk, and the <code>L2_file</code> representation.  At the moment, four
+classes are defined.
+
+<p><a name="from_xmpl"></a>
+<b>from_xmpl</b>
+Reads a model in the XMPL format.  This requires the Xerces XML
+parser to be linked in with the program.
+
+<p><a name="from_l2"></a>
+<b>from_l2</b>
+Reads a model in the
+<a href="../L2_refman/l2_file_format.txt">L2 format</a>. 
+This is an ASCII file format, with support for debugging sections,
+and is largely analogous to what's used in flight.
+
+<p><a name="from_bin"></a>
+<b>from_bin</b>
+Reads a model in the l2bin format.  In fact, it simply loads the file into
+an array of char in memory, and calls <code>from_memory</code>.
+
+<p><a name="from_memory"></a>
+<b>from_memory</b>
+Reads a model in the l2bin format that's already in memory.  L2bin is a
+binary file format, similar but much smaller, faster to load, and smaller
+code size, than the ASCII l2 format.  It was developed when we had a very
+large and slow executable; its advantages are less important now, but we
+may as well use it since we have it.  This is flight code.
+
+<p><hr>
+Node:<a name="Readers%20-%20translators">Readers - translators</a>,
+Next:<a rel=next href="#Readers%20-%20writers">Readers - writers</a>,
+Previous:<a rel=previous href="#Readers%20-%20readers">Readers - readers</a>,
+Up:<a rel=up href="#Components%20-%20Readers">Components - Readers</a>
+<br>
+
+<h4>Translators</h4>
+
+<p>Translators can effect various changes on a model in the <code>L2_file</code>
+internal representation, and create a new such model.  These are not flight
+code; the idiom is to translate the model as much as needed while on the
+ground - where we can easily wait a weekend, or get a bigger computer -,
+and then install the resulting file on the flight article.  Thus, the
+translators are not optimized for speed or code size, but rather for ease
+of implementation (although in practice they only take seconds to run at
+the moment).
+
+<p>The two main variables that determine L2's performance are the number of
+variables, and the number of components (or, equivalently, the number of
+mode variables).  The number of values per variable and the number of
+clauses are just as important, but in every model I've seen, they average
+to 3 and 9 respectively.
+
+<p>None of these are flight code.
+
+<p><a name="xlate_merge_eq_vars"></a>
+<b>xlate_merge_eq_vars</b>
+
+<p>Merges variables that are equated to each other unconditionally.  This
+optimization reduces the number of variables, though not the number of
+mode variables.
+
+<p>In a nutshell, it looks at all clauses that assert <i>v1=v2</i>.  It then
+replaces <i>v1</i> and <i>v2</i> with one single variable which takes the name of
+one of the two.  Wherever one of the variables are found in any
+proposition, it replaces it with the new variable.  If either variable was
+some kind of special variable (mode, observation, or command), the new
+variable is of the same type.
+
+<p>Equated variables happen fairly rarely within a component (humans don't
+write them often); but occur whenever two components are connected
+(computers write them all the time).  The optimization tends to halve the
+number of variables.
+
+<p>Also, the optimization is required by min-progress.  Min-progress assumes
+that each modeTransition variable is directly affected by a command.  This
+optimization seems to make that true, although this author
+(Benoit Hudson) isn't convinced that it is guaranteed to do so.
+
+<p><a name="xlate_remove_duplicates"></a>
+<b>xlate_remove_duplicates</b>
+
+<p>Remove duplicate clauses and tautologies - clauses that are obviously true
+no matter what (such as <i>v1=v1</i>).  This optimization is run last, in
+order to allow the other translators to be sloppy about creating duplicates
+and tautologies.
+
+<p><a name="xlate_sort_props"></a>
+<b>xlate_sort_props</b>
+
+<p>Used by the <code>to_l2</code> and <code>to_l2bin</code> classes to reorder the
+propositions into the order they write them in the file: first positive
+<i>var=value</i> propositions, then negative ones, followed by positive
+<i>var=var</i> propositions, and finally negative ones.  This is done to save
+on storage space, but is required by the two file formats.
+
+<p><a name="xlate_strip"></a>
+<b>xlate_strip</b>
+
+<p>Removes all debugging information.  In addition, given that enumerations no
+longer store any naming information, replaces all enumerations of the same
+size with a single one, and updates the variables to use that single
+enumeration.  For instance, if the model has a ModeType with values ok and
+failed; and an observation with values of zero and non-zero,
+<code>xlate_strip</code> replaces both with a single enumeration of size two. 
+This only saves on model storage space, and then only slightly (25 bytes on
+one version of the X-37 model, out of about 9kb).
+
+<p><hr>
+Node:<a name="Readers%20-%20writers">Readers - writers</a>,
+Next:<a rel=next href="#Readers%20-%20L2_file">Readers - L2_file</a>,
+Previous:<a rel=previous href="#Readers%20-%20translators">Readers - translators</a>,
+Up:<a rel=up href="#Components%20-%20Readers">Components - Readers</a>
+<br>
+
+<h4>Writers</h4>
+
+<p>Writers are responsible for taking a model in the <code>L2_file</code>
+representation and transfering it to another representation.  That new
+representation can be either a file, or the L2 engine; there may or may not
+be a reader for it.  There is no writer for the XMPL format.
+
+<p><a name="to_bin"></a>
+<b>to_bin</b>
+
+<p>Writes the model in the l2bin file format.  The model must have its
+propositions appropriately sorted (see <a href="#xlate_sort_props">xlate_sort_props</a>).
+
+<p><a name="to_graphviz"></a>
+<b>to_graphviz</b>
+
+<p>Writes the model into a format appropriate for the
+<a href="http://www.research.att.com/sw/tools/graphviz"><code>graphviz</code></a> graph
+drawing program.
+
+<p><a name="to_l2"></a>
+<b>to_l2</b>
+
+<p>Writes the model in the
+<a href="../L2_refman/l2_file_format.txt">L2 file format</a>. 
+The model must have its propositions appropriately sorted
+(see <a href="#xlate_sort_props">xlate_sort_props</a>).
+
+<p><a name="to_t_system"></a>
+<a name="to_t_system_listener"></a>
+<b>to_t_system</b>
+
+<p>Writes the model into the L2 engine proper.  After this operation, we are
+ready for operation.  This is flight code.
+
+<p><hr>
+Node:<a name="Readers%20-%20L2_file">Readers - L2_file</a>,
+Next:<a rel=next href="#Readers%20-%20configuration">Readers - configuration</a>,
+Previous:<a rel=previous href="#Readers%20-%20writers">Readers - writers</a>,
+Up:<a rel=up href="#Components%20-%20Readers">Components - Readers</a>
+<br>
+
+<h4>The L2_file representation.</h4>
+
+<p><code>L2_file</code> is a class that represents a model in a way similar to how
+it is represented in the file formats.  It has arrays of each kind of item:
+enumerations, variables, propositions, clauses, and transitions.  Each kind
+of item has one or several classes that represent it.  They are all
+prefixed with <code>L2r</code> ("L2 reader").  These are all flight code, as they
+are needed to temporarily represent the much shorter
+representation stored in the non-volatile memory.
+
+<p>Several also have a version with debugging info; those are again prefixed
+with <code>dbg_</code>.  The debugging information is unused by the L2 engine,
+but is used by the debuggers, and makes reading the model files slightly
+easier (but still difficult).  These classes are non-flight and can be
+disabled with the configure option <code>--disable-debug-sections</code>.
+
+<p>The classes also define <code>operator&lt;&lt;</code> and related functions to output
+using the iostream mechanism.  Those functions can be disabled with the
+configure option <code>--disable-verbose</code>.
+
+<p><a name="L2rEnumeration"></a>
+<b>L2rEnumeration</b>
+
+<p>Represents the values that a variable can take.  The standard version has
+just an ID and a count of the number of values.  The debugging version adds
+the name of the enumeration, along with the names for each value.
+
+<p>Enumerations are also known as types, attribute types, or domains.
+
+<p><a name="L2rVariable"></a>
+<b>L2rVariable</b>
+
+<p>Represents the variable.  The standard version has ID, a pointer to the
+enumeration, initial value (-1 meaning it has no initial value), the "kind"
+of variable (observation, command, mode, or other; we use kind so as to
+distinguish from type, which is the enumeration), and the modes of the
+variable (stored as an <code>L2rMode</code>) .
+
+<p>Initial value is de facto ignored unless the variable is a mode variable,
+although that isn't enforced until we get to
+<code>to_t_system::createInitialState</code>.  The modes can only be accessed if
+the variable is a mode variable, and it is enforced.
+
+<p>The debugging version adds the name of the variable.
+
+<p><a name="L2rProposition"></a>
+<a name="L2rPropVarValue"></a>
+<a name="L2rPropVarVar"></a>
+<b>L2rProposition, L2rPropVarValue, L2rPropVarVar</b>
+
+<p>Represents an assignment of a variable to a value, or of a variable to
+another variable.  Class <code>L2rProposition</code> is an abstract superclass to
+classes <code>L2rPropVarValue</code> (which represents the former) and
+<code>L2rPropVarVar</code> (the latter).  They are known as propositions because
+the <i>var=value</i> ones map to propositions; but this is somewhat of a
+misnomer, as the <i>var=var</i> ones map to a number of clauses.
+
+<p>Propositions may be positive or negative (rather than having the clause
+store them as positive or negative literals; this may well have been a
+bad choice).
+
+<p>There is no debugging version.
+
+<p><a name="L2rClause"></a>
+<b>L2rClause</b>
+
+<p>Represents a CNF clause.  The clause stores a list of propositions (see
+above) and is to be interpreted as a disjunction between those
+propositions.  At most one of those propositions can be an <i>var=value</i>
+assignment, in which case the <code>L2rClause</code> maps to several clauses
+in the <code>LTMS</code>.  The clause also knows whether it is in the
+'background' - i.e. always active (as opposed to being a guard clause of a
+transition).
+
+<p>It was probably an error to have the clause store a list of propositions,
+rather than two lists, one of positive literals and the other of negated
+literals.  However, it's probably not worth changing.
+
+<p>The debugging version stores the component which created the clause.  This
+information was added a while back in response to a change-request, but
+this author (Benoit Hudson) never figured out how to keep it up to date. 
+So it's largely wasted space.
+
+<p><a name="L2rTransition"></a>
+<b>L2rTransition</b>
+
+<p>Represents a transition from one mode to another.  Stores a list of
+clauses, the mode variable of which it's a transition, the modes which are
+the endpoints of the transition edge (the origin is ignored if this is a
+failure transition), the rank of the failure (ignore if this isn't a
+failure transition), and whether it's a failure.
+
+<p>The debug version adds the name of the transition.  The XMPL format has a
+slot for it, which is why it's here and in the l2 ascii format.  It's
+ignored and there isn't currently a way for the user to see it.
+
+<p><a name="L2rMode"></a>
+<b>L2rMode</b>
+
+<p>Represents the transition diagram of a mode variable.  Simply holds lists
+of the nominal and failure transitions.  It's here to make it easier to
+move things that only apply to mode variables out of the instance variables
+<code>L2rVariable</code>, and just have that class hold a single pointer for all
+that information.
+
+<p>No debugging version.
+
+<p><hr>
+Node:<a name="Readers%20-%20configuration">Readers - configuration</a>,
+Previous:<a rel=previous href="#Readers%20-%20L2_file">Readers - L2_file</a>,
+Up:<a rel=up href="#Components%20-%20Readers">Components - Readers</a>
+<br>
+
+<h4>How to configure the readers</h4>
+
+<p>Using configure, of course.  More on this later...
+
+<p><hr>
+Node:<a name="Components%20-%20Debuggers">Components - Debuggers</a>,
+Previous:<a rel=previous href="#Components%20-%20Readers">Components - Readers</a>,
+Up:<a rel=up href="#Software%20components">Software components</a>
+<br>
+
+<h3>Support for model debugging</h3>
+
+<p>The debuggers are non-flight code which help in model development and
+debugging.  One main feature they include is a mapping from strings to the
+integer IDs and data structures used internally.  They also provide much
+more visibility into the internal structure than is stricly necessary or
+safe, much as does a C++ debugger.
+
+<p><hr>
+Node:<a name="Configuration">Configuration</a>,
+Previous:<a rel=previous href="#Software%20components">Software components</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h2>Configuration</h2>
+
+<p>For lack of time, I won't go into great details here.  Part of the reason
+is that much of configure should be rewritten in my opinion, in order to
+take a higher-level description of the interdependencies of the various
+options.  A seed of an idea lies in the files used to generate this manual,
+in particular the image below.
+
+<p>In said image, green ovals are user-provided settings; white ovals are
+internal settings.  These are all boolean values (at least, as far as the
+dependency graph is concerned).  The configure script adds some files
+and/or macros to the build depending on the value of the settings.
+
+<p>Red arrows denote that if the source node of the edge is active, the
+destination node to must not be active (the source disallows the
+destination).  Yellow edges denote the opposite: the destination node must
+be active if the source node is (the source requires the destination). 
+Green edges denote that, unless some other reason forbids it, the
+destination node should be active (the source wants the destination, but
+does not require it).
+
+<p>For example, assume we enable <code>l2test</code> using
+<code>--enable-l2test</code>, and disable the optimizer using
+<code>--disable-optimizer</code>.  <code>l2test</code> requires the
+<code>livingstone_reader</code> (yellow edge), so it is in turn enabled.  The
+<code>livingstone_reader</code> would like the optimizer (green edge); however,
+the option to disable the optimizer disallows it (red edge) so it is not
+enabled.
+
+<p>The configure file currently tries to implement this by hand, but that is
+tedious and error-prone; it would be nice to have that fragment of
+configury be automatically generated from a file format that could also
+automatically generate this image, which is informative.
+
+<img src="config.png" alt="config.png">
+
+</body></html>
+

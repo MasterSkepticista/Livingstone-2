@@ -1,0 +1,1362 @@
+Document file - DO NOT EDIT
+
+<BEGIN> BUILD_RULE_Livingstone.out
+
+<END>
+
+<BEGIN> BUILD_RULE_archive
+
+<END>
+
+<BEGIN> BUILD_RULE_objects
+
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_BUILDRULE
+Livingstone.out
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_AR
+arsimso
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_ARCHIVE
+$(PRJ_DIR)/SIMSPARCSOLARISgnu/Livingstone.a
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_AS
+ccsimso
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_CC
+ccsimso
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_CFLAGS
+-g \
+	-ansi \
+	-nostdinc \
+	-fvolatile \
+	-fno-builtin \
+	-fguiding-decls \
+	-I. \
+	-I$(WIND_BASE)/target/h \
+	-I$(PRJ_DIR)/include \
+	-I/home/copernicus/id2/shayden/xerces/src \
+	-I/home/copernicus/id2/shayden/xerces/src/VxWorks \
+	-DRW_MULTI_THREAD \
+	-D_REENTRANT \
+	-DCPU=SIMSPARCSOLARIS \
+	-DVXWORKS \
+	-DGCC
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_CFLAGS_AS
+-g \
+	-ansi \
+	-nostdinc \
+	-fvolatile \
+	-fno-builtin \
+	-P \
+	-x \
+	assembler-with-cpp \
+	-I. \
+	-I$(WIND_BASE)/target/h \
+	-DCPU=SIMSPARCSOLARIS
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_CPP
+ccsimso -E -P -xc
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_LD
+ccsimso
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_LDFLAGS
+-N
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_LD_PARTIAL_FLAGS
+-nostdlib -r
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_NM
+nmsimso
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_OPTION_DEFINE_MACRO
+-D
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_OPTION_INCLUDE_DIR
+-I
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_POST_BUILD_RULE
+
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_PRJ_LIBS
+
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_MACRO_SIZE
+sizesimso
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_RO_DEPEND_PATH
+{$(WIND_BASE)/target/h/} \
+	{$(WIND_BASE)/target/src/} \
+	{$(WIND_BASE)/target/config/}
+<END>
+
+<BEGIN> BUILD_SIMSPARCSOLARISgnu_TC
+::tc_SIMSPARCSOLARISgnu
+<END>
+
+<BEGIN> BUILD__CURRENT
+SIMSPARCSOLARISgnu
+<END>
+
+<BEGIN> BUILD__LIST
+SIMSPARCSOLARISgnu
+<END>
+
+<BEGIN> CORE_INFO_TYPE
+::prj_vxApp
+<END>
+
+<BEGIN> CORE_INFO_VERSION
+2.0
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/assignable.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/assignable.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/assignable.cpp_objects
+assignable.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/assignable.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/assignment.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/assignment.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/assignment.cpp_objects
+assignment.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/assignment.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/candidate.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/candidate.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/candidate.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/candidate.cpp_objects
+candidate.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/candidate.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict.cpp_objects
+conflict.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict_db.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict_db.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict_db.cpp_objects
+conflict_db.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict_db.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict_db_debug.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict_db_debug.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/conflict_db_debug.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/tms/ltms_debug.h \
+	$(PRJ_DIR)/include/tms/tms_utils.h \
+	$(PRJ_DIR)/include/mba_utils/list_parser.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict_db_debug.cpp_objects
+conflict_db_debug.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/conflict_db_debug.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/dependent.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/dependent.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/dependent.cpp_objects
+dependent.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/dependent.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/domain.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/domain.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/domain.cpp_objects
+domain.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/domain.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/variable.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/variable.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/variable.cpp_objects
+variable.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/conflict_db/variable.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover.cpp_dependencies
+$(PRJ_DIR)/include/cover/cover.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover.cpp_objects
+cover.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover_tracker.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover_tracker.cpp_dependencies
+$(PRJ_DIR)/include/cover/cover.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h \
+	$(PRJ_DIR)/include/cover/cover_tracker.h \
+	$(PRJ_DIR)/include/transition/tracker.h \
+	$(PRJ_DIR)/include/transition/T_system.h \
+	$(PRJ_DIR)/include/transition/transitioned.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover_tracker.cpp_objects
+cover_tracker.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover_tracker.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover_tracker_debug.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover_tracker_debug.cpp_dependencies
+$(PRJ_DIR)/include/cover/cover_tracker_debug.h \
+	$(PRJ_DIR)/include/cover/cover_tracker.h \
+	$(PRJ_DIR)/include/transition/tracker.h \
+	$(PRJ_DIR)/include/transition/T_system.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/transition/transitioned.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h \
+	$(PRJ_DIR)/include/transition/tracker_debug.h \
+	$(PRJ_DIR)/include/transition/T_system_debug.h \
+	$(PRJ_DIR)/include/tms/ltms_debug.h \
+	$(PRJ_DIR)/include/tms/tms_utils.h \
+	$(PRJ_DIR)/include/mba_utils/list_parser.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db_debug.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover_tracker_debug.cpp_objects
+cover_tracker_debug.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/cover/cover_tracker_debug.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/livingstone/livingstone.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/livingstone/livingstone.cpp_objects
+livingstone.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/livingstone/livingstone.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/livingstone/livingstone_debug.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/livingstone/livingstone_debug.cpp_objects
+livingstone_debug.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/livingstone/livingstone_debug.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/MBA_string.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/MBA_string.cpp_dependencies
+$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/MBA_string.cpp_objects
+MBA_string.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/MBA_string.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/alloc.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/alloc.cpp_dependencies
+$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/alloc.cpp_objects
+alloc.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/alloc.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/hash_table.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/hash_table.cpp_dependencies
+$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/hash_table.cpp_objects
+hash_table.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/hash_table.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/list_parser.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/list_parser.cpp_dependencies
+$(PRJ_DIR)/include/mba_utils/list_parser.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/list_parser.cpp_objects
+list_parser.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/mba_utils/list_parser.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/agenda_types.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/agenda_types.cpp_dependencies
+$(PRJ_DIR)/include/opsat/cbfs_agenda.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/opsat/binaryheap.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/opsat/agenda_types.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/agenda_types.cpp_objects
+agenda_types.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/agenda_types.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/cbfs_tracker.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/cbfs_tracker.cpp_dependencies
+$(PRJ_DIR)/include/opsat/cbfs_tracker.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/transition/tracker.h \
+	$(PRJ_DIR)/include/transition/T_system.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/transition/transitioned.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h \
+	$(PRJ_DIR)/include/opsat/opsat.h \
+	$(PRJ_DIR)/include/opsat/cbfs_agenda.h \
+	$(PRJ_DIR)/include/opsat/binaryheap.h \
+	$(PRJ_DIR)/include/opsat/agenda_types.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/cbfs_tracker.cpp_objects
+cbfs_tracker.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/cbfs_tracker.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/cbfs_tracker_debug.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/cbfs_tracker_debug.cpp_dependencies
+$(PRJ_DIR)/include/opsat/cbfs_tracker_debug.h \
+	$(PRJ_DIR)/include/opsat/cbfs_tracker.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/transition/tracker.h \
+	$(PRJ_DIR)/include/transition/T_system.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/transition/transitioned.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h \
+	$(PRJ_DIR)/include/opsat/opsat.h \
+	$(PRJ_DIR)/include/opsat/cbfs_agenda.h \
+	$(PRJ_DIR)/include/opsat/binaryheap.h \
+	$(PRJ_DIR)/include/opsat/agenda_types.h \
+	$(PRJ_DIR)/include/transition/tracker_debug.h \
+	$(PRJ_DIR)/include/transition/T_system_debug.h \
+	$(PRJ_DIR)/include/tms/ltms_debug.h \
+	$(PRJ_DIR)/include/tms/tms_utils.h \
+	$(PRJ_DIR)/include/mba_utils/list_parser.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db_debug.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/cbfs_tracker_debug.cpp_objects
+cbfs_tracker_debug.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/cbfs_tracker_debug.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/opsat.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/opsat.cpp_dependencies
+$(PRJ_DIR)/include/opsat/opsat.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/opsat/cbfs_agenda.h \
+	$(PRJ_DIR)/include/opsat/binaryheap.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h \
+	$(PRJ_DIR)/include/opsat/agenda_types.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/opsat.cpp_objects
+opsat.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/opsat/opsat.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/test/testMOFVxWorks.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/test/testMOFVxWorks.cpp_objects
+testMOFVxWorks.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/test/testMOFVxWorks.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/clause.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/clause.cpp_dependencies
+$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/clause.cpp_objects
+clause.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/clause.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ltms.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ltms.cpp_dependencies
+$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ltms.cpp_objects
+ltms.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ltms.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ltms_debug.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ltms_debug.cpp_dependencies
+$(PRJ_DIR)/include/tms/ltms_debug.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/tms/tms_utils.h \
+	$(PRJ_DIR)/include/mba_utils/list_parser.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ltms_debug.cpp_objects
+ltms_debug.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ltms_debug.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/proposition.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/proposition.cpp_dependencies
+$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/proposition.cpp_objects
+proposition.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/proposition.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ptheory.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ptheory.cpp_dependencies
+$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ptheory.cpp_objects
+ptheory.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/ptheory.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/theory.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/theory.cpp_dependencies
+$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/tms/formula.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/theory.cpp_objects
+theory.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/tms/theory.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system.cpp_dependencies
+$(PRJ_DIR)/include/transition/T_system.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/transition/transitioned.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system.cpp_objects
+T_system.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system_debug.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system_debug.cpp_dependencies
+$(PRJ_DIR)/include/conflict_db/conflict_db_debug.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/tms/ltms_debug.h \
+	$(PRJ_DIR)/include/tms/tms_utils.h \
+	$(PRJ_DIR)/include/mba_utils/list_parser.h \
+	$(PRJ_DIR)/include/transition/T_system_debug.h \
+	$(PRJ_DIR)/include/transition/T_system.h \
+	$(PRJ_DIR)/include/transition/transitioned.h \
+	$(PRJ_DIR)/include/cover/cover.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system_debug.cpp_objects
+T_system_debug.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system_debug.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system_reader.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system_reader.cpp_objects
+T_system_reader.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/T_system_reader.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/tracker.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/tracker.cpp_dependencies
+$(PRJ_DIR)/include/transition/tracker.h \
+	$(PRJ_DIR)/include/transition/T_system.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/transition/transitioned.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/tracker.cpp_objects
+tracker.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/tracker.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/tracker_debug.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/tracker_debug.cpp_dependencies
+$(PRJ_DIR)/include/transition/tracker_debug.h \
+	$(PRJ_DIR)/include/transition/tracker.h \
+	$(PRJ_DIR)/include/transition/T_system.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/transition/transitioned.h \
+	$(PRJ_DIR)/include/conflict_db/candidate.h \
+	$(PRJ_DIR)/include/transition/T_system_debug.h \
+	$(PRJ_DIR)/include/tms/ltms_debug.h \
+	$(PRJ_DIR)/include/tms/tms_utils.h \
+	$(PRJ_DIR)/include/mba_utils/list_parser.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db_debug.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/tracker_debug.cpp_objects
+tracker_debug.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/tracker_debug.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/transitioned.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/transitioned.cpp_dependencies
+$(PRJ_DIR)/include/transition/transitioned.h \
+	$(PRJ_DIR)/include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/include/conflict_db/domain.h \
+	$(PRJ_DIR)/include/mba_utils/slist.h \
+	$(PRJ_DIR)/include/mba_utils/utils.h \
+	$(PRJ_DIR)/include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/include/mba_utils/resource.h \
+	$(PRJ_DIR)/include/mba_utils/alloc.h \
+	$(PRJ_DIR)/include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/include/conflict_db/assumption.h \
+	$(PRJ_DIR)/include/conflict_db/assignable.h \
+	$(PRJ_DIR)/include/conflict_db/variable.h \
+	$(PRJ_DIR)/include/tms/theory.h \
+	$(PRJ_DIR)/include/tms/formula.h \
+	$(PRJ_DIR)/include/conflict_db/assignment.h \
+	$(PRJ_DIR)/include/tms/ltms.h \
+	$(PRJ_DIR)/include/tms/ptheory.h \
+	$(PRJ_DIR)/include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/include/mba_utils/pair.h \
+	$(PRJ_DIR)/include/mba_utils/prime.h \
+	$(PRJ_DIR)/include/tms/clause.h \
+	$(PRJ_DIR)/include/tms/proposition.h \
+	$(PRJ_DIR)/include/conflict_db/dependent.h \
+	$(PRJ_DIR)/include/conflict_db/conflict.h \
+	$(PRJ_DIR)/include/transition/T_system.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/transitioned.cpp_objects
+transitioned.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/src/transition/transitioned.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> PROJECT_FILES
+$(PRJ_DIR)/src/conflict_db/variable.cpp \
+	$(PRJ_DIR)/src/conflict_db/assignment.cpp \
+	$(PRJ_DIR)/src/conflict_db/candidate.cpp \
+	$(PRJ_DIR)/src/conflict_db/conflict.cpp \
+	$(PRJ_DIR)/src/conflict_db/conflict_db.cpp \
+	$(PRJ_DIR)/src/conflict_db/conflict_db_debug.cpp \
+	$(PRJ_DIR)/src/conflict_db/dependent.cpp \
+	$(PRJ_DIR)/src/conflict_db/domain.cpp \
+	$(PRJ_DIR)/src/conflict_db/assignable.cpp \
+	$(PRJ_DIR)/src/cover/cover_tracker_debug.cpp \
+	$(PRJ_DIR)/src/cover/cover_tracker.cpp \
+	$(PRJ_DIR)/src/cover/cover.cpp \
+	$(PRJ_DIR)/src/livingstone/livingstone_debug.cpp \
+	$(PRJ_DIR)/src/livingstone/livingstone.cpp \
+	$(PRJ_DIR)/src/mba_utils/MBA_string.cpp \
+	$(PRJ_DIR)/src/mba_utils/hash_table.cpp \
+	$(PRJ_DIR)/src/mba_utils/list_parser.cpp \
+	$(PRJ_DIR)/src/mba_utils/alloc.cpp \
+	$(PRJ_DIR)/src/opsat/opsat.cpp \
+	$(PRJ_DIR)/src/opsat/cbfs_tracker.cpp \
+	$(PRJ_DIR)/src/opsat/cbfs_tracker_debug.cpp \
+	$(PRJ_DIR)/src/opsat/agenda_types.cpp \
+	$(PRJ_DIR)/src/tms/theory.cpp \
+	$(PRJ_DIR)/src/tms/ltms.cpp \
+	$(PRJ_DIR)/src/tms/ltms_debug.cpp \
+	$(PRJ_DIR)/src/tms/proposition.cpp \
+	$(PRJ_DIR)/src/tms/ptheory.cpp \
+	$(PRJ_DIR)/src/tms/clause.cpp \
+	$(PRJ_DIR)/src/transition/T_system.cpp \
+	$(PRJ_DIR)/src/transition/T_system_reader.cpp \
+	$(PRJ_DIR)/src/transition/T_system_debug.cpp \
+	$(PRJ_DIR)/src/transition/tracker.cpp \
+	$(PRJ_DIR)/src/transition/tracker_debug.cpp \
+	$(PRJ_DIR)/src/transition/transitioned.cpp \
+	$(PRJ_DIR)/src/test/testMOFVxWorks.cpp
+<END>
+
+<BEGIN> userComments
+L2 C++ port for VxWorks
+<END>
+

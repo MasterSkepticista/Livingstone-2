@@ -1,0 +1,4 @@
+progress test.sv31.valveCmdIn=close
+assign test.sv31.openMicroSwitch=notOpen
+fc
+

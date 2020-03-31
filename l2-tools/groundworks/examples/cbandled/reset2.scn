@@ -1,0 +1,37 @@
+/// ********** TEST RESET 2 *********************
+/// In this test, we turn on a second LED, which
+/// disambiguates the failure.   If the truncation
+/// length is low, we'll have the sambe behavior as above.
+
+progress test.cb14.cmdIn=on
+progress test.cb12.cmdIn=on
+progress test.cb15.cmdIn=on
+progress test.cb8.cmdIn=on
+assign test.led8.ledState=off
+fc
+progress test.cb8.cmdIn=reset
+progress test.cb8.cmdIn=on
+assign test.led8.ledState=on
+fc
+
+/// Next test
+
+
+
+
+
+
+progress test.cb15.cmdIn=on
+progress test.cb14.cmdIn=on
+progress test.cb12.cmdIn=on
+progress test.cb11.cmdIn=on
+progress test.cb5.cmdIn=on
+progress test.cb8.cmdIn=on
+assign test.led5.ledState=on
+assign test.led8.ledState=off
+fc
+// Now turn on CB8 with no LED output
+
+
+fc
+

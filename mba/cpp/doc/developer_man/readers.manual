@@ -1,0 +1,331 @@
+@node Components - Readers
+@subsection The model readers
+
+The name 'readers' is a bit of a misnomer.  The readers directory includes
+all of the following:
+@table @b
+    @item readers
+        Classes that load a model from file (or an array of char) into an
+        internal representation.  Name starts with @code{from_}.
+    @item translators
+        Classes that copy a loaded model, modifying it according to some
+        function.  Optimizers fit in this category.  Name starts with
+        @code{xlate_}.
+    @item writers
+        Classes that use a loaded model and write it in a different
+        representation, for instance into a file according to one file
+        format or another ; or into the representation of the L2 engine.
+        Name starts with @code{to_}.
+@end table
+
+
+All three share an in-memory representation, @code{L2_file}, that is fairly
+easy to manipulate.  The goal is that we can share a single representation,
+yet optimize for the code needed for flight.  The ideal is to have a small
+on-disk (or the flight equivalent thereof) representation, simple code to
+read it into our in-memory representation, minimal memory overhead to store
+it there, and simple code to put it into the representation the engine
+expects.
+
+Note that to minimize the amount of read-only storage, we need to trade off
+code size and model size: since the model size is on the same order of
+magnitude as the code to read it, it may not save space to have a much
+smaller storage mechanism that is more complicated to read -- in
+particular, it does not seem to be wortwhile to use compression techniques
+like gzip.
+
+
+The executable
+@ifhtml
+@uref{@value{HTML_base}/user_man/l2.html#xmpl2l2, , xmpl2l2}
+@end ifhtml
+@ifnothtml
+@command{xmpl2l2} (@pxref{xmpl2l2, l2, L2 user manual})
+@end ifnothtml
+can translate from one format to another (although it can't write XMPL).
+
+In the discussion that follows, only @code{from_memory},
+@code{to_t_system}, and the @code{L2_file} classes that are not prefixed
+with @code{dbg_} are flight code.  The rest is ground-only.
+
+
+@menu
+* Readers - readers::         Load a model into an internal representation.
+* Readers - translators::     Optimize or otherwise modify a model.
+* Readers - writers::         Write to file or to the engine's representation.
+* Readers - L2_file::         The internal representation.
+* Readers - configuration::   Use configure to decide which ones to use.
+@end menu
+
+@c ***************************************************************************
+
+@node Readers - readers
+@subsubsection Readers
+
+Readers are the intermediary between some model representation, typically
+on disk, and the @code{L2_file} representation.  At the moment, four
+classes are defined.
+
+@anchor{from_xmpl}
+@b{from_xmpl}
+Reads a model in the XMPL format.  This requires the Xerces XML
+parser to be linked in with the program.
+
+@anchor{from_l2}
+@b{from_l2}
+Reads a model in the
+@uref{@value{HTML_base}/L2_refman/l2_file_format.txt, , L2 format}.
+This is an ASCII file format, with support for debugging sections,
+and is largely analogous to what's used in flight.
+
+@anchor{from_bin}
+@b{from_bin}
+Reads a model in the l2bin format.  In fact, it simply loads the file into
+an array of char in memory, and calls @code{from_memory}.
+
+@anchor{from_memory}
+@b{from_memory}
+Reads a model in the l2bin format that's already in memory.  L2bin is a
+binary file format, similar but much smaller, faster to load, and smaller
+code size, than the ASCII l2 format.  It was developed when we had a very
+large and slow executable; its advantages are less important now, but we
+may as well use it since we have it.  This is flight code.
+
+@c ***************************************************************************
+
+@node Readers - translators
+@subsubsection Translators
+
+Translators can effect various changes on a model in the @code{L2_file}
+internal representation, and create a new such model.  These are not flight
+code; the idiom is to translate the model as much as needed while on the
+ground -- where we can easily wait a weekend, or get a bigger computer --,
+and then install the resulting file on the flight article.  Thus, the
+translators are not optimized for speed or code size, but rather for ease
+of implementation (although in practice they only take seconds to run at
+the moment).
+
+
+The two main variables that determine L2's performance are the number of
+variables, and the number of components (or, equivalently, the number of
+mode variables).  The number of values per variable and the number of
+clauses are just as important, but in every model I've seen, they average
+to 3 and 9 respectively.
+
+None of these are flight code.
+
+@anchor{xlate_merge_eq_vars}
+@b{xlate_merge_eq_vars}
+
+Merges variables that are equated to each other unconditionally.  This
+optimization reduces the number of variables, though not the number of
+mode variables.
+
+In a nutshell, it looks at all clauses that assert @i{v1=v2}.  It then
+replaces @i{v1} and @i{v2} with one single variable which takes the name of
+one of the two.  Wherever one of the variables are found in any
+proposition, it replaces it with the new variable.  If either variable was
+some kind of special variable (mode, observation, or command), the new
+variable is of the same type.
+
+Equated variables happen fairly rarely within a component (humans don't
+write them often); but occur whenever two components are connected
+(computers write them all the time).  The optimization tends to halve the
+number of variables.
+
+Also, the optimization is required by min-progress.  Min-progress assumes
+that each modeTransition variable is directly affected by a command.  This
+optimization seems to make that true, although this author
+(@value{bhudson}) isn't convinced that it is guaranteed to do so.
+
+
+
+@anchor{xlate_remove_duplicates}
+@b{xlate_remove_duplicates}
+
+Remove duplicate clauses and tautologies -- clauses that are obviously true
+no matter what (such as @i{v1=v1}).  This optimization is run last, in
+order to allow the other translators to be sloppy about creating duplicates
+and tautologies.
+
+@anchor{xlate_sort_props}
+@b{xlate_sort_props}
+
+Used by the @code{to_l2} and @code{to_l2bin} classes to reorder the
+propositions into the order they write them in the file: first positive
+@i{var=value} propositions, then negative ones, followed by positive
+@i{var=var} propositions, and finally negative ones.  This is done to save
+on storage space, but is required by the two file formats.
+
+
+@anchor{xlate_strip}
+@b{xlate_strip}
+
+Removes all debugging information.  In addition, given that enumerations no
+longer store any naming information, replaces all enumerations of the same
+size with a single one, and updates the variables to use that single
+enumeration.  For instance, if the model has a ModeType with values ok and
+failed; and an observation with values of zero and non-zero,
+@code{xlate_strip} replaces both with a single enumeration of size two.
+This only saves on model storage space, and then only slightly (25 bytes on
+one version of the X-37 model, out of about 9kb).
+
+
+@c ***************************************************************************
+
+@node Readers - writers
+@subsubsection Writers
+
+Writers are responsible for taking a model in the @code{L2_file}
+representation and transfering it to another representation.  That new
+representation can be either a file, or the L2 engine; there may or may not
+be a reader for it.  There is no writer for the XMPL format.
+
+@anchor{to_bin}
+@b{to_bin}
+
+Writes the model in the l2bin file format.  The model must have its
+propositions appropriately sorted (@pxref{xlate_sort_props}).
+
+@anchor{to_graphviz}
+@b{to_graphviz}
+
+Writes the model into a format appropriate for the
+@uref{http://www.research.att.com/sw/tools/graphviz, , @code{graphviz}} graph
+drawing program.
+
+@anchor{to_l2}
+@b{to_l2}
+
+Writes the model in the
+@uref{@value{HTML_base}/L2_refman/l2_file_format.txt, , L2 file format}.
+The model must have its propositions appropriately sorted
+(@pxref{xlate_sort_props}).
+
+@anchor{to_t_system}
+@anchor{to_t_system_listener}
+@b{to_t_system}
+
+Writes the model into the L2 engine proper.  After this operation, we are
+ready for operation.  This is flight code.
+
+
+@c ***************************************************************************
+@node Readers - L2_file
+@subsubsection The L2_file representation.
+
+@code{L2_file} is a class that represents a model in a way similar to how
+it is represented in the file formats.  It has arrays of each kind of item:
+enumerations, variables, propositions, clauses, and transitions.  Each kind
+of item has one or several classes that represent it.  They are all
+prefixed with @code{L2r} (``L2 reader'').  These are all flight code, as they
+are needed to temporarily represent the much shorter
+representation stored in the non-volatile memory.
+
+Several also have a version with debugging info; those are again prefixed
+with @code{dbg_}.  The debugging information is unused by the L2 engine,
+but is used by the debuggers, and makes reading the model files slightly
+easier (but still difficult).  These classes are non-flight and can be
+disabled with the configure option @code{--disable-debug-sections}.
+
+The classes also define @code{operator<<} and related functions to output
+using the iostream mechanism.  Those functions can be disabled with the
+configure option @code{--disable-verbose}.
+
+@anchor{L2rEnumeration}
+@b{L2rEnumeration}
+
+Represents the values that a variable can take.  The standard version has
+just an ID and a count of the number of values.  The debugging version adds
+the name of the enumeration, along with the names for each value.
+
+Enumerations are also known as types, attribute types, or domains.
+
+@anchor{L2rVariable}
+@b{L2rVariable}
+
+Represents the variable.  The standard version has ID, a pointer to the
+enumeration, initial value (-1 meaning it has no initial value), the "kind"
+of variable (observation, command, mode, or other; we use kind so as to
+distinguish from type, which is the enumeration), and the modes of the
+variable (stored as an @code{L2rMode}) .
+
+Initial value is de facto ignored unless the variable is a mode variable,
+although that isn't enforced until we get to
+@code{to_t_system::createInitialState}.  The modes can only be accessed if
+the variable is a mode variable, and it is enforced.
+
+The debugging version adds the name of the variable.
+
+@anchor{L2rProposition}
+@anchor{L2rPropVarValue}
+@anchor{L2rPropVarVar}
+@b{L2rProposition, L2rPropVarValue, L2rPropVarVar}
+
+Represents an assignment of a variable to a value, or of a variable to
+another variable.  Class @code{L2rProposition} is an abstract superclass to
+classes @code{L2rPropVarValue} (which represents the former) and
+@code{L2rPropVarVar} (the latter).  They are known as propositions because
+the @i{var=value} ones map to propositions; but this is somewhat of a
+misnomer, as the @i{var=var} ones map to a number of clauses.
+
+Propositions may be positive or negative (rather than having the clause
+store them as positive or negative literals; this may well have been a
+bad choice).
+
+There is no debugging version.
+
+
+@anchor{L2rClause}
+@b{L2rClause}
+
+Represents a CNF clause.  The clause stores a list of propositions (see
+above) and is to be interpreted as a disjunction between those
+propositions.  At most one of those propositions can be an @i{var=value}
+assignment, in which case the @code{L2rClause} maps to several clauses
+in the @code{LTMS}.  The clause also knows whether it is in the
+'background' -- i.e. always active (as opposed to being a guard clause of a
+transition).
+
+It was probably an error to have the clause store a list of propositions,
+rather than two lists, one of positive literals and the other of negated
+literals.  However, it's probably not worth changing.
+
+The debugging version stores the component which created the clause.  This
+information was added a while back in response to a change-request, but
+this author (@value{bhudson}) never figured out how to keep it up to date.
+So it's largely wasted space.
+
+
+@anchor{L2rTransition}
+@b{L2rTransition}
+
+Represents a transition from one mode to another.  Stores a list of
+clauses, the mode variable of which it's a transition, the modes which are
+the endpoints of the transition edge (the origin is ignored if this is a
+failure transition), the rank of the failure (ignore if this isn't a
+failure transition), and whether it's a failure.
+
+The debug version adds the name of the transition.  The XMPL format has a
+slot for it, which is why it's here and in the l2 ascii format.  It's
+ignored and there isn't currently a way for the user to see it.
+
+@anchor{L2rMode}
+@b{L2rMode}
+
+Represents the transition diagram of a mode variable.  Simply holds lists
+of the nominal and failure transitions.  It's here to make it easier to
+move things that only apply to mode variables out of the instance variables
+@code{L2rVariable}, and just have that class hold a single pointer for all
+that information.
+
+No debugging version.
+
+
+@c ***************************************************************************
+
+@node Readers - configuration
+@subsubsection How to configure the readers
+
+@c TODO
+Using configure, of course.  More on this later...

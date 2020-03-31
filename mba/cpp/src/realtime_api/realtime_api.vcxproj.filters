@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{610ab4c2-7643-4a81-963b-32a33a87dad5}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\win32">
+      <UniqueIdentifier>{665f51a6-0c49-4b2d-ace3-e81b9b37279c}</UniqueIdentifier>
+      <Extensions>*.cpp</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{77221017-522b-497a-9b2a-67eeb2695efc}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\win32 No. 1">
+      <UniqueIdentifier>{4d7c3800-8e09-48aa-9b47-43217cbfbbaa}</UniqueIdentifier>
+      <Extensions>*.h</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="win32\guardcondition.cpp">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\guardedqueue.cpp">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\livapi_rt.cpp">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\livingstone_dispatcher.cpp">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\threadobject.cpp">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\timeout_handlers.cpp">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\realtime_api\win32\dataguard.h">
+      <Filter>Header Files\win32 No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\realtime_api\win32\guardcondition.h">
+      <Filter>Header Files\win32 No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\realtime_api\win32\livingstone_dispatcher.h">
+      <Filter>Header Files\win32 No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\realtime_api\win32\threadobject.h">
+      <Filter>Header Files\win32 No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\realtime_api\livingstonemessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\realtime_api\userfcns.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

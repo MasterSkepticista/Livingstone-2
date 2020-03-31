@@ -1,0 +1,63 @@
+/// ********** Multiple trajectory test
+//  Create fresh model
+//
+//  This test is trickier, and shows some of the features
+//  of Livingstone2.
+//
+//  When we turn on CB8, CB7 is off.  Thus we cannot say
+//  if LED8 is not receiving power, or both LED7 and LED8
+//  are without power.  We therefore track both the trajectory
+//  where CB8 and CB12 (which powers both LEDS) are failed.
+//
+//  Later, we turn on CB7 and LED7 goes on.  The trajectory
+//  where CB12 is failed is dropped.
+
+echo // start the failure sequence
+progress cb15.cmdIn=on
+progress cb14.cmdIn=on
+progress cb12.cmdIn=on
+progress cb11.cmdIn=on
+progress cb5.cmdIn=on
+assign led5.ledState=on
+fc
+ltms-stats
+
+echo // now turn on CB8 with no LED output
+progress cb8.cmdIn=on
+assign led8.ledState=off
+fc
+ltms-stats
+
+echo // turn on CB7, which disambiguates which CB is failed
+progress cb7.cmdIn=on
+assign led7.ledState=on
+fc
+ltms-stats
+
+echo // reset CB8
+progress cb8.cmdIn=reset
+fc
+ltms-stats
+
+echo // now turn on CB8
+progress cb8.cmdIn=on
+assign led8.ledState=on
+fc
+ltms-stats
+
+echo // return everything to the start state
+progress cb15.cmdIn=off
+assign led8.ledState=off
+assign led5.ledState=off
+assign led7.ledState=off
+fc
+ltms-stats
+
+progress cb14.cmdIn=off
+progress cb12.cmdIn=off
+progress cb11.cmdIn=off
+progress cb5.cmdIn=off
+progress cb7.cmdIn=off
+progress cb8.cmdIn=off
+echo // back to start state
+

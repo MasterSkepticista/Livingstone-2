@@ -1,0 +1,25 @@
+@node names2ids
+@section Translating human-readable scripts into l2flight's format
+
+The @command{l2flight} program takes input using integer IDs;
+@command{names2ids} shares the same syntax, except that we use the string
+values specified in the XMPL model rather than the integer values.  This
+makes it much easier to write appropriate scripts.
+
+
+The program takes one argument: the model filename.  It takes input from
+stdin, although it gives no prompt.  It sends output to stdout.
+The usual usage is as:
+@example
+        names2ids model.l2 < script.names > script.ids
+@end example
+Or even:
+@example
+        scr2names script.scr | names2ids model.l2 > script.ids
+@end example
+
+The command syntax is identical to that of @command{l2flight}, with the
+exception that where it calls for a @samp{varID}, @command{names2ids} calls
+for a variable name; and where @command{l2flight} calls for a @samp{value},
+@command{names2ids} calls for the name of the value.  Use @samp{unknown} to
+unassign an observable.

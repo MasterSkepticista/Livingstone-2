@@ -1,0 +1,8 @@
+scenario sv03StuckClosed lo2subsystem
+assign test.sv03.openMicroSwitch=notOpen
+progress test.sv03.valveCmdIn=open
+fc
+assign test.mpre202p.pressureReading.pr02Crack=belowThreshold test.mpre202p.pressureReading.pressurizationRate.upperBound=belowThreshold test.mpre202p.pressureReading.pressurizationRate.lowerBound=belowThreshold test.mpre202p.pressureReading.heatingRate.upperBound=belowThreshold test.mpre202p.pressureReading.heatingRate.lowerBound=aboveThreshold test.mpre202p.pressureReading.bleedRate.upperBound=aboveThreshold test.mpre202p.pressureReading.bleedRate.lowerBound=aboveThreshold test.mpre202p.pressureReading.ventingRate.upperBound=aboveThreshold test.mpre202p.pressureReading.ventingRate.lowerBound=aboveThreshold test.mpre202p.pressureReading.controllerPressureBias=unknown
+fc
+assign test.mpre103p.pressureReading.rg01.upperBound=belowThreshold test.mpre103p.pressureReading.rg01.lowerBound=belowThreshold test.mpre103p.pressureReading.rg11.upperBound=belowThreshold test.mpre103p.pressureReading.rg11.lowerBound=aboveThreshold test.mpre103p.pressureReading.ambient.upperBound=aboveThreshold test.mpre103p.pressureReading.ambient.lowerBound=aboveThreshold
+fc

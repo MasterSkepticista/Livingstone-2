@@ -1,0 +1,16 @@
+my($in_table) = 0;
+my($in_example) = 0;
+
+my(@table_styles) = ("enumerate", "itemize", "multitable", "table");
+
+while(<>) {
+    foreach $style (@table_styles) {
+        if(/^\@$style/)     { $in_table++; last; }
+        if(/^\@end *$style/) { $in_table--; last; }
+    }
+
+    if(/^\@example/)      { $in_example++; }
+    if(/^\@end *example/) { $in_example--; }
+    if($in_table && !$in_example) { s/^[ \t]*//; }
+    print;
+}

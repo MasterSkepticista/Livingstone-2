@@ -1,0 +1,102 @@
+# $Id: l2test-rt.mk.in,v 1.7 2000/12/13 22:25:58 spepke Exp $
+
+# Makefile to build l2test-rt
+# We don't use top.mk and bot.mk for this one: they have too much
+# baggage.  So we copy just the necessary bits.
+
+#######
+# Directories
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+libdir      = @libdir@
+includedir  = @includedir@
+datadir     = @datadir@
+XERCESCROOT = @XERCESCROOT@
+RTI_USER    = @datadir@/rti_user
+
+#######
+# Libraries
+LIBS = @LIBS@
+LIBS += -llivrti -llivdll -l@XERCES@ -lpthread
+
+
+#######
+# Programs
+CC=@CC_FULL_PATH@
+CXX=@CXX_FULL_PATH@
+INSTALL = @INSTALL@
+
+
+#######
+# Flags for programs
+CFLAGS = @CFLAGS@
+CXXFLAGS = @CXXFLAGS@
+CXXRFLAG = @CXXRFLAG@
+CPPFLAGS = @CPPFLAGS@
+CPPFLAGS += -I$(XERCESCROOT)/include
+CPPFLAGS += -I$(includedir)
+CPPFLAGS += -I$${RTI_USER_INCLUDE-.}
+LDFLAGS = @LDFLAGS@
+DEFS = @DEFS@
+
+#######
+# Combination flags and programs
+COMPILE_CXX = $(CXX) -c $(CXXFLAGS) $(DEFS) $(CPPFLAGS)
+
+# LIBS must come after the .o's
+LINK_CXX    = $(CXX) $(CXXFLAGS) $(LDFLAGS) -L$(libdir) $(CXXRFLAG)$(libdir)
+
+
+#######
+# Rules
+
+# by default, build the executable
+all: l2test-rt
+
+# copy rtapi and the makefile itself in from the share directory
+rtapi.cpp: $(datadir)/rtapi.cpp
+	$(INSTALL) -m 444 $< $@
+rti_user/userfcns.cpp: $(datadir)/rti_user/userfcns.cpp
+	$(INSTALL) -d rti_user
+	$(INSTALL) -m 444 $< $@
+rti_user/userfcns_debug.cpp: $(datadir)/rti_user/userfcns_debug.cpp
+	$(INSTALL) -m 444 $< $@
+l2test-rt.mk : $(datadir)/l2test-rt.mk
+	$(INSTALL) -m 444 $< $@
+
+# depend just on the cpp file ; should depend on the time_delays
+# and enumapi headers, but we don't actually know where they are.
+rtapi.o: rtapi.cpp
+	$(COMPILE_CXX) rtapi.cpp
+
+rti_user/userfcns.o: rti_user/userfcns.cpp
+	$(COMPILE_CXX) -o rti_user/userfcns.o rti_user/userfcns.cpp
+
+rti_user/userfcns_debug.o: rti_user/userfcns_debug.cpp
+	$(COMPILE_CXX) -o rti_user/userfcns_debug.o rti_user/userfcns_debug.cpp
+
+# build the l2test-rt executable.
+l2test-rt: rtapi.o rti_user/userfcns.o rti_user/userfcns_debug.o
+	$(LINK_CXX) -o $@ rtapi.o rti_user/userfcns.o rti_user/userfcns_debug.o $(LIBS)
+
+
+# build a tags file for vi or emacs ; always rebuild it
+.PHONY: tags TAGS
+tags:
+	ctags *.c *.cpp *.h
+
+TAGS:
+	etags *.c *.cpp *.h
+
+
+# generate dependency information
+.PHONY: depend
+depend:
+	makedepend $(CPPFLAGS) $(DEFS) *.c *.cpp
+
+# clean up
+.PHONY: clean distclean
+clean:
+	$(RM) *.o rti_user/*.o core l2test-rt tags
+distclean: clean
+	$(RM) rtapi.cpp rti_user/userfcns.cpp rti_user/userfcns_debug.cpp

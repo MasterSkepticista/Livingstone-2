@@ -1,0 +1,1370 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./Introduction%20to%20JMPL_files/filelist.xml">
+<title>Introduction to JMPL</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Stephen Wragg</o:Author>
+  <o:LastAuthor>Stephen Wragg</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>0</o:TotalTime>
+  <o:Created>2001-12-11T19:41:00Z</o:Created>
+  <o:LastSaved>2001-12-11T19:41:00Z</o:LastSaved>
+  <o:Pages>7</o:Pages>
+  <o:Words>1814</o:Words>
+  <o:Characters>10340</o:Characters>
+  <o:Company>NASA Ames Research Center</o:Company>
+  <o:Lines>86</o:Lines>
+  <o:Paragraphs>20</o:Paragraphs>
+  <o:CharactersWithSpaces>12698</o:CharactersWithSpaces>
+  <o:Version>9.4402</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:DoNotHyphenateCaps/>
+  <w:PunctuationKerning/>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>3</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:DoNotShadeFormData/>
+  <w:Compatibility>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Garamond;
+	panose-1:2 2 4 4 3 3 1 1 8 3;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:647 0 0 0 159 0;}
+@font-face
+	{font-family:"Lucida Console";
+	panose-1:2 11 6 9 4 5 4 2 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-2147482993 6144 0 0 31 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+ /* Page Definitions */
+@page
+	{mso-page-border-surround-header:no;
+	mso-page-border-surround-footer:no;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US style='tab-interval:.5in;text-justify-trim:punctuation'>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center;mso-pagination:none;
+mso-layout-grid-align:none;text-autospace:none'><b><span style='font-size:28.0pt;
+font-family:Garamond'>Introduction to JMPL<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center;mso-pagination:none;
+mso-layout-grid-align:none;text-autospace:none'><b><span style='font-size:14.0pt;
+font-family:Garamond'>Language Version: 4.0<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center;mso-pagination:none;
+mso-layout-grid-align:none;text-autospace:none'><b><span style='font-size:14.0pt;
+font-family:Garamond'>Andrew Bachmann<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center;mso-pagination:none;
+mso-layout-grid-align:none;text-autospace:none'><b><span style='font-size:14.0pt;
+font-family:Garamond'>May 31, 2001<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:14.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:16.0pt'>Introduction to JMPL</span></b><b><span
+style='font-size:14.0pt'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>JMPL is the Java-based
+Model Programming Language.<span style="mso-spacerun: yes">  </span>JMPL is
+designed to be easier to use for modellers.<span style="mso-spacerun: yes"> 
+</span>The Java/C++ syntax is more familiar to users than the previous Lisp syntax.<span
+style="mso-spacerun: yes">  </span>JMPL also represents a number of extensions
+beyond the original Lisp-based MPL.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:14.0pt'>History of JMPL</span><o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>In the beginning, there was
+Lisp-based MPL, and it was good.<span style="mso-spacerun: yes"> 
+</span>However, engineers who may want to use the Livingstone system are
+generally not familiar or comfortable with Lisp syntax.<span
+style="mso-spacerun: yes">  </span>They are more familiar with C++ and java
+conventions.<span style="mso-spacerun: yes">  </span>So, Brian Williams
+designed a language that was more in keeping with these conventions.<span
+style="mso-spacerun: yes">  </span>Jim Kurien presented the language to Andrew
+Bachmann (me) and we worked through some issues.<span style="mso-spacerun:
+yes">  </span>We made the language conform more to java conventions.<span
+style="mso-spacerun: yes">  </span>Throughout this process we tried to make the
+syntax as straightforward and simple as possible.<span style="mso-spacerun:
+yes">  </span>As we developed the parser and compiler, we realized that certain
+structures were redundant and we removed them.<span style="mso-spacerun: yes"> 
+</span>We made these changes along with others.<span style="mso-spacerun:
+yes">  </span>The result is JMPL today.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:14.0pt'>Differences between JMPL
+and the Lisp-based MPL</span><o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>When JMPL was designed,
+syntactic structures were provided for improvements in the engine, either
+realized or future.<span style="mso-spacerun: yes">  </span>Where the
+Lisp-based MPL had a single &quot;mode&quot; variable, JMPL has a state vector.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>In conjunction with the
+change from a single mode variable, the way to describe transitions and modes
+has changed somewhat.<span style="mso-spacerun: yes">  </span>In the Lisp-based
+MPL, a single mode was represented by a syntactic structure that enclosed the
+descriptions of transitions out of that mode.<span style="mso-spacerun: yes"> 
+</span>In JMPL, transitions are represented by syntactic structures at the
+topmost level of a component type.<span style="mso-spacerun: yes"> 
+</span>Transitions are defined by a &quot;from vector&quot; and a &quot;to
+vector&quot;, each of which corresponds to a set of values for the state
+vector, before and after the transition, respectively.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Some other syntactic
+constructs have been removed.<span style="mso-spacerun: yes"> 
+</span>Lisp-based MPL had a construct called &quot;initially&quot;, which would
+set up the initial state of any component of that component type.<span
+style="mso-spacerun: yes">  </span>In JMPL, there is no such construct.<span
+style="mso-spacerun: yes">  </span>It was removed and replaced by an
+independent mechanism to supply the initial state of each component
+individually.<span style="mso-spacerun: yes">  </span>The new system is more
+flexible and expressive.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>The Lisp-based MPL
+construct called &quot;always&quot; has been replaced by a java syntactic
+convention.<span style="mso-spacerun: yes">  </span>Constraints enclosed in
+curly braces (constraint groups) at the topmost level of a component type serve
+the same role.<span style="mso-spacerun: yes">  </span>These constraints are
+imposed when a component of that component type is instantiated.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Another difference is in
+failure probabilities.<span style="mso-spacerun: yes">  </span>Failure
+probabilities used to be associated with failure modes.<span
+style="mso-spacerun: yes">  </span>Essentially, these were a priori
+probabilities.<span style="mso-spacerun: yes">  </span>As such, they were only
+useful at the start of the diagnosis.<span style="mso-spacerun: yes"> 
+</span>The new probabilities are more expressive and flexible.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:16.0pt'>Modelling in JMPL</span></b><span
+style='font-size:14.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>All models in JMPL are
+broken down into two categories of source objects.<span style="mso-spacerun:
+yes">  </span>A source object is either an enumeration or class.<span
+style="mso-spacerun: yes">  </span>Both of these source objects allow
+specification of relations that operate on them.<span style="mso-spacerun:
+yes">  </span>It is not necessary to define a class or enumeration before its
+use.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Template:</b><span style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>jmpl</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>enumeration</i>
+| <i>class</i>)*</span><span style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:14.0pt'>Enumerations</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Enumeration</b><b><span style='font-size:10.0pt'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Enumerations describe
+attribute types.<span style="mso-spacerun: yes">  </span>They specify the
+domain of the attribute. (the set of possible values)<span style="mso-spacerun:
+yes">  </span>Enumerations are finite and discrete.<span style="mso-spacerun:
+yes">  </span>Enumerations are atomic.<span style="mso-spacerun: yes"> 
+</span>They can not be constructed from composing other enumerations.<span
+style="mso-spacerun: yes">  </span>Enumerations do not form an inheritance
+heirarchy.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Template:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>enumeration</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= enum <i>enumName</i>
+{ <i>enumValue</i> (,<i> enumValue</i>)* } ({ <i>relation</i>* })? ;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>enumName</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= <i>ident<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>enumValue
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::= <i>ident<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Examples:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>enum
+onOffState {on, off};</span><span style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>enum
+relativeValues {low, nominal, high} { <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>// some relations<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>relation relativeValuesEqual (
+relativeValues to) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>this = to;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>relation relativeValuesLessThan (
+relativeValues to) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>((this = low) &amp; ((to = nominal) | (to
+= high))) |<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>((this = nominal) &amp; (to = high));<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>relation relativeValuesMoreThan (
+relativeValues to) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>((this = high) &amp; ((to = nominal) | (to
+=low))) |<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>((this = nominal) &amp; (to = low));<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>relation relativeValuesNotEqual (
+relativeValues to) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>this != to;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>};<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:14.0pt'>Classes</span></b><span
+style='font-size:14.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Class <o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Classes describe component
+types, modules, and composite attribute types.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Template:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>class</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= class <i>className</i>
+(extends <i>superName</i>)? { <i>classEntry</i>* }<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>className</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= <i>ident<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>superName
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::= <i>identifier<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>classEntry</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>attribute</i> | <i>stateVector</i>
+| <i>classEnumeration</i> | <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">                </span><i>transition</i> | <i>failure</i>
+| <i>relation</i> | <i>constraintGroup</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Example:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>class
+led {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>onOffState currentIn;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>onOffState ledState;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>commandIn repairFlag;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>private enum ModeType {nominal,failed};<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>private ModeType mode;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>stateVector [mode];<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>transition fix(failed,nominal) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>repairFlag=repaired;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>failure break(*,failed,low) {}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>{<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>switch (mode) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">      </span>case nominal: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">        </span>ledState = currentIn;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">    </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Attribute<o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>An attribute can be an
+instance of an enumeration, or an instance of another class.</span><b><o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Template:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>attribute</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>modifier</i>)?<i>
+enumIdentifier attributeName</i> ;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>enumIdentifier</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= <i>identifier<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>attributeName</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= <i>ident</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Example:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>public
+onOffState ledState;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>State Vector</b><b><span style='font-size:10.0pt'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Each class can have at most
+one state vector.<span style="mso-spacerun: yes">  </span>The state vector
+defines a set of variables that are used to encapsulate the mode of the
+component.<span style="mso-spacerun: yes">  </span>When transitions are
+defined, they use the state vector as a reference for the order of the
+arguments.</span><b><o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Templates:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>stateVector</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= stateVector <i>stateVectorVariables</i>
+;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>stateVectorVariables</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>stateVectorVariable</i>
+|<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">                          </span>[ <i>stateVectorVariable</i>
+(, <i>stateVectorVariable</i>)* ])<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>stateVectorVariable</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= <i>attributeName</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Examples:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>stateVector
+modeVar;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>stateVector
+[xCondition,yCondition,zCondition];<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Class Enumeration<o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Enumerations can be defined
+within the context of a class.<span style="mso-spacerun: yes">  </span>An
+enumeration defined this way can define attributes at this point.<span
+style="mso-spacerun: yes">  </span>If at least one attribute is defined
+simultaneously, then the enumeration can be anonymous. (defined without a name)<span
+style="mso-spacerun: yes">  </span>Otherwise, these are the same as attributes
+defined outside a class.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Templates:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>classEnumeration</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>modifier</i>)?<i>
+</i>enum (<i>enumName</i>)? <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">                                   </span>{ (<i>enumValue</i>
+(,<i> enumValue</i>)*)? }<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">                                   </span>(<i>enumVar
+</i>(, <i>enumVar</i>)*)?<span style="mso-spacerun: yes">  </span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">                                   </span>({ <i>enumEntry*</i>
+})?<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>enumVar</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= <i>variable</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Example:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>private
+enum {north, east, south, west} direction1, direction2;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>public
+enum onOffState {on, off};</span><span style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Transitions and Failures<o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Transitions and failures
+are birds of a feather.<span style="mso-spacerun: yes">  </span>From states can
+be specified as &quot;*&quot; (asterisk/star) to indicate any from state.<span
+style="mso-spacerun: yes">  </span>To states can be specified as &quot;+&quot;
+(plus) to indicate that the to state is the same as the from state.<span
+style="mso-spacerun: yes">  </span>Identifiers should belong to the domain of
+the variable that occurs at their location in the state vector.<span
+style="mso-spacerun: yes">  </span>The constraints in the statement block must
+hold in order for the transition or failure to be possible.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Transitions have an
+additional argument that represents the cost of that transition.<span
+style="mso-spacerun: yes">  </span>Failures have an additional argument that
+represents the probability of that failure occurring.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Templates:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>transition
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::=
+transition (<i>transitionName</i>)? <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">               </span>'(' (<i>fromVector '</i>,' (<i>toVector</i>
+',' (<i>transitionCost</i>)?)?)? ')'<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">               </span><i>statementBlock</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>transitionCost</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>identifier</i> |
+<i>constant</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>failure</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= failure (<i>failureName</i>)?<i><o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">            </span>'(' (<i>fromVector '</i>,' (<i>toVector</i>
+',' (<i>failureProbability</i>)?)?)? ')'<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">            </span><i>statementBlock</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>failureProbability</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>identifier</i> |
+<i>constant</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>toVector</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>toStateId</i> |
+'[' <i>toStateId</i> (',' <i>toStateId</i>)* ']' )<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>toStateId</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= ( '.' | '+' | <i>identifier</i>
+)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></i></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>fromVector</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>fromStateId</i>
+| '[' <i>fromStateId</i> (',' <i>fromStateId</i>)* ']' )<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>fromStateId</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= ( '.' | '*' | <i>identifier</i>
+)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Examples:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>transition
+turnAround([north],[south]) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>commandIn=turnAround;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>failure
+fallDown(*,[north],unlikely) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Relations <o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Relations are named sets of
+constraints.<span style="mso-spacerun: yes">  </span>They are essentially
+processed as macros, although they have some scope.<span style="mso-spacerun:
+yes">  </span>For example, a relation in a class can refer to attributes of
+that class at the location of the relation invocation.<span
+style="mso-spacerun: yes">  </span>Relations are invoked from instances of the
+class of which they are a part.<span style="mso-spacerun: yes">  </span><i>(see
+Constraints)</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Templates:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>relation
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::=
+relation <i>relationName</i> '(' (<i>argument</i> (',' <i>argument</i>)*)? ')' <i>statementBlock<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>relationName</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= <i>ident<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>argument
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::= <i>argumentType</i>
+<i>argumentVar<o:p></o:p></i></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>argumentType</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= <i>identifier</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>argumentVar
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::= <i>variable</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Examples:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+attach the two boxes through this class's local attributes: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+string1, string2<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>relation
+attach(Can can1, Can can2) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>can1.inString = string1;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>can2.outString = string1;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>can1.outString = string2;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>can2.inString = string2;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>}<span
+style="mso-spacerun: yes">  </span></span><span style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Constraints </b><b><span style='font-size:10.0pt'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Although constraints may
+sometimes <i>look</i> like executable code, they are <u>not</u>.<span
+style="mso-spacerun: yes">  </span>The compiler converts these constraints into
+clauses for the engine.<span style="mso-spacerun: yes">  </span>As part of this
+process, all the constraints in a particular context (transition, failure,
+etc.) are logically combined.<span style="mso-spacerun: yes">  </span>During
+this combining, certain forms of trivial logical simplification might take
+place.<span style="mso-spacerun: yes">  </span>(i.e. A or not A implies
+true)<span style="mso-spacerun: yes">  </span>The clauses formed by the
+compiler each conform to disjunctive normal form.<span style="mso-spacerun:
+yes">   </span>(i.e. A or B or not C or...)<span style="mso-spacerun: yes"> 
+</span>The clauses output are logically equivalent to the constraints input,
+but may or may not bear resemblance to them, depending on the logical operators
+used to combine the terms.<b><o:p></o:p></b></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Templates:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>constraintGroup
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::= { (<i>constraint</i>)*
+}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>constraint
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::= ( <i>constraintGroup</i>
+<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">               </span>| (if (<i>expression</i>) <i>statement</i>
+(else <i>statement</i>)?)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">               </span>| (iff (<i>expression</i>) <i>statement</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">               </span>| (switch '(' (<i>identifier</i>
+| this) ')' { (<i>casesGroup</i>)* } )<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">               </span>| ';'<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">               </span>| (<i>expression</i> ';')<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>casesGroup</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= ( case <i>identifier</i>
+':' )+<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">               </span><i>caseConstraintList</i><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>caseConstraintList</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> ::= (<i>constraint</i>)*<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Examples:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>if
+(a=b) { c=d; } else {e=f;}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>iff
+(a=b) { c=d; }<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+the following is equivalent to &quot;a=b &amp; c=d;&quot;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>{<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>a=b;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>c=d;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>}
+<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>switch
+(onOff) {<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>case on: a=b;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">  </span>case off: c=d;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>}<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Expressions </b><b><span style='font-size:10.0pt'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Expressions are the most
+basic part of a constraint.<span style="mso-spacerun: yes">  </span>Equality
+and inequality expressions must operate on attributes or components of the same
+type.<span style="mso-spacerun: yes">  </span>Said another way, if
+&quot;a=b&quot;, then a and b must both be components or attributes of the same
+type.<span style="mso-spacerun: yes">  </span>Also, redundant syntactic forms
+are supplied for the logical constructs, in order to make it easier for
+modellers to use syntax that is most familiar and comfortable to them.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Relations are used like
+method invocations in C++ or java.<span style="mso-spacerun: yes">  </span>It
+is important to note that relations are not functions.<span
+style="mso-spacerun: yes">  </span>Relations do not return values.<span
+style="mso-spacerun: yes">  </span>Please see the example for an invalid usage
+of a relation as a function.<span style="mso-spacerun: yes">  </span>Also of
+note is that relations only accept identifiers as arguments.<span
+style="mso-spacerun: yes">  </span>Expressions are not identifiers, and can not
+be used as arguments.<b><o:p></o:p></b></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Templates:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>expression</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> := ( (<i>expression</i>
+'|' <i>expression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| (<i>expression</i> '||' <i>expression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| (<i>expression</i> '&amp;' <i>expression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| (<i>expression</i>
+'&amp;&amp;' <i>expression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| (<i>primaryExpression </i>'=' <i>primaryExpression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| (<i>primaryExpression</i> '=='
+<i>primaryExpression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| (<i>primaryExpression</i> '!='
+<i>primaryExpression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| ('!' <i>expression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| ('~' <i>expression</i>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>| ( (<i>identifier'</i>.')?<i>relationName</i>
+<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">                  </span>'(' (<i>primaryExpression</i>
+(','<i>primaryExpression</i> )*)? ')' ) <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">              </span>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>primaryExpression</span></i><span
+style='font-size:10.0pt;font-family:"Lucida Console"'> := (<i>identifier</i> |
+this)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Examples:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+equality<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>this=on;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>this==on;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+conjunction<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>(a=b)
+&amp; (c=d);<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>a=b
+&amp;&amp; (c=d);<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+disjunction<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>a=b
+| c=d;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>(a=b)
+|| c=d;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+negation/inequality<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>~a=b;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>!a=b;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>a!=b;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+relations<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>object.relation(arg1,arg2);<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>relation2(arg);<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+relations are not functions (this is syntactically invalid)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>sum(x,y)=z;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+arguments to relations can not be expressions<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+(this is syntactically invalid)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>allTrue(x=y,z=f);<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Symbols/References</b><b><span style='font-size:10.0pt'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Names are of the fairly
+standard convention from Java and C++.<b><o:p></o:p></b></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Templates:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>identifier
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::= <i>ident</i>('.'<i>ident</i>)*<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><i><span style='font-size:10.0pt;font-family:"Lucida Console"'>ident
+</span></i><span style='font-size:10.0pt;font-family:"Lucida Console"'>::=
+[A-Z,a-z,_,$][A-Z,a-z,0-9,_,$]*<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Examples:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>foo.bar.baz
+(identifier)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>foo
+(ident)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Comments </b><b><span style='font-size:10.0pt'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>There are two kinds of
+comments.<span style="mso-spacerun: yes">  </span>Line comments and group
+comments.<span style="mso-spacerun: yes">  </span>They are similar to comments
+in C++ and Java.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><span style='font-size:10.0pt'>Examples:</span></b><span
+style='font-size:10.0pt'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>//
+this is a line comment<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'>/*
+this is a <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><span
+style="mso-spacerun: yes">   </span>group comment */<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt;font-family:"Lucida Console"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b>Modifiers<o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><b><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></b></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'>Modifiers establish the
+rules of access for attrbiutes or enumerated types that are defined within the
+context of a component type.<span style="mso-spacerun: yes">  </span>The
+absence of a modifier, or the &quot;public&quot; modifier allows access to from
+any context.<span style="mso-spacerun: yes">  </span>The &quot;private&quot;
+modifier only allows access from the component type.<b><o:p></o:p></b></span></p>
+
+<p class=MsoNormal style='mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none'><span style='font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

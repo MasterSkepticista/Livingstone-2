@@ -1,0 +1,193 @@
+
+// Equivalent to lisp function (test-recovery-patches)
+//--> entering create-ispp 
+//--> exiting create-ispp 
+
+progress outlet.valve_1.cmd_in=open
+progress z_flow_module.shut_off_1.cmd_in=open
+progress z_flow_module.shut_off_2.cmd_in=open
+progress z_valve_module.valve_1.cmd_in=open
+progress z_valve_module.valve_2.cmd_in=open
+progress spump.inlet.valve_1.cmd_in=open
+progress spump.vent.valve_1.cmd_in=open
+
+assign z_flow_module.flow_sensor_1.flowrate=off
+assign z_flow_module.flow_sensor_2.flowrate=off
+assign z_valve_module.z_cell_1.cell.press=low
+assign z_valve_module.z_cell_2.cell.press=low
+assign z_valve_module.z_cell_1.cell.amps=off
+assign z_valve_module.z_cell_2.cell.amps=off
+assign z_valve_module.z_cell_1.cell.temp=low
+assign z_valve_module.z_cell_2.cell.temp=low
+assign z_valve_module.z_cell_1.cell.flow_out=off
+assign z_valve_module.z_cell_2.cell.flow_out=off
+fc
+ltms-stats
+
+echo ///  Turn on sorption heater
+progress spump.heater_a.cmd_in=on
+assign spump.heat=nominal
+assign spump.sorpressure=high
+fc
+ltms-stats
+
+echo ///  Turn on preheater
+progress z_valve_module.z_cell_1.heater.preheatCmd=on
+assign z_valve_module.z_cell_1.cell.temp=nominal
+fc
+ltms-stats
+
+echo /// Set Zirconia controllers and valves
+progress z_flow_module.control_2.cmd_in=low
+progress z_flow_module.control_1.cmd_in=low
+progress z_valve_module.z_cell_1.switch.cmd_in=on
+progress z_valve_module.z_cell_2.heater.preheatCmd=on
+assign z_valve_module.z_cell_2.cell.temp=nominal
+fc
+ltms-stats
+
+echo /// Turn on z cell 2
+progress z_valve_module.z_cell_2.switch.cmd_in=on
+
+echo // Starting a failure.  Either valve_1 or valve_3 of
+echo // the outlet valve cluster won't open
+progress outlet.valve_3.cmd_in=open
+assign z_flow_module.flow_sensor_1.flowrate=off
+assign z_flow_module.flow_sensor_2.flowrate=off
+assign z_valve_module.z_cell_2.cell.flow_out=off
+assign z_valve_module.z_cell_1.cell.flow_out=off
+
+//echo // After failure
+//install 0
+//assignables
+//echo // Conflict is
+//conflict
+fc
+ltms-stats
+
+
+
+echo // Recovery: Open valve2, the backup for valve3.
+echo // Since this causes flow, it eliminates the hypothesis
+echo // that outlet.valve_1 is stuck.
+progress outlet.valve_2.cmd_in=open
+assign z_valve_module.z_cell_1.cell.amps=nominal
+assign z_flow_module.flow_sensor_1.flowrate=low
+assign z_valve_module.z_cell_1.cell.flow_out=on
+assign z_valve_module.z_cell_1.cell.press=high
+assign z_valve_module.z_cell_2.cell.amps=nominal
+assign z_flow_module.flow_sensor_2.flowrate=low
+assign z_valve_module.z_cell_2.cell.flow_out=on
+assign z_valve_module.z_cell_2.cell.press=high
+fc
+ltms-stats
+
+echo // Repair outlet.valve_3
+echo // the outlet valve cluster won't open
+progress outlet.valve_3.cmd_in=repair
+fc
+ltms-stats
+
+echo // Now close valve_2
+progress outlet.valve_2.cmd_in=close
+
+assign z_flow_module.flow_sensor_1.flowrate=off
+assign z_flow_module.flow_sensor_2.flowrate=off
+assign z_valve_module.z_cell_2.cell.flow_out=off
+assign z_valve_module.z_cell_1.cell.flow_out=off
+
+assign z_valve_module.z_cell_1.cell.amps=off
+assign z_valve_module.z_cell_1.cell.press=low
+assign z_valve_module.z_cell_2.cell.amps=off
+assign z_valve_module.z_cell_2.cell.press=low
+
+progress outlet.valve_3.cmd_in=open
+fc
+ltms-stats
+
+echo // ------  Try again
+
+echo // Recovery: Open valve2, the backup for valve3.
+echo // Since this causes flow, it eliminates the hypothesis
+echo // that outlet.valve_1 is stuck.
+progress outlet.valve_2.cmd_in=open
+assign z_valve_module.z_cell_1.cell.amps=nominal
+assign z_flow_module.flow_sensor_1.flowrate=low
+assign z_valve_module.z_cell_1.cell.flow_out=on
+assign z_valve_module.z_cell_1.cell.press=high
+assign z_valve_module.z_cell_2.cell.amps=nominal
+assign z_flow_module.flow_sensor_2.flowrate=low
+assign z_valve_module.z_cell_2.cell.flow_out=on
+assign z_valve_module.z_cell_2.cell.press=high
+fc
+ltms-stats
+
+echo // Repair outlet.valve_3
+echo // the outlet valve cluster won't open
+progress outlet.valve_3.cmd_in=repair
+fc
+ltms-stats
+
+echo // Now close valve_2
+progress outlet.valve_2.cmd_in=close
+
+assign z_flow_module.flow_sensor_1.flowrate=off
+assign z_flow_module.flow_sensor_2.flowrate=off
+assign z_valve_module.z_cell_2.cell.flow_out=off
+assign z_valve_module.z_cell_1.cell.flow_out=off
+
+assign z_valve_module.z_cell_1.cell.amps=off
+assign z_valve_module.z_cell_1.cell.press=low
+assign z_valve_module.z_cell_2.cell.amps=off
+assign z_valve_module.z_cell_2.cell.press=low
+
+progress outlet.valve_3.cmd_in=open
+fc
+ltms-stats
+
+
+echo // ------  Try again
+
+echo // Recovery: Open valve2, the backup for valve3.
+echo // Since this causes flow, it eliminates the hypothesis
+echo // that outlet.valve_1 is stuck.
+progress outlet.valve_2.cmd_in=open
+assign z_valve_module.z_cell_1.cell.amps=nominal
+assign z_flow_module.flow_sensor_1.flowrate=low
+assign z_valve_module.z_cell_1.cell.flow_out=on
+assign z_valve_module.z_cell_1.cell.press=high
+assign z_valve_module.z_cell_2.cell.amps=nominal
+assign z_flow_module.flow_sensor_2.flowrate=low
+assign z_valve_module.z_cell_2.cell.flow_out=on
+assign z_valve_module.z_cell_2.cell.press=high
+fc
+ltms-stats
+
+echo // Repair outlet.valve_3
+echo // the outlet valve cluster won't open
+progress outlet.valve_3.cmd_in=repair
+fc
+ltms-stats
+
+echo // Now close valve_2
+progress outlet.valve_2.cmd_in=close
+
+assign z_flow_module.flow_sensor_1.flowrate=off
+assign z_flow_module.flow_sensor_2.flowrate=off
+assign z_valve_module.z_cell_2.cell.flow_out=off
+assign z_valve_module.z_cell_1.cell.flow_out=off
+
+assign z_valve_module.z_cell_1.cell.amps=off
+assign z_valve_module.z_cell_1.cell.press=low
+assign z_valve_module.z_cell_2.cell.amps=off
+assign z_valve_module.z_cell_2.cell.press=low
+
+progress outlet.valve_3.cmd_in=open
+fc
+ltms-stats
+echo // Done
+exit
+
+
+
+

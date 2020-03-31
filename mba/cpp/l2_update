@@ -1,0 +1,82 @@
+#! /bin/sh
+# $Id: l2_update,v 1.6 2001/07/18 23:55:17 bhudson Exp $
+
+# Do a cvs update, then touch changed files.
+# with -f option, doesn't check
+# with -t option, neither checks nor even updates, just touches
+
+# Assumes that the repository is correctly maintained, probably a safe
+# assumption.
+
+
+TMPDIR=/tmp/l2_update.$$.dir
+trap '/bin/rm -rf $TMPDIR' 0
+mkdir $TMPDIR
+
+
+FILES_TO_CHECK="configure \
+        src/livingstone/version.c \
+        include/livingstone/gnu_conf.h.in \
+        doc/user_man/l2.html \
+        doc/developer_man/*.png \
+        doc/developer_man/l2dev.html"
+
+do_check=yes
+
+
+echo_run() {
+    echo "$@"
+    "$@"
+}
+
+save() {
+    cp $@ $TMPDIR
+}
+
+# true if identical
+compare() {
+    diff $@ $TMPDIR/`basename $@` >/dev/null
+}
+
+
+
+
+while [ $# -gt 0 ] ; do
+    case $1 in
+        -t)
+            # instead of checking the files, just touch them all
+            for x in $FILES_TO_CHECK ; do
+                echo_run touch $x
+            done
+            exit 0
+        ;;
+
+        -f)
+            # don't bother checking
+            do_check=no
+        ;;
+
+        *)
+            # no other options
+            echo "Unrecognized option '$1'" 1>&2
+            exit 1
+        ;;
+    esac
+    shift
+done
+
+
+
+for x in $FILES_TO_CHECK ; do
+    save $x
+done
+
+cvs update
+
+for x in $FILES_TO_CHECK ; do
+    if [ $do_check = yes ] && compare $x ; then
+        echo "$x unchanged"
+    else
+        echo_run touch $x
+    fi
+done

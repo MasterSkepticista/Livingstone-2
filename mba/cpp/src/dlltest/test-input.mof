@@ -1,0 +1,503 @@
+<?xml version="1.0"?>
+<!DOCTYPE  mplModel[
+
+<!ELEMENT mplModel ((type | component)*) >
+<!ATTLIST mplModel
+    name NMTOKEN #REQUIRED
+    version CDATA  #REQUIRED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT type EMPTY>
+<!ATTLIST type
+   name ID #REQUIRED
+   members NMTOKENS  #REQUIRED
+   doc  CDATA #IMPLIED>
+
+<!ELEMENT component (struct*, attribute*, clause*, transition*)>
+<!ATTLIST component
+    name ID #REQUIRED
+    type NMTOKEN #REQUIRED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT struct EMPTY>
+<!ATTLIST struct
+    name NMTOKEN #REQUIRED
+    type NMTOKEN  #REQUIRED
+    value IDREF #REQUIRED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT attribute EMPTY>
+<!ATTLIST attribute 
+    name NMTOKEN #REQUIRED
+    type IDREF  #REQUIRED
+    interface  (monitor|command|state|none) #IMPLIED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT transition (clause*)>
+<!ATTLIST transition
+    var NMTOKEN  #REQUIRED
+    name NMTOKEN #REQUIRED
+    from CDATA #REQUIRED
+    to NMTOKEN #REQUIRED
+    prob  CDATA #IMPLIED>
+
+<!ELEMENT clause EMPTY>
+<!ATTLIST clause
+    disj CDATA #REQUIRED
+    datum CDATA #IMPLIED>
+]>
+<mplModel name="vdecu" version="1.00">
+     <type name="vdecuCmd" members="on off noCommand"/>
+     <type name="driverCmd" members="on off open close noCommand"/>
+     <type name="valveCmd" members="open close noCommand"/>
+     <type name="valvePosition" members="open closed"/>
+     <type name="checksum" members="ok corrupted"/>
+     <type name="valveDriveElectronicsControlUnitModes" members="on off"/>
+
+     <component name="vdecu" type="valveDriveElectronicsControlUnit">
+          <attribute name="mode" type="valveDriveElectronicsControlUnitModes" interface="state"/>
+          <attribute name="cmdIn" type="vdecuCmd" interface="cmd" />
+          <attribute name="driver1CmdIn" type="driverCmd" interface="cmd" />
+          <attribute name="driver2CmdIn" type="driverCmd" interface="cmd" />
+          <attribute name="driver1CmdOut" type="driverCmd"/>
+          <attribute name="driver2CmdOut" type="driverCmd"/>
+          <clause disj="!vdecu.mode=on vdecu.driver1CmdIn=vdecu.driver1CmdOut" datum="(ON NIL)"/>
+          <clause disj="!vdecu.mode=on vdecu.driver2CmdIn=vdecu.driver2CmdOut" datum="(ON NIL)"/>
+          <clause disj="!vdecu.mode=off vdecu.driver1CmdOut=noCommand" datum="(OFF NIL)"/>
+          <clause disj="!vdecu.mode=off vdecu.driver2CmdOut=noCommand" datum="(OFF NIL)"/>
+
+          <transition var="vdecu.mode" name="turnOn" from="off" to="on">
+          <clause disj="!vdecu.cmdIn=on"/>
+          </transition>
+          <transition var="vdecu.mode" name="nominal" from="off" to="off">
+          <clause disj="!vdecu.cmdIn=off"/>
+          </transition>
+          <transition var="vdecu.mode" name="turnOff" from="on" to="off">
+          <clause disj="!vdecu.cmdIn=off"/>
+          </transition>
+          <transition var="vdecu.mode" name="nominal" from="on" to="on">
+          <clause disj="!vdecu.cmdIn=on"/>
+          </transition>
+     </component>
+
+     <type name="driverModes" members="recoverable on off"/>
+     <component name="driver1" type="driver">
+          <attribute name="mode" type="driverModes" interface="state"/>
+          <attribute name="cmdIn" type="driverCmd"/>
+          <attribute name="cmdOut" type="valveCmd"/>
+          <attribute name="checksum" type="checksum" interface="obs"/>
+          <clause disj="!driver1.mode=recoverable driver1.cmdOut=noCommand" datum="(RECOVERABLE NIL)"/>
+          <clause disj="!driver1.mode=on driver1.checksum=ok" datum="(ON NIL)"/>
+          <clause disj="!driver1.mode=on !driver1.cmdIn=open driver1.cmdOut=open" datum="(ON NIL)"/>
+          <clause disj="!driver1.mode=on driver1.cmdIn=open !driver1.cmdIn=close driver1.cmdOut=close" datum="(ON NIL)"/>
+          <clause disj="!driver1.mode=on driver1.cmdIn=open driver1.cmdIn=close driver1.cmdOut=noCommand" datum="(ON NIL)"/>
+          <clause disj="!driver1.mode=off driver1.cmdOut=noCommand" datum="(OFF NIL)"/>
+
+	<transition var="driver1.mode" name="turnOn" from="off" to="on">
+          <clause disj="!vdecu.driver1CmdIn=on !vdecu.mode=on"/>
+	  </transition>
+          <transition var="driver1.mode" name="turnOff" from="on" to="off">
+          <clause disj="!vdecu.driver1CmdIn=off !vdecu.mode=on"/>
+          </transition>
+          <transition var="driver1.mode" name="nominal" from="on" to="on">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="driver1.mode" name="cutPower" from="recoverable" to="off">
+          <clause disj="!vdecu.driver1CmdIn=off !vdecu.mode=on"/>
+          </transition>
+          <transition var="driver1.mode" name="nominal" from="recoverable" to="recoverable">
+          <clause disj="!vdecu.driver1CmdIn=on !vdecu.mode=on"/>
+          </transition>
+          <transition var="driver1.mode" name="nominal" from="recoverable" to="recoverable">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+	<transition var="driver1.mode" name="recoverable" from="*" to="recoverable" prob="0.001"/>
+     </component>
+
+     <component name="driver2" type="driver">
+          <attribute name="mode" type="driverModes" interface="state"/>
+          <attribute name="cmdIn" type="driverCmd"/>
+          <attribute name="cmdOut" type="valveCmd"/>
+          <attribute name="checksum" type="checksum" interface="obs"/>
+          <clause disj="!driver2.mode=recoverable driver2.cmdOut=noCommand" datum="(RECOVERABLE NIL)"/>
+          <clause disj="!driver2.mode=on driver2.checksum=ok" datum="(ON NIL)"/>
+          <clause disj="!driver2.mode=on !driver2.cmdIn=open driver2.cmdOut=open" datum="(ON NIL)"/>
+          <clause disj="!driver2.mode=on driver2.cmdIn=open !driver2.cmdIn=close driver2.cmdOut=close" datum="(ON NIL)"/>
+          <clause disj="!driver2.mode=on driver2.cmdIn=open driver2.cmdIn=close driver2.cmdOut=noCommand" datum="(ON NIL)"/>
+          <clause disj="!driver2.mode=off driver2.cmdOut=noCommand" datum="(OFF NIL)"/>
+
+          <transition var="driver2.mode" name="turnOn" from="off" to="on">
+          <clause disj="!vdecu.driver2CmdIn=on !vdecu.mode=on"/>
+          </transition>
+          <transition var="driver2.mode" name="nominal" from="off" to="off">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="driver2.mode" name="turnOff" from="on" to="off">
+          <clause disj="!vdecu.driver2CmdIn=off !vdecu.mode=on"/>
+          </transition>
+          <transition var="driver2.mode" name="nominal" from="on" to="on">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="driver2.mode" name="cutPower" from="recoverable" to="off">
+          <clause disj="!vdecu.driver2CmdIn=off !vdecu.mode=on"/>
+          </transition>
+          <transition var="driver2.mode" name="nominal" from="recoverable" to="recoverable">
+          <clause disj="!vdecu.driver2CmdIn=on !vdecu.mode=on"/>
+          </transition>
+          <transition var="driver2.mode" name="nominal" from="recoverable" to="recoverable">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="driver2.mode" name="recoverable" from="*" to="recoverable" prob="0.001"/>
+     </component>
+     <type name="valveActuatorModes" members="stuckOpen stuckClosed closed open"/>
+     <component name="valve1.actuator" type="valveActuator">
+          <attribute name="mode" type="valveActuatorModes" interface="state"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="position" type="valvePosition"/>
+          <clause disj="!valve1.actuator.mode=stuckOpen valve1.actuator.position=open" datum="(STUCK-OPEN NIL)"/>
+          <clause disj="!valve1.actuator.mode=stuckClosed valve1.actuator.position=closed" datum="(STUCK-CLOSED NIL)"/>
+          <clause disj="!valve1.actuator.mode=closed valve1.actuator.position=closed" datum="(CLOSED NIL)"/>
+          <clause disj="!valve1.actuator.mode=open valve1.actuator.position=open" datum="(OPEN NIL)"/>
+
+          <transition var="valve1.actuator.mode" name="close" from="open" to="closed">
+          <clause disj="!vdecu.driver1CmdIn=close !vdecu.mode=on !driver1.mode=on"/>
+          </transition>
+          <transition var="valve1.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve1.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver1.mode=off"/>
+          </transition>
+          <transition var="valve1.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver1.mode=recoverable"/>
+          </transition>
+          <transition var="valve1.actuator.mode" name="open" from="closed" to="open">
+          <clause disj="!vdecu.driver1CmdIn=open !vdecu.mode=on !driver1.mode=on"/>
+          </transition>
+          <transition var="valve1.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve1.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver1.mode=off"/>
+          </transition>
+          <transition var="valve1.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver1.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve1.actuator.mode" name="stuckOpen" from="*" to="stuckOpen" prob="0.01"/>
+          <transition var="valve1.actuator.mode" name="stuckClosed" from="*" to="stuckClosed" prob="0.01"/>
+
+     </component>
+     <type name="valveSensorModes" members="nominal"/>
+     <component name="valve1.sensor" type="valveSensor">
+          <attribute name="mode" type="valveSensorModes" interface="state"/>
+          <attribute name="sensedPosition" type="valvePosition"/>
+          <attribute name="reportedPosition" type="valvePosition" />
+          <clause disj="!valve1.sensor.mode=nominal valve1.sensor.sensedPosition=valve1.sensor.reportedPosition" datum="(NOMINAL NIL)"/>
+     </component>
+     <component name="valve1" type="valveAndSensor">
+          <struct name="slot1" type="valveActuator" value="valve1.actuator"/>
+          <struct name="slot2" type="valveSensor" value="valve1.sensor"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="reportedPosition" type="valvePosition" interface="obs"/>
+          <clause disj="valve1.sensor.sensedPosition=valve1.actuator.position" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-1))"/>
+          <clause disj="valve1.cmdIn=valve1.actuator.cmdIn" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-1))"/>
+          <clause disj="valve1.reportedPosition=valve1.sensor.reportedPosition" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-1))"/>
+     </component>
+     <component name="valve2.actuator" type="valveActuator">
+          <attribute name="mode" type="valveActuatorModes" interface="state"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="position" type="valvePosition"/>
+          <clause disj="!valve2.actuator.mode=stuckOpen valve2.actuator.position=open" datum="(STUCK-OPEN NIL)"/>
+          <clause disj="!valve2.actuator.mode=stuckClosed valve2.actuator.position=closed" datum="(STUCK-CLOSED NIL)"/>
+          <clause disj="!valve2.actuator.mode=closed valve2.actuator.position=closed" datum="(CLOSED NIL)"/>
+          <clause disj="!valve2.actuator.mode=open valve2.actuator.position=open" datum="(OPEN NIL)"/>
+
+          <transition var="valve2.actuator.mode" name="close" from="open" to="closed">
+          <clause disj="!vdecu.driver1CmdIn=close !vdecu.mode=on !driver1.mode=on"/>
+          </transition>
+          <transition var="valve2.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve2.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver1.mode=off"/>
+          </transition>
+          <transition var="valve2.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver1.mode=recoverable"/>
+          </transition>
+          <transition var="valve2.actuator.mode" name="open" from="closed" to="open">
+          <clause disj="!vdecu.driver1CmdIn=open !vdecu.mode=on !driver1.mode=on"/>
+          </transition>
+          <transition var="valve2.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve2.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver1.mode=off"/>
+          </transition>
+          <transition var="valve2.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver1.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve2.actuator.mode" name="stuckOpen" from="*" to="stuckOpen" prob="0.01"/>
+          <transition var="valve2.actuator.mode" name="stuckClosed" from="*" to="stuckClosed" prob="0.01"/>
+
+     </component>
+
+     <component name="valve2.sensor" type="valveSensor">
+          <attribute name="mode" type="valveSensorModes" interface="state"/>
+          <attribute name="sensedPosition" type="valvePosition"/>
+          <attribute name="reportedPosition" type="valvePosition" />
+          <clause disj="!valve2.sensor.mode=nominal valve2.sensor.sensedPosition=valve2.sensor.reportedPosition" datum="(NOMINAL NIL)"/>
+     </component>
+     <component name="valve2" type="valveAndSensor">
+          <struct name="slot1" type="valveActuator" value="valve2.actuator"/>
+          <struct name="slot2" type="valveSensor" value="valve2.sensor"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="reportedPosition" type="valvePosition" interface="obs"/>
+          <clause disj="valve2.sensor.sensedPosition=valve2.actuator.position" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-2))"/>
+          <clause disj="valve2.cmdIn=valve2.actuator.cmdIn" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-2))"/>
+          <clause disj="valve2.reportedPosition=valve2.sensor.reportedPosition" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-2))"/>
+     </component>
+     <component name="valve3.actuator" type="valveActuator">
+          <attribute name="mode" type="valveActuatorModes" interface="state"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="position" type="valvePosition"/>
+          <clause disj="!valve3.actuator.mode=stuckOpen valve3.actuator.position=open" datum="(STUCK-OPEN NIL)"/>
+          <clause disj="!valve3.actuator.mode=stuckClosed valve3.actuator.position=closed" datum="(STUCK-CLOSED NIL)"/>
+          <clause disj="!valve3.actuator.mode=closed valve3.actuator.position=closed" datum="(CLOSED NIL)"/>
+          <clause disj="!valve3.actuator.mode=open valve3.actuator.position=open" datum="(OPEN NIL)"/>
+
+          <transition var="valve3.actuator.mode" name="close" from="open" to="closed">
+          <clause disj="!vdecu.driver2CmdIn=close !vdecu.mode=on !driver2.mode=on"/>
+          </transition>
+          <transition var="valve3.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve3.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver2.mode=off"/>
+          </transition>
+          <transition var="valve3.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver2.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve3.actuator.mode" name="open" from="closed" to="open">
+          <clause disj="!vdecu.driver2CmdIn=open !vdecu.mode=on !driver2.mode=on"/>
+          </transition>
+          <transition var="valve3.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve3.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver2.mode=off"/>
+          </transition>
+          <transition var="valve3.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver2.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve3.actuator.mode" name="stuckOpen" from="*" to="stuckOpen" prob="0.01"/>
+          <transition var="valve3.actuator.mode" name="stuckClosed" from="*" to="stuckClosed" prob="0.01"/>
+
+     </component>
+
+
+
+     <component name="valve3.sensor" type="valveSensor">
+          <attribute name="mode" type="valveSensorModes" interface="state"/>
+          <attribute name="sensedPosition" type="valvePosition"/>
+          <attribute name="reportedPosition" type="valvePosition" />
+          <clause disj="!valve3.sensor.mode=nominal valve3.sensor.sensedPosition=valve3.sensor.reportedPosition" datum="(NOMINAL NIL)"/>
+     </component>
+     <component name="valve3" type="valveAndSensor">
+          <struct name="slot1" type="valveActuator" value="valve3.actuator"/>
+          <struct name="slot2" type="valveSensor" value="valve3.sensor"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="reportedPosition" type="valvePosition" interface="obs"/>
+          <clause disj="valve3.sensor.sensedPosition=valve3.actuator.position" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-3))"/>
+          <clause disj="valve3.cmdIn=valve3.actuator.cmdIn" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-3))"/>
+          <clause disj="valve3.reportedPosition=valve3.sensor.reportedPosition" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-3))"/>
+     </component>
+     <component name="valve4.actuator" type="valveActuator">
+          <attribute name="mode" type="valveActuatorModes" interface="state"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="position" type="valvePosition"/>
+          <clause disj="!valve4.actuator.mode=stuckOpen valve4.actuator.position=open" datum="(STUCK-OPEN NIL)"/>
+          <clause disj="!valve4.actuator.mode=stuckClosed valve4.actuator.position=closed" datum="(STUCK-CLOSED NIL)"/>
+          <clause disj="!valve4.actuator.mode=closed valve4.actuator.position=closed" datum="(CLOSED NIL)"/>
+          <clause disj="!valve4.actuator.mode=open valve4.actuator.position=open" datum="(OPEN NIL)"/>
+
+          <transition var="valve4.actuator.mode" name="close" from="open" to="closed">
+          <clause disj="!vdecu.driver2CmdIn=close !vdecu.mode=on !driver2.mode=on"/>
+          </transition>
+          <transition var="valve4.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve4.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver2.mode=off"/>
+          </transition>
+          <transition var="valve4.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver2.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve4.actuator.mode" name="open" from="closed" to="open">
+          <clause disj="!vdecu.driver2CmdIn=open !vdecu.mode=on !driver2.mode=on"/>
+          </transition>
+          <transition var="valve4.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve4.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver2.mode=off"/>
+          </transition>
+          <transition var="valve4.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver2.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve4.actuator.mode" name="stuckOpen" from="*" to="stuckOpen" prob="0.01"/>
+          <transition var="valve4.actuator.mode" name="stuckClosed" from="*" to="stuckClosed" prob="0.01"/>
+     </component>
+
+     <component name="valve4.sensor" type="valveSensor">
+          <attribute name="mode" type="valveSensorModes" interface="state"/>
+          <attribute name="sensedPosition" type="valvePosition"/>
+          <attribute name="reportedPosition" type="valvePosition" />
+          <clause disj="!valve4.sensor.mode=nominal valve4.sensor.sensedPosition=valve4.sensor.reportedPosition" datum="(NOMINAL NIL)"/>
+     </component>
+     <component name="valve4" type="valveAndSensor">
+          <struct name="slot1" type="valveActuator" value="valve4.actuator"/>
+          <struct name="slot2" type="valveSensor" value="valve4.sensor"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="reportedPosition" type="valvePosition" interface="obs"/>
+          <clause disj="valve4.sensor.sensedPosition=valve4.actuator.position" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-4))"/>
+          <clause disj="valve4.cmdIn=valve4.actuator.cmdIn" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-4))"/>
+          <clause disj="valve4.reportedPosition=valve4.sensor.reportedPosition" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-4))"/>
+     </component>
+     <component name="valve5.actuator" type="valveActuator">
+          <attribute name="mode" type="valveActuatorModes" interface="state"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="position" type="valvePosition"/>
+          <clause disj="!valve5.actuator.mode=stuckOpen valve5.actuator.position=open" datum="(STUCK-OPEN NIL)"/>
+          <clause disj="!valve5.actuator.mode=stuckClosed valve5.actuator.position=closed" datum="(STUCK-CLOSED NIL)"/>
+          <clause disj="!valve5.actuator.mode=closed valve5.actuator.position=closed" datum="(CLOSED NIL)"/>
+          <clause disj="!valve5.actuator.mode=open valve5.actuator.position=open" datum="(OPEN NIL)"/>
+          <transition var="valve5.actuator.mode" name="close" from="open" to="closed">
+          <clause disj="!vdecu.driver2CmdIn=close !vdecu.mode=on !driver2.mode=on"/>
+          </transition>
+          <transition var="valve5.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve5.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver2.mode=off"/>
+          </transition>
+          <transition var="valve5.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver2.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve5.actuator.mode" name="open" from="closed" to="open">
+          <clause disj="!vdecu.driver2CmdIn=open !vdecu.mode=on !driver2.mode=on"/>
+          </transition>
+          <transition var="valve5.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve5.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver2.mode=off"/>
+          </transition>
+          <transition var="valve5.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver2.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve5.actuator.mode" name="stuckOpen" from="*" to="stuckOpen" prob="0.01"/>
+          <transition var="valve5.actuator.mode" name="stuckClosed" from="*" to="stuckClosed" prob="0.01"/>
+
+     </component>
+
+
+     <component name="valve5.sensor" type="valveSensor">
+          <attribute name="mode" type="valveSensorModes" interface="state"/>
+          <attribute name="sensedPosition" type="valvePosition"/>
+          <attribute name="reportedPosition" type="valvePosition" />
+          <clause disj="!valve5.sensor.mode=nominal valve5.sensor.sensedPosition=valve5.sensor.reportedPosition" datum="(NOMINAL NIL)"/>
+     </component>
+     <component name="valve5" type="valveAndSensor">
+          <struct name="slot1" type="valveActuator" value="valve5.actuator"/>
+          <struct name="slot2" type="valveSensor" value="valve5.sensor"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="reportedPosition" type="valvePosition" interface="obs"/>
+          <clause disj="valve5.sensor.sensedPosition=valve5.actuator.position" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-5))"/>
+          <clause disj="valve5.cmdIn=valve5.actuator.cmdIn" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-5))"/>
+          <clause disj="valve5.reportedPosition=valve5.sensor.reportedPosition" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-5))"/>
+     </component>
+     <component name="valve6.actuator" type="valveActuator">
+          <attribute name="mode" type="valveActuatorModes" interface="state"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="position" type="valvePosition"/>
+          <clause disj="!valve6.actuator.mode=stuckOpen valve6.actuator.position=open" datum="(STUCK-OPEN NIL)"/>
+          <clause disj="!valve6.actuator.mode=stuckClosed valve6.actuator.position=closed" datum="(STUCK-CLOSED NIL)"/>
+          <clause disj="!valve6.actuator.mode=closed valve6.actuator.position=closed" datum="(CLOSED NIL)"/>
+          <clause disj="!valve6.actuator.mode=open valve6.actuator.position=open" datum="(OPEN NIL)"/>
+
+          <transition var="valve6.actuator.mode" name="close" from="open" to="closed">
+          <clause disj="!vdecu.driver2CmdIn=close !vdecu.mode=on !driver2.mode=on"/>
+          </transition>
+          <transition var="valve6.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve6.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver2.mode=off"/>
+          </transition>
+          <transition var="valve6.actuator.mode" name="nominal" from="open" to="open">
+          <clause disj="!driver2.mode=recoverable"/>
+          </transition>
+          <transition var="valve6.actuator.mode" name="open" from="closed" to="open">
+          <clause disj="!vdecu.driver2CmdIn=open !vdecu.mode=on !driver2.mode=on"/>
+          </transition>
+          <transition var="valve6.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!vdecu.mode=off"/>
+          </transition>
+          <transition var="valve6.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver2.mode=off"/>
+          </transition>
+          <transition var="valve6.actuator.mode" name="nominal" from="closed" to="closed">
+          <clause disj="!driver2.mode=recoverable"/>
+          </transition>
+
+          <transition var="valve6.actuator.mode" name="stuckOpen" from="*" to="stuckOpen" prob="0.01"/>
+          <transition var="valve6.actuator.mode" name="stuckClosed" from="*" to="stuckClosed" prob="0.01"/>
+
+     </component>
+
+
+     <component name="valve6.sensor" type="valveSensor">
+          <attribute name="mode" type="valveSensorModes" interface="state"/>
+          <attribute name="sensedPosition" type="valvePosition"/>
+          <attribute name="reportedPosition" type="valvePosition"/>
+          <clause disj="!valve6.sensor.mode=nominal valve6.sensor.sensedPosition=valve6.sensor.reportedPosition" datum="(NOMINAL NIL)"/>
+     </component>
+     <component name="valve6" type="valveAndSensor">
+          <struct name="slot1" type="valveActuator" value="valve6.actuator"/>
+          <struct name="slot2" type="valveSensor" value="valve6.sensor"/>
+          <attribute name="cmdIn" type="valveCmd"/>
+          <attribute name="reportedPosition" type="valvePosition" interface="obs"/>
+          <clause disj="valve6.sensor.sensedPosition=valve6.actuator.position" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-6))"/>
+          <clause disj="valve6.cmdIn=valve6.actuator.cmdIn" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-6))"/>
+          <clause disj="valve6.reportedPosition=valve6.sensor.reportedPosition" datum="(CONNECTIONS (VALVE-AND-SENSOR VALVE-6))"/>
+     </component>
+     <component name="vdecuDriversAndValves" type="vdecuDriversAndValves">
+          <struct name="slot1" type="valveDriveElectronicsControlUnit" value="vdecu"/>
+          <struct name="slot2" type="driver" value="driver1"/>
+          <struct name="slot3" type="driver" value="driver2"/>
+          <struct name="slot4" type="valveAndSensor" value="valve1"/>
+          <struct name="slot5" type="valveAndSensor" value="valve2"/>
+          <struct name="slot6" type="valveAndSensor" value="valve3"/>
+          <struct name="slot7" type="valveAndSensor" value="valve4"/>
+          <struct name="slot8" type="valveAndSensor" value="valve5"/>
+          <struct name="slot9" type="valveAndSensor" value="valve6"/>
+          <clause disj="vdecu.driver1CmdOut=driver1.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="vdecu.driver2CmdOut=driver2.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="driver1.cmdOut=valve1.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="driver1.cmdOut=valve2.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="driver1.cmdOut=valve1.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="driver1.cmdOut=valve2.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="driver2.cmdOut=valve3.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="driver2.cmdOut=valve4.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="driver2.cmdOut=valve5.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+          <clause disj="driver2.cmdOut=valve6.cmdIn" datum="(CONNECTIONS (VDECU-DRIVERS-AND-VALVES))"/>
+     </component>
+</mplModel>

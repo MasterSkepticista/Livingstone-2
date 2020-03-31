@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE  xmpl[
+
+<!-- An XMPL file may have a harness, zero or more component  -->
+<!-- instances, and an initialization. All items are optional -->
+<!-- but if present they must appear in the order specified.  -->
+
+
+<!ELEMENT xmpl ( mplHarness? , componentInstance*, mplInit? ) > 
+<!ATTLIST xmpl
+    name NMTOKEN #IMPLIED
+    version CDATA  #IMPLIED
+    doc  CDATA #IMPLIED>
+
+<!-- An MPL harness specifies the external data interface to the -->
+<!-- model.  That is, what is a command and what is a monitor -->
+
+<!ELEMENT mplHarness ((obs | cmd)*) >
+<!ATTLIST mplHarness
+    name NMTOKEN #REQUIRED
+    version CDATA  #REQUIRED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT obs EMPTY>
+<!ATTLIST obs
+    name CDATA #REQUIRED
+    doc CDATA #IMPLIED>
+
+<!ELEMENT cmd EMPTY>
+<!ATTLIST cmd
+    name CDATA #REQUIRED
+    doc CDATA #IMPLIED>
+
+
+<!-- An MPL initialization is simply a set of assignments that must -->
+<!-- be asserted at startup.  We may want to expand it to include -->
+<!-- any clause, but for the moment using only assignments make the -->
+<!-- structure of the code somewhat cleaner.  -->
+
+<!ELEMENT mplInit (assign*) >
+<!ATTLIST mplInit
+    name NMTOKEN #IMPLIED
+    version CDATA  #IMPLIED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT assign EMPTY>
+<!ATTLIST assign
+    eq CDATA #REQUIRED
+    datum CDATA #IMPLIED>
+
+
+
+<!-- An componentInstance is a set of variable types (enums) -->
+<!-- and a set of instantiated components -->
+
+<!ELEMENT componentInstance ((type | component)*) >
+<!ATTLIST componentInstance
+    name NMTOKEN #REQUIRED
+    version CDATA  #REQUIRED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT type EMPTY>
+<!ATTLIST type
+   name ID #REQUIRED
+   members NMTOKENS  #REQUIRED
+   doc  CDATA #IMPLIED>
+
+<!ELEMENT component (struct*, statevector?, attribute*, clause*, transition*)>
+<!ATTLIST component
+    name ID #REQUIRED
+    type NMTOKEN #REQUIRED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT struct EMPTY>
+<!ATTLIST struct
+    name NMTOKEN #REQUIRED
+    type NMTOKEN  #REQUIRED
+    value IDREF #REQUIRED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT statevector EMPTY>
+<!ATTLIST statevector 
+    vars CDATA #REQUIRED>
+
+<!ELEMENT attribute EMPTY>
+<!ATTLIST attribute 
+    name NMTOKEN #REQUIRED
+    type IDREF  #REQUIRED
+    doc  CDATA #IMPLIED>
+
+<!ELEMENT transition (clause*)>
+<!ATTLIST transition
+    var NMTOKEN  #REQUIRED
+    name NMTOKEN #REQUIRED
+    from CDATA #REQUIRED
+    to NMTOKEN #REQUIRED
+    prob  CDATA #IMPLIED>
+
+<!ELEMENT clause EMPTY>
+<!ATTLIST clause
+    disj CDATA #REQUIRED
+    datum CDATA #IMPLIED>
+
+
+]>
+
+
+<xmpl><mplHarness name="testInput" version="1.00">
+     <cmd name="vdecu.driver2CmdIn" />
+     <cmd name="vdecu.cmdIn" />
+     <cmd name="vdecu.driver1CmdIn" />
+     <obs name="valve4.reportedPosition" />
+     <obs name="driver2.checksum" />
+     <obs name="valve1.reportedPosition" />
+     <obs name="driver1.checksum" />
+     <obs name="valve6.reportedPosition" />
+     <obs name="valve2.reportedPosition" />
+     <obs name="valve5.reportedPosition" />
+     <obs name="valve3.reportedPosition" />
+</mplHarness></xmpl>

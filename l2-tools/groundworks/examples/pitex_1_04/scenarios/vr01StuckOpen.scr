@@ -1,0 +1,24 @@
+scenario vr01StuckOpen mainPropulsionSystem
+assign test.sv31.openMicroSwitch=notOpen
+assign test.sv03.openMicroSwitch=notOpen
+assign test.pv03.closedMicroSwitch=closed
+assign test.pv03.openMicroSwitch=notOpen
+progress test.sv31.valveCmdIn=open
+assign test.sv31.openMicroSwitch=open
+assign test.mrtd203t.temperatureReading.ambient.upperBound=belowThreshold
+assign test.mrtd203t.temperatureReading.ambient.lowerBound=belowThreshold
+assign test.mrtd203t.temperatureReading.tankMixture.upperBound=belowThreshold
+assign test.mrtd203t.temperatureReading.tankMixture.lowerBound=aboveThreshold
+assign test.mpre202p.pressureReading.pressurizationRate.upperBound=belowThreshold
+assign test.mpre202p.pressureReading.pressurizationRate.lowerBound=belowThreshold
+assign test.mpre202p.pressureReading.heatingRate.upperBound=belowThreshold
+assign test.mpre202p.pressureReading.heatingRate.lowerBound=belowThreshold
+assign test.mpre202p.pressureReading.bleedRate.upperBound=belowThreshold
+assign test.mpre202p.pressureReading.bleedRate.lowerBound=belowThreshold
+assign test.mpre202p.pressureReading.ventingRate.upperBound=belowThreshold
+assign test.mpre202p.pressureReading.ventingRate.lowerBound=aboveThreshold
+assign test.mpre212p.pressureReading.pr02Crack=belowThreshold test.mpre212p.pressureReading.pressurizationRate.upperBound=belowThreshold test.mpre212p.pressureReading.pressurizationRate.lowerBound=belowThreshold test.mpre212p.pressureReading.heatingRate.upperBound=belowThreshold test.mpre212p.pressureReading.heatingRate.lowerBound=belowThreshold test.mpre212p.pressureReading.bleedRate.upperBound=belowThreshold test.mpre212p.pressureReading.bleedRate.lowerBound=belowThreshold test.mpre212p.pressureReading.ventingRate.upperBound=belowThreshold test.mpre212p.pressureReading.ventingRate.lowerBound=aboveThreshold test.mpre212p.pressureReading.controllerPressureBias=unknown
+fc
+progress test.sv31.valveCmdIn=close
+assign test.sv31.openMicroSwitch=notOpen
+fc

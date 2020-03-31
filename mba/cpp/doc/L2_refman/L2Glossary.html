@@ -1,0 +1,1350 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+
+  <head>
+    <title>L2 Glossary</title>
+  </head>
+
+  <body bgcolor="#FFFFEE">
+    <h1 align="center">L2 Glossary</h1>
+
+    <p><p>
+    <a href="../index.html">Back to Main Page</a>
+    <p><p>
+
+    <dl>
+      <a name="Agenda"></a>
+      <dt>Agenda</dt>
+      <dd>A set of items ordered by a weight property; that is, a priority
+          queue. Code: <code>opsat/cbfs_agenda.h</code></dd>
+
+      <a name="apigen"></a>
+      <dt>apigen</a>
+      <dd>An executable utility that takes a model and generates a
+          <code>*.h</code> C header file for
+          <a href="#Enumeration">Enumeration</a>s.</dd>
+
+      <a name="Assign"></a>
+      <dt>Assign</dt>
+      <dd><ul>
+            <li>To bind a value to an <a href="#ObservedVariable">Observed
+            Variable</a>.</li>
+            <li>To bind a truth value to a
+            <a href="#Proposition">Proposition</a>.</li>
+          </ul></dd>
+
+      <a name="AssignableVariable"></a>
+      <dt>Assignable Variable</dt>
+      <dd>An Assignable Variable is an independent
+          <a href="#Variable">Variable</a>, one whose value can be assigned by
+          the client. The set of Assignable Variables is partitioned into
+          three subsets:
+          <ul>
+            <li><a href="#AssumptionVariable">Assumption Variable</a>s
+            <li><a href="#CommandVariable">Command Variable</a>s
+            <li><a href="#ObservedVariable">Observed Variable</a>s
+          </ul>
+          It has the following properties:
+          <ul>
+            <li>The <a href="#LTMS">LTMS</a>
+            <li>The current <a href="#Assignment">Assignment</a>
+            <li>A saved <a href="#Assignment">Assignment</a>
+            <li>The set of permitted <a href="#Assignment">Assignments</a>
+            <li>The set of <a href="#Conflict">Conflicts</a> in which it
+                appears
+          </ul>
+          The opposite of an Assignable Variable is a
+          <a href="#DependentVariable">Dependent Variable">.
+          Code: <code>conflict_db/assignable.*</code></dd>
+
+      <a name="Assignment"></a>
+      <dt>Assignment</dt>
+      <dd>A binding of a <a href="#Variable">Variable</a> to a value in its
+          domain.
+          It has the following properties:
+          <ul>
+            <li>A confidence-factor "weight"
+            <li>The <a href="#Variable">Variable</a> being bound
+            <li>The index of this Assignment within its
+                <a href="#Variable">Variable</a>
+            <li>The <a href="#Clause">Clause</a> that ordains the Assignment
+            <li>A set of <a href="#Conflict">Conflicts</a> in which the
+                Assignment appears
+            <li>A set of resolved <a href="#Conflict">Conflicts</a>
+            <li>A set of alternative values
+          </ul>
+          Each <a href="#Assignable">Assignable</a> maintains a list of all
+          legal Assignments, as well as the current one, if any.
+          Code: <code>conflict_db/assignment.h</code></dd>
+
+      <a name="AssumptionVariable"></a>
+      <dt>Assumption Variable</dt>
+      <dd>An <a href="#AssignableVariable">Assignable Variable</a> the value
+          of which the <a href="#SearchProcedure">Search Procedure</a> can
+          re-assign. Either a <a href="#ModeTransitionVariable">Mode
+          Transition Variable</a> or the <a href="#StateVariable">State
+          Variable</a>.
+          Code: <code>conflict_db/assumption.*</code></dd>
+
+      <a name="Attribute"></a>
+      <dt>Attribute</dt>
+      <dd>In the <a href="#JMPL">JMPL<a>-to-<a href="#XMPL">XMPL</a>
+          <a href="#Compiler">Compiler</a>, any element of a
+          <a href="#Component">Component</a> node.</dd>
+
+      <a name="AutonomousTransition"></a>
+      <dt>Autonomous Transition</dt>
+      <dd>A <a href="#Transition">Transition</a> that can occur at any time
+          without a guard condition being satisfied. The most important type
+          is a <a href="#FailureTransition">Failure Transition</a>.</dd>
+
+      <a name="Background"></a>
+      <dt>Background</dt>
+      <dd>A property of a <a href="#Clause">Clause</a> that specifies a system
+          invariant rather than properties of a <a href="#ModeTransition">Mode
+          Transition</a>. For example, every <a href="Variable">Variable</a>
+          must have exactly one value. If the domain is <code>v1</code>,
+          <code>v2</code>, ... , <vn>, then the
+          <a href="#Constraint">Constraints</a> are
+          <code><pre>
+          variable[timeStep]=v1 | variable[timeStep]=v2 | ... | variable[timeStep]=vn
+          !variable[timeStep]=v1 | !variable[timeStep]=v2
+          !variable[timeStep]=v1 | !variable[timeStep]=v3
+          ...
+          !variable[timeStep]=v(n-1) | !variable[timeStep]=vn
+          </pre></code></dd>
+
+      <a name="bin"></a>
+      <dt>bin</dt>
+      <dd>See <a href="#l2bin">l2bin</a>.</dd>
+
+      <a name="BooleanConstraintPropagation"></a>
+      <dt>Boolean Constraint Propagation</dt>
+      <dd>The same as <a href="#UnitPropagation">Unit Propagation</a>.</dd>
+
+      <a name="Candidate"></a>
+      <dt>Candidate</dt>
+      <dd>A set of <a href="#Assignment">Assignment</a>s constituting an
+          element of a <a href="#Diagnosis">Diagnosis</a>. The
+          <a href="#FindCandidates">Find Candidates</a> operation returns a
+          set of Candidate objects.</dd>
+
+      <a name="cb"></a>
+      <dt>cb</td>
+      <dd>Circuit Breaker, a very simple <a href="#Model">Model</a> used for
+          regression testing</dd>
+
+      <a name="CBFS"></a>
+      <dt>CBFS</dt>
+      <dd>See <a href="#ConflictDirectedBestFirstSearch">Conflict-Directed
+          Best-First Search</a>.</dd>
+
+      <a name="CBFSMaxCandidates"></a>
+      <dt>CBFS Max Candidates</dt>
+      <dd>Configuration <a href="#Parameter">Parameter</a>: maximum number of
+          <a href="#Candidate">Candidate</a>s returned by the
+          <a href="#CBFS">CBFS</a> <a href="#Tracker">Tracker</a>.</dd>
+
+      <a name="CBFSMaxRank"></a>
+      <dt>CBFS Max Rank</dt>
+      <dd>Configuration <a href="#Parameter">Parameter</a>: maximum value of
+          <a href="#Rank">Rank</a>s used by the <a href="#CBFS">CBFS</a>
+          <a href="#Tracker">Tracker</a>.</dd>
+
+      <a name="CBFSSearchSpace"></a>
+      <dt>CBFS Search Space</dt>
+      <dd>Configuration <a href="#Parameter">Parameter</a>: maximum number of
+          search space nodes to visit by the <a href="#CBFS">CBFS</a>
+          <a href="#Tracker">Tracker</a>.</dd>
+
+      <a name="Checkpoint"></a>
+      <dt>Checkpoint</dt>
+      <dd>Stores a checkpoint, which allows later restoring the state of
+          Livingstone to this point.</dd>
+
+      <a name="Checksum"></a>
+      <dt>Checksum</dt>
+      <dd>Two bytes are reserved for a cyclic redundancy check in 
+          <a href="#l2bin">l2bin</a> <a href="#ModelFile">Model File</a>s, but
+          the checksum is currently set to the constant 0.</dd>
+
+      <a name="Clause"></a>
+      <dt>Clause</dt>
+      <dd>A Clause is a conjunct <a href="#Formula">Formula</a> for a
+          <a href="#PropositionalTheory">Propositional Theory</a>. It is a
+          disjunction of one or more <a href="#Literal">Literals</a>. It
+          is represented by a list of <a href="#PositiveProposition">Positive
+          Propositions</a>, a list of <a href="#NegativeProposition">Negative
+          Propositions</a> and a <a href="#Volatile">Volatile</a> flag.</dd>
+
+      <a name="cmdIn"></a>
+      <dt>cmdIn</dt>
+      <dd>By convention, this is the name for the
+          <a href="#Command">Command</a> input to a
+          <a href="#Component">Component</a>.</dd>
+
+      <a name="cmdOut"></a>
+      <dt>cmdOut</dt>
+      <dd>When a <a href="#Component">Component</a> issues a
+          <a href="#Command">Command</a> to another
+          <a href="#Component">Component</a>, this is the name of the
+          <a href="#Command">Command</a>.</dd>
+
+      <a name="CNF"></a>
+      <dt>CNF</dt>
+      <dd>Conjunctive Normal Form (expressing a proposition as a conjunction
+          of disjunctions).</dd>
+
+      <a name="Command"</a>
+      <dt>Command</dt>
+      <dd>A control signal to a <a href="#Device">Device</a> directing it to
+          do something. Commands are represented in Livingstone as 
+          <a href="#CommandVariable">Command Variable</a>s. The arrival of
+          a Command causes Livingstone to <a href="#Progress">Progress</a></dd>
+
+      <a name="CommandVariable"></a>
+      <dt>Command Variable</dt>
+      <dd>A <a href="#Variable">Variable</a> the value of which is a 
+          <a href="#Command">Command</a> to a
+          <a href="#Device">Device</a>.</dd>
+
+      <a name="CommandedTransition"></a>
+      <dt>Commanded Transition</dt>
+      <dd>A <a href="#ModeTransition">Mode Transition</a> that asserts how the
+          <a href="#Mode">Mode</a> of a <a href="#Component">Component</a>
+          depends on the command. There are two types of Commanded Transition:
+          <a href="#IndexedTransition>Indexed Transition</a> for the commanded
+          <a href="#Component">Component</a> and
+          <a href="#UnindexedTransition">Unindexed Transition</a> for the
+          uncommanded <a href="#Component">Components</a>. See also
+          <a href="#IdleTransition">Idle Transition</a>.</dd>
+
+      <a name="Component"></a>
+      <dt>Component</a>
+      <dd><ul>
+            <li>In Stanley, the leaf node of a <a href="#Model">Model</a>. See
+                <a href="#Module">Module</a></li>
+            <li>In the <a href="#JMPL">JMPL<a>-to-<a href="#XMPL">XMPL</a>
+                <a href="#Compiler">Compiler</a>, any node in a
+                <a href="#Model">Model</a>.
+            <li>More loosely, a synonym for <a href="#Device">Device</a>.</li>
+          </ul></dd>
+
+      <a name="Conflict">
+      <dt>Conflict</dt>
+      <dd>A set of <a href="#Assignment">Assignment</a>s to
+          <a href="#AssumptionVariable">Assumption Variable</a>s that, if
+          made, would imply inconsistent values for the same
+          <a href="#Variable">Variable</a>.</dd>
+
+      <a name="ConflictDataBase"></a>
+      <dt>Conflict Data Base</dt>
+      <dd>An in-memory store for the <a href="#Variable">Variable</a>s, their
+          values, and the <a href="#Constraint">Constraint</a>s on them. It
+          has the following properties:
+          <ul>
+            <li>A set of all <a href="#Variable">Variable</a>s
+            This is further partitioned into:
+            <ul>
+              <li>A set of all <a href="#Assumption">Assumption Variable</a>s
+              <li>A set of all <a href="#AssignableVariable">Assignable
+                  Variable</a>s
+            </ul>
+            <li>A set of all <a href="#Conflict">Conflict</a>s
+            <li>The <a href="#LTMS">LTMS</a> in use
+          </ul>
+          It expresses <a href="#Variable">Variable</a>-value pairs as
+          propositions for use by the <a href="#LTMS">LTMS</a>.
+          Code: <code>conflict_db/conflict_db.*</code></dd>
+
+      <a name="ConflictDirectedBestFirstSearch"></a>
+      <dt>Conflict-Directed Best-First Search</dt>
+      <dd>A <a href="#SearchStyle">Search Style</a> that uses the
+          Conflict-Directed Best-First Search search algorithm for diagnosis.
+          The alternative is <a href="#Cover">Cover</a>./dd>
+
+      <a name"ConsistencyChecker"></a>
+      <dt>Consistency Checker</dt>
+      <dd>Code that checks whether an <a href="#Assignment">Assignment</a> is
+          consistent with a set of <a href="#Constraint">Constraint</a>s.</dd>
+
+      <a name="Constraint"></a>
+      <dt>Constraint</dt>
+      <dd>A <a href="#Clause">Clause</a> representing permissible
+          <a href="#Assignment">Assignment</a>s to
+          <a href="#Variable">Variables</a>.</dd>
+
+      <a name="Cookie"></a>
+      <dt>Cookie</dt>
+      <dd>An <a href="#l2bin">l2bin</a> <a href="#ModelFile">Model File</a>
+          begins with a 4-character code that identifies the file as a binary
+          Model file for Livingstone. If this set of 4
+          characters is not found, the <a href="#ModelFile">Model File</a>
+          <a href="#Reader">Reader</a> will not attempt to read in the
+          <a href="#Model">Model</a> from the file.</dd>
+
+      <a name="Cover"></a>
+      <dt>Cover</dt>
+      <dd><a href="#SearchStyle">Search Style</a> that uses the rho
+          conflict coverage search algorithm for diagnosis. The alternative is
+          <a href="#CBFS">CBFS</a>.
+          Code: <code>cover/cover.*</code></dd>
+
+      <a name="CoverMaxRank"></a>
+      <dt>Cover Max Rank</dt>
+      <dd>Configuration <a href="#Parameter">Parameter</a>: maximum value of
+          <a href="#Rank">Rank</a>s used by the <a href="#Cover">Cover</a>
+          <a href="#Tracker">.</dd>
+
+      <a name="Datum"></a>
+      <dt>Datum</dt>
+      <dd>An application-specific data structure associated with a
+          <a href="#Clause">Clause</a> that is the thing that the 
+          <a href="#Clause">Clause</a> describes.</dd>
+
+      <a name="DependentVariable"></a>
+      <dt>Dependent Variable</dt>
+      <dd>A Dependent Variable is one whose value is inferred by the
+          <a href="#ConflictDataBase">Conflict Data Base</dd> from the
+          <a href="#AssignableVariable">Assignable Variable</a>s and the
+          <a href="#Constraint">Constraint</a>s. The user can
+          not set its value. The opposite of a Dependent Variable is an
+          <a href="#AssignableVariable">Assignable Variable</a>.
+          Code: <code>conflict_db/dependent.*</code></dd>
+
+      <a name="Device"></a>
+      <dt>Device</dt>
+      <dd>A structural and functional unit of a system being modeled. Devices
+          are represented indirectly in Livingstone, by means of the
+          <a href="#ModeTransitionVariable">Mode Transition Variable</a>s that
+          characterize them. Also called a <a href="#Component>Component</a>
+          when stressing that it is part of a system.</dd>
+
+      <a name="Diagnosis"></a>
+      <dt>Diagnosis</dt>
+      <dd>The set of <a href="#Candidate">Candidates</a> at a given time.</dd>
+
+      <a name="DifferentProposition"></a>
+      <dt>Different Proposition</dt>
+      <dd>A predicate that the value of a <a href="#Variable">Variable</a> is
+          unequal to that of a second <a href="#Variable">Variable</a>.</dd>
+
+      <a name="Discrepancy"></a>
+      <dt>Discrepancy</dt>
+      <dd>The <a href="#ObservedVariable">Observed Variable</a>s and
+          <a href="#CommandVariable">Command Variable</a>s that conflict with
+          the current <a href="#ModeAssignment">Mode Assignment</a>. After
+          diagnosis, the Discrepancy will be null.</dd>
+
+      <a name="DiscreteStateEstimation"></a>
+      <dt>Discrete State Estimation</dt>
+      <dd>Diagnosis using <a href="#variable">Variables</a> with finite
+          domains, that is, <a href="#Enumeration">Enumerations</a>.</dd>
+
+      <a name="Domain"></a>
+      <dt>Domain</dt>
+      <dd>The set of values a <a href="#Variable">Variable</a> can be
+          <a href="#Assign">assign</a>ed.</dd>
+
+      <a name="Enumeration"></a>
+      <dt>Enumeration</td>
+      <dd>Not only do all <a href="#Variable">Variables</a> in 
+          <a href="#L2">L2</a> have a discrete domain, these domains are
+          finite, and have small cardinalities as well. An
+          Enumeration is the domain of some
+          <a href="#Variable">Variable</a>.</dd>
+
+      <a name="Evolution"></a>
+      <dt>Evolution</dt>
+      <dd>The change in the state of the system
+          (<a href="#Assignment">Assignment</a>s to
+          <a href="#Variable">Variable</a>s) as a function of time.</dd>
+
+      <a name="Explain"</a>
+      <dt>Explain</dt>
+      <dd>Prints the entire decision tree back to the
+          <a href="#Observation">Observation</a>s, initial
+          <a href="#Mode">Mode</a>s, and
+          <a href="#ModeTransition">Mode Transition</a>s.</dd>
+
+      <a name="Extend"></a>
+      <dt>Extend</dt>
+      <dd>A <a href="#FindCandidatesStyle">Find Candidates Style</a>. It is
+          available only with the <a href="#CBFS">CBFS</a>
+          <a href="#SearchStyle">Search Style</a>. Takes all
+          <a href="#Candidate">Candidate</a>s and uses them as the prefix for
+          new ones. Consistent <a href="#Candidate">Candidate</a>s are
+          returned unchanged; inconsistent ones may have new failures
+          added.</dd>
+
+      <a name="Failure"></a>
+      <dt>Failure</dt>
+      <dd><ul>
+            <li>Another name for a <a href="#Candidate">Candidate</a></li>
+            <li>A <a href="#Transition">Transition</a> that is not a
+                <a href="#NominalTransition">Nominal Transition</a></li>
+          </ul>
+          Code: <code>api/livingstone.*</code></dd>
+
+      <a name="FailureMode"></a>
+      <dt>Failure Mode</dt>
+      <dd>The device being modeled behaves not in the way it was intended to,
+          but in one of a set of enumerated faulty ways. A
+          <a href="#Mode">Mode</a> that is not a Failure Mode is a
+          <a href="#NominalMode">Nominal Mode</a>.</dd>
+
+      <a name="FailureTransition">
+      <dt>Failure Transition</dt>
+      <dd>An <a href="#AutonomousTransition">Autonomous Transition</a> from
+          any <a href="#Mode">Mode</a> to a <a href="#FailureMode">Failure
+          Mode</a>.</dd>
+
+      <a name="FC"></a>
+      <dt>FC</dt>
+      <dd>Abbreviation for <a href="#FindCandidates">Find Candidates</a>.</dd>
+
+      <a name="FindCandidates"></a>
+      <dt>Find Candidates</dt>
+      <dd><ul>
+            <li>A command to L2 to perform diagnosis, resulting in a set of 
+                <a href="#Candidate">Candidates</a>.</li>
+            <li>A <a href="#FindCandidatesStyle">Find Candidates Style</a>. It
+                is identical to <a href="#Extend">Extend</a></li>
+          </ul>
+      </dd>
+
+      <a name="FindCandidatesStyle"></a>
+      <dt>Find Candidates Style</a>
+      <dd>Configuration <a href="#Parameter">Parameter</a>. One of the
+          following:
+          <ul>
+            <li><a href="#FindCandidates">Find Candidates</a>
+            <li><a href="#Extend">Extend</a>
+            <li><a href="#FindFreshCandidates">Find Fresh Candidates</a>
+            <li><a href="#PruneAndSearch">Prune and Search</a>
+          </ul></dd>
+
+      <a name="FindFreshCandidates"></a>
+      <dt>Find Fresh Candidates</dt>
+      <dd>A <a href="#FindCandidatesStyle">Find Candidates Style</a>. It is
+          available only with the <a href="#Cover">Cover</a>
+          <a href="#SearchStyle">Search Style</a>. Discards all existing
+          <a href="#Candidate">Candidate</a>s and then initiates diagonosis.
+          It is slower because it has to re-discover discarded
+          <a href="#Candidate">Candidate</a>s, but the set of
+          <a href="#Candidate">Candidate</a>s will be most likely./dd>
+
+      <a name="Fringe"</a>
+      <dt>Fringe</dt>
+      <dd>The fringe is the set of <a href="#UnitClause">Unit Clause</a>s.
+          It is cached because they are often processed first.</dd>
+
+      <a name="FullProgress"></a>
+      <dt>Full Progress</dt>
+      <dd>A mode of operation of the <a href="#TransitionSystem">Transition
+          System</a> in which all
+          <a href="#Variable">Variable</a>s are copied to the next
+          <a href="#TimeStep">Time Step</a> upon receipt of a
+          <a href="#Command">Command</a>. See also
+          <a href="#MinProgress">Min Progress</a>.</dd>
+
+      <a name="Gamma"></a>
+      <dt>Gamma</dt>
+      <dd>The likelihood limit of <a href="#Cover">Cover</a> search.</dd>
+
+      <a name="GPU"></a>
+      <dt>GPU</dt>
+      <dd>Ground Processing Unit</dd>
+
+      <a name="GroundProcessingUnit"></a>
+      <dt>Ground Processing Unit</dt>
+      <dd>A computer at a ground base running processes that receive,
+          interpret and display <a href="#Telemetry">Telemetry"</a> data
+          from a vehicle.</dd>
+
+      <a name="Harness"></a>
+      <dt>Harness</dt>
+      <dd>A <a href="#ModelFile">Model File</a>, with extension
+          <code>.hrn</code>, that specifies which
+          <a href="#AssignableVariable">Assignable Variable</a>s are 
+          <a href="#ObservableVariable">Observable Variable</a>s and which are
+          <a href="#CommandVariable">Command Variable</a>s. See also
+          <a href="#Ini">Ini</a> and <a href="#Params">Params</a>.</dd>
+
+      <a name="History"></a>
+      <dt>History</dt>
+      <dd><ul>
+            <li>A set of <a href="#Assignment">Assignments</a> for a sequence
+                of contiguous <a href="#TimeStep">Time Steps</a>, beginning at
+                the <a href="#Horizon"> and ending at the current
+                <a href="#TimeStep">Time Step</a>.</li>
+            <li>Configuration <a href="#Parameter">Parameter</a>: the maximum
+                number of <a href="#TimeStep">Time Step</a>s to retain (the
+                <a href="#Zenith">Zenith</a> minus the
+                <a href="#Horizon">Horizon</a>) before
+                <a href="#Truncate">Truncating</a>.</li>
+          </ul></dd>
+
+
+      <a name="Horizon"></a>
+      <dt>Horizon</dt>
+      <dd>The earliest <a href="#TimeStep">Time Step</a> for which a full
+          <a href="#History">History</a> is retained. It is expressed as a
+          non-negative integer. A
+          <a href="#TransitionedVariable">Transitioned Variable</a>
+          maintains pointers to the
+          <a href="#ModeTransitionVariable">Mode Transition Variable</a> at
+          both the <a href="#Horizon">Horizon</a> and the Zenith.</dd>
+
+      <a name="HorizonTransition"></a>
+      <dt>Horizon Transition</dt>
+      <dd>An <a href="#AssumptionVariable">Assumption Variable</a> progressed
+          backward in time from a
+          <a href="#ModeTransitionVariable">Mode Transition Variable</a>,
+          representing the transition from the
+          <a href="#StateVariable">State Variable</a> to the earliest stored
+          <a href="#TransitionedVariable">Transitioned Variable</a>.</dd>
+
+      <a name="IdleTransition"></a>
+      <dt>Idle Transition</dt>
+      <dd>The <a href="#ModeTransition">Mode Transition</a> taken by the
+          <a href="#TransitionSystem">Transition System</a> when the
+          <a href="#Command">Command</a> is null (absent). For each component,
+          one <a href="#Constraint">Constraint</a> is added, to assert that
+          the mode does not change if the
+          <a href="#ModeTransition">Mode Transition</a> was nominal:
+          <code><pre>
+          modeVariable[timeStep]=m & modeTransition[timeStep]=nominal =>
+          modeVariable[timeStep+1]=m
+          </pre></code>
+          See also
+          <a href="#CommandedTransition">Commanded Transition</a>.</dd>
+
+      <a name="IndexedTransition"></a>
+      <dt>Indexed Transition</dt>
+      <dd>A <a href="#CommandedTransition">Commanded Transition</a> that
+          asserts how the <a href="#Mode">Mode</a> of a commanded
+          <a href="#Component">Component</a> depends on the
+          <a href="#Command">Command</a>. One
+          <a href="#Constraint">Constraint</a> is added, asserting the change
+          to the <a href="#Mode">mode</a> of the
+          <a href="#Component">Component</a> that is commanded if the
+          <a href="#ModeTransition">Mode Transition</a> is nominal:
+         <code><pre>
+         modeVariable[timeStep]=m1 & modeTransition[timeStep]=nominal & cmdIn=c =>
+         modeVariable[timeStep+1]=m2
+         </pre></code>
+         See also <a href="#UnindexedTransition">Unindexed Transition</a>.</dd>
+
+      <a name="InitialValue"></a>
+      <dt>Initial Value</dt>
+      <dd>The value of a <a href="#Variable">Variable</a> when Livingstone is
+          started.</dd>
+
+      <a name="Ini"></a>
+      <dt>Ini</dt>
+      <dd>A <a href="#ModelFile">Model File</a>, with extension
+          <code>.ini</code>, that specifies
+          initial values for <a href="#Variable">Variable</a>s. See also
+          <a href="#Harness">Harness</a> and <a href="#Params">Params</a>.</dd>
+
+      <a name="Install"></a>
+      <dt>Install</dt>
+      <dd>Insert a <a href="#Candidate">Candidate</a> into the set to allow
+          looking up its effects. Has no effect on the future evolution of the
+          system.</dd>
+
+      <a name="IntegratedVehicleHealthManagement"></a>
+      <dt>Integrated Vehicle Health Management</dt>
+      <dd>A system for monitoring, diagnosing and correcting the state of a
+          spacecraft.</dd>
+
+      <a name="IVHM"></a>
+      <dt>IVHM</dt>
+      <dd>See <a href="#IntegratedVehicleHealthManagement">Integrated Vehicle
+          Health Management</a>.</dd>
+
+      <a name="JavaBasedModelProgrammingLanguage"></a>
+      <dt>Java-Based Model Programming Language</dt>
+      <dd>A <a href="#ModelFileFormat">Model File Format</a>. The syntax is
+          more similar to that of Java than it is to that of Lisp. The
+          <a href="#JMPLCompiler">JMPL compiler</a>
+          translates from <a href="#JMPL">JMPL</a> to <a href="#XMPL">XMPL</a>.
+          See also <a href="L2Format">L2 Format</a>, <a href="l2bin">l2bin</a>,
+          <a href="#MPL">MPL</a> and <a href="#XMPL">XMPL</a>.</dd>
+
+      <a name="JMPL"></a>
+      <dt>JMPL</dt>
+      <dd>See <a href="#JavaBasedModelProgrammingLanguage">Java-based Model
+          Programming Language</a>.</dd>
+
+      <a name="JMPLCompiler"></a>
+      <dt>JMPL Compiler</dt>
+      <dd>A Java program that translates a <a href="#Model">Model</a> from
+         <a href="#JMPL">JMPL</a> to <a href="#XMPL">XMPL</a>.</dd>
+
+      <a name="Kind"></a>
+      <dt>Kind</dt>
+      <dd>A partition of the set of <a href="#Variable">Variables</a> into
+          <a href="#CommandVariable">Command Variables</a>,
+          <a href="#ModeTransitionVariable">Mode Transition Variables</a> and
+          <a href="#ObservedVariable">Observed Variables</a>.</dd>
+
+      <a name="L1"></a>
+      <dt>L1</dt>
+      <dd>Livingstone 1, written in Common Lisp.</dd>
+
+      <a name="L2"></a>
+      <dt>L2</dt>
+      <dd>
+      <ul>
+        <li>Livingstone 2, re-written from Common Lisp to C++ and given
+            additional functionality.</li>
+        <li>The <a href="L2Format">L2</a> ASCII
+            <a href="#ModelFileFormat">Model File Format</a>.</li>
+      </ul></dd>
+
+      <a name="l2bin"></a>
+      <dt>l2bin</dt>
+      <dd>Binary <a href="#ModelFileFormat">Model File Format</a>, a highly
+          compressed representation. The structure is all present, but there
+          are no print names for the <a href="#Model">model</a> elements. Use
+          utility <a href="#xmpl2l2"><code>xmpl2l2</code></a> to translate an
+          <a href="XMPL">XMPL</a> format <a href="#ModelFile">Model File</a>
+          into an <code>l2bin</code> format <a href="#ModelFile">Model
+          File</a>. See also <a href="#JMPL">JMPL</a>,
+          <a href="#L2Format">L2 Format</a>, <a href="#MPL">MPL</a>, and
+          <a href="#XMPL">XMPL</a>.</dd>
+
+      <a name="l2flight"></a>
+      <dt>l2flight</dt>
+      <dd>An executable that runs <a href="#L2">L2</a> models with a minimal
+          user interface and only flight code other than the UI. This allows
+          for size and timing measurements. See also
+          <a href="l2test">l2test</a>.</dd>
+
+      <a name="L2Format"></a>
+      <dt>L2 Format</dt>
+      <dd>An ASCII <a href="#ModelFileFormat">Model File Format</a>. See also
+         <a href="#JMPL">JMPL</a>, <a href="l2bin">l2bin</a>,
+         <a href="#MPL">MPL</a> and <a href="#XMPL">XMPL</a>.</dd>
+
+      <a name="l2test"></a>
+      <dt>l2test</dt>
+      <dd>An executable that runs <a href="#L2">L2</a> models with a text
+          interface (in contrast to the
+          <a href="#Stanley">Stanley</a>/<a href="#Skunkworks">Skunkworks</a>
+          GUI). See also <a href="#l2flight">l2flight</a></dd>
+
+      <a name="LikelihoodLevel"></a>
+      <dt>Likelihood Level</dt>
+      <dd></dd>
+
+      <a name="Listener"></a>
+      <dt>Listener</dt>
+      <dd>A <a href="#PropositionalTheory">Propositional Theory</a> can have
+          any number of Listeners. A <a href="#TransitionSystem">Transition
+          System</a> can have any number of Listeners.</dd>
+
+      <a name="Literal"></a>
+      <dt>Literal</dt>
+      <dd>In a <a href="#Clause">Clause</a>, a 
+          <a href="#Proposition">Proposition</a>, whether a
+          <a href="#PositiveProposition">Positive Proposition</a> or a
+          <a href="#NegativeProposition">Negative Proposition</a>.</dd>
+
+      <dt>Livingstone</dt>
+      <dd>A program that takes a model of a real-world system and a description
+          of its state and, if there is any discrepancy between the intended
+          and actual states of the system, delivers a diagnosis of the most 
+          likely cause(s) of that discrepancy.</dd>
+
+      <a name="LogicBasedTruthMaintenanceSystem"></a>
+      <dt>Logic-Based Truth Maintenance System</dt>
+      <dd></dd>
+
+      <a name="LTMS"></a>
+      <dt>LTMS</dt>
+      <dd>Logic-based Truth Maintenance System, and the name of a C++ class
+          that implements it. It is the propositional inference system of the
+          <a href="#ConflictDataBase">Conflict Data Base</a>.</dd>
+
+      <a name="MagicCookie"></a>
+      <dt>Magic Cookie</dt>
+      <dd>See "Cookie".</dd>
+
+      <a name="MaxTruncatedCandidates"></a>
+      <dt>Max Truncated Candidates</dt>
+      <dd>Configuration <a href="#Parameter">Parameter</a>: the maximum number
+          of <a href="#Candidate">Candidate</a>s tracked before.</dd>
+
+      <a name="MBAUtilities"></a>
+      <dt>MBA Utilities</dt>
+      <dd>Because the C++ Standard Template Library is not standard enough,
+          the support classes that are needed have been implemented for the
+          use of L2.</dd>
+
+      <a name="MinProgress</a>
+      <dt>Min progress</dt>
+      <dd>A mode of operation of the <a href="#TransitionSystem">Transition
+          System</a> in which the minimal number of
+          <a href="#Variable">Variables</a> (only those that could possibly
+          change) is tranistioned upon receipt of a
+          <a href="#Command">Command</a>. Min Progres requires that a
+          <a href="#Model">Model</a> be <a href="#Optimize">Optimize</a>d. See
+          also <a href="#FullProgress">Full Progress</a>.</dd>
+
+      <a name="Mode"></a>
+      <dt>Mode</dt>
+      <dd><ul>
+            <li>A <a href="#Device">Device</a> of a system may either be
+                in one of a set of <a href="#NominalMode">Nominal Mode</a>s or
+                one of a set of <a href="#FailureMode">Failure Mode</a>s.</li>
+            <li>L2 can be operating in either <a href="#ShadowMode">Shadow
+                Mode</a> or <a href="#RecoveryMode">Recovery Mode</a>.</li>
+          </ul></dd>
+
+      <a name="ModeAssignment">
+      <dt>Mode Assignment</dt>
+      <dd>At a given <a href="#TimeStep">Time Step</a>, the
+          <a href="#Mode">Mode</a> of a <a href="#Device">Device</a>.</dd>
+
+      <a name="ModeIdentification">
+      <dt>Mode Identification</dt>
+      <dd>Determination of the state of each device that is represented in the
+          <a href="#Model">Model</a>. This is active in
+          <a href="#ShadowMode">Shadow Mode</a>.</dd>
+
+      <a name="ModeReconfiguration"></a>
+      <a name="ModeRecovery"></a>
+      <dt>Mode Reconfiguration/Mode Recovery</dt>
+      <dd>Selecting (and executing) a <a href="#Command">Command</a> that is
+          intended to correct a faulty condition in the device being
+          modeled.</dd>
+
+      <a name="ModeTransitionVarible"></a>
+      <dt>Mode Transition Variable</dt>
+      <dd>Synonym for <a href="#TransitionVariable">Transition Variable</a>. An
+          <a href="#Assumption">Assumption</a> that a
+          <a href="#Component">Component</a> changed its
+          <a href="#Mode">Mode</a>.</dd>
+
+      <a name="ModeTransitionVariable"></a>
+      <dt>Mode Variable</dt>
+      <dd>A <a href="#DependentVariable">Dependent Variable</a>, representing
+          the state of a <a href="#Device">Device</a>, the value of which
+          is inferred. The domain is the union of the set of
+          <a href="#NominalMode">Nominal Mode</a>s and the set of
+          <a href="#FailureMode">Failure Mode</a>s, to which may be added a
+          unique element representing an unknown mode. The initial value will
+          typically be a <a href="#NominalMode">Nominal Mode</a>.</dd>
+
+      <a name="Model"></a>
+      <dt>Model</dt>
+      <dd>A data structure that represents the real-world
+          <a href="#Device">Device</a> the faults of which Livingstone
+          diagnoses. Models can be stored in <a href="#ModelFile">Model
+          File</a>s of several different
+          <a href="#ModelFileFormat">Model File Format</a>s.</dd>
+
+      <a name="ModelFile"></a>
+      <dt>Model File</dt>
+      <dd>A file containing a specification of the Livingstone
+          <a href="Model">Model</a> in some <a href="#ModelFileFormat">Model
+          File Format</a> or one of three kinds of files that is read in at the
+          same time:
+          <ul>
+            <li><a href="#Harness">Harness</a>
+            <li><a href="#Ini">Ini</a>
+            <li><a href="#Params">Params</a>
+          </ul></dd>
+
+      <a name="ModelFileFormat"></a>
+      <dt>Model File Format</dt>
+      <dd>An encoding scheme for <a href="#Model">Model File</a>s. The
+          alternatives are:
+          <ul>
+            <li><a href="#JMPL">JMPL</a></li>
+            <li><a href="#L2Format">L2</a></li>
+            <li><a href="#l2bin">l2bin</a></li>
+            <li><a href="#MPL">MPL</a></li>
+            <li><a href="#XMPL">XMPL</a></li>
+          </ul></dd>
+
+      <a name="Module"></a>
+      <dt>Module</dt>
+      <dd>In Stanley, a non-leaf node of a <a href="#Module">Module</a>. See
+          <a href="#Component">Component</a>.</dd>
+
+      <a name="Monitor"></a>
+      <dt>Monitor</dt>
+      <dd>Code that maps a sensor reading value onto an
+          <a href=#ObservedVariable">Observed Variable</a>.</dd> 
+
+      <a name="MonitoredVariable"></a>
+      <dt>Monitored Variable</dt>
+      <dd>Synonym for <a href="#ObservedVariable">Observed Variable</a>.</dd>
+
+      <a name="MPL"></a>
+      <dt>MPL</dt>
+      <dd>Model Programming Language, a representation of models for
+          Livingstone using Lisp syntax. Many model builders are not 
+          comfortable with Lisp syntax, and so resist its use. See also
+          <a href="#JMPL">JMPL</a> and <a href="#XMPL">XMPL</a>.
+
+      <a name="name2ids"></a>
+      <dt>name2ids</dt>
+      <dd>An executable that translates a human-readable script (using names
+          rather than numbers) into one that can be read by
+          <a href="#l2flight">l2flight</a>.</dd>
+
+      <a name="NegativeProposition"></a>
+      <dt>Negative Proposition</dt>
+      <dd>A <a href="#Proposition">Proposition"</a> that a
+         <a href="#Variable">Variable</a> does not have a specific value from
+         an <a href="#Enumeration">Enumeration</a>.</dd>
+
+      <a name="NominalMode"></a>
+      <dt>Nominal Mode</dt>
+      <dd>A <a href="#Device">Device</a> in the system being modeled
+          behaves as it was intended to behave. There may be more than one
+          Nominal Mode for a <a href="#Device">Device</a>. The opposite is
+          <a href="#FailureMode">Failure Mode</a>.</dd>
+
+      <a name="NominalTransition"></a>
+      <dt>Nominal Transition</dt>
+      <dd>A <a href="#Transition">Transition</a> that is as intended; that is,
+          it is not a <a href="#Failure">Failure</a>.</dd>
+
+      <a name="ObservableVariable"></a>
+      <dt>Observable Variable</dt>
+      <dd>Synonym for <a href="ObservedVariable">Observed Variable</a>.</dd>
+
+      <a name="ObservedVariable"></a>
+      <dt>Observed Variable</dt>
+      <dd>An <a href="#AssignableVariable">Assignable Variable</a> is an
+          Observed Variable if its value comes from a sensor.</dd>
+
+      <a name="Observation"></a>
+      <dt>Observation<dt>
+      <dd>A sensor reading from a <a href="#Device">Device</a>, such as
+          current, pressure, temperature, valve state or voltage. Observations
+          are represented in Livingstone as
+         <a href="ObservationVariable">Observation Variable</a>s.</dd>
+
+      <a name="Observe"></a>
+      <dt>Observe</dt>
+      <dd>Assign a value to an <a href="#ObservedVariable">Observed
+          Variable</a>. An Observation does not causes Livingstone to
+          <a href="#Progress">Progress</a>. The value will not be propagated
+          immediately.</dd>
+
+      <a name="ObservationVariable"></a>
+      <dt>Observation Variable</dt>
+      <dd>Synonym for <a href="#ObservedVariable">Observed Variable</a>.</dd>
+
+      <a name="Opsat"></a>
+      <dt>Opsat</dt>
+      <dd>Another name for the <a href="#CBFS">CBFS</a>
+          <a href="#Tracker">Tracker</a>.</dd>
+
+      <a name="Optimize"></a>
+      <dt>Optimize</dt>
+      <dd>Re-write a <a href="#Model">Model</a> so that it is logically
+          equivalent but <a href="#Transition">Transitions</a> can be computed
+          more rapidly. <a href="#MinProgress">Min Progress</a> requires that a
+          <a href="#Model">Model</a> be optimized.</dd>
+
+      <a name="Parameter"></a>
+      <dt>Parameter</dt>
+      <dd>A value that configures L2. Parameters can be read in from a file
+          when the <a href="Model">Model File</a> is read in, or they can be
+          set programmatically. The parameters are
+          <ul>
+            <li><a href="#CBFSMaxCandidates">CBFS Max Candidates</a>
+            <li><a href="#CBFSMaxRank">CBFS Max Rank</a>
+            <li><a href="#CBFSSearchSpace">CBFS Search Space"</a>
+            <li><a href="#CoverMaxRank">CoverMaxRank</a>
+            <li><a href="#FindCandidatesStyle">Find Candidates Style</a>
+            <li><a href="#History">History</a>
+            <li><a href="#MaxTruncatedCandidates">Max Truncated Candidates</a>
+            <li><a href="#ProgressStyle">Progress Style</a>
+            <li><a href="#SearchStyle">Search Style</a>
+          </ul></dd>
+
+      <a name="Params"></a>
+      <dt>Params</dt>
+      <dd>A <a href="#ModelFile">Model File</a>, with extension
+          <code>.params</code>, that specifies
+          configuration <a href="#Parameter">Parameter</a>s. See also
+          <a href="#Harness">Harness</a> and <a href="#Ini">Ini</a>.</dd>
+
+      <a name="PositiveProposition"></a>
+      <dt>Positive Proposition</dt>
+      <dd>A <a href="#Proposition">Proposition</a> that a
+          <a href="#Variable">Variable</a> has a specific value from an
+          <a href="#Enumeration">Enumeration</a>.</dd>
+
+      <a name="PresentVariable"></a>
+      <dt>Present Variable</dt>
+      <dd>In <code>T_system.h</code>, a
+      <a href="#Variable">Variable</a> at the NOW <a href="#TimeStep">Time
+      Step</a> with the exception of the <a href="#ModeTransitionVariable">Mode
+      Transition Variable</a>s. A Present Variable must be an instance of the
+      following four classes:
+      <ul>
+        <a href="Command Variable">Command Variable</a>,
+        <a href="DependentVariable">Dependent Variable</a>
+        <a href="ObservableVariable">Observable Variable</a>
+        <a href="TransitionedVariable">Transitioned Variable</a>
+      </ul>
+      Note that when the <a href="#TransitionSystem">Transition System</a>
+      copies a Present Variable into the history, the object's type may
+      change to that of a supertype.</dd>
+
+      <a name="PrimeImplicate"></a>
+      <dt>Prime Implicate</dt>
+      <dd></dd>
+
+      <a name="Progress"></a>
+      <dt>Progress</dt>
+      <dd>When a <a href="#Command">arrives, advance the
+          <a href="#TimeStep">Time Step</a> one
+          unit. There are two <a href="#ProgressStyle">Progress Style</a>s:
+          <ul>
+            <li><a href="#MinProgress">Min Progress</a>
+            <li><a href="#FullProgress">Full Progress</a>.
+          </ul></dd>
+
+      <a name="ProgressStyle"></a>
+      <dt>Progress Style</a>
+      <dd>Configuration <a href="#Parameter">Parameter</a>. One of two ways of
+          performing a <a href="#Progress">Progress</a>:
+          <ul>
+            <li><a href="#FullProgress">Full Progress</a>
+            <li><a href="#MinProgress">Min Progress</a>
+          </ul></dd>
+
+      <a name="Propagation"</a>
+      <dt>Propagation</dt>
+      <dd>The <a href="#LTMS">LTMS</a> performs propositional inference,
+          determining whether its
+          <a href="#PropositionalTheory">Propositional Theory</a> is
+          consistent. Propagate the values in the TMS to compute the logical
+          inferences of the current set of <a href="#Clause">Clause</a>s.</dd>
+
+      <a name="Proposition"></a>
+      <dt>Proposition</dt>
+      <dd>In Livingstone, a Proposition is an element of a
+          <a href="#Clause">Clause</a>. It is an equality predicate that is
+          partitioned into <a href="#PositiveProposition">Positive
+          Propositions</a> and <a href="#NegativeProposition">Negative
+          Propositions</a>. <a href="#SameProposition">Same Propositions</a>
+          can be expressed as
+          <a href="#PositivePropostion">Positive Proposition</a>s and
+          <a href="#DifferentProposition">Different Propositions</a> can be
+          expressed as
+          <a href="#NegativeProposition">Negative Proposition</a>s. A
+          <a href="#Clause">Clause</a> may <a href="#Support">Support</a> a
+          Proposition.</dd>
+
+      <a name="PropositionalTheory"></a>
+      <dt>Propositional Theory</dt>
+      <dd>A <a href="#Theory">Theory</a> of a physical system
+          consisting solely of statements in propositional logic, as opposed
+          to first-order predicate calculus, a modal logic, etc. It consists
+          of two parts:
+          <ul>
+            <li>A set of <a href="#Proposition">Proposition</a>s representing
+                predicates on the values of <a href="#Variable">Variable</a>s.
+            <li>A set of <a href="#Clause">Clause</a>s representing
+                <a href="#Constraint">Constraint</a>s on the
+                <a href="#Proposition">Proposition</a>s. All of the
+                <a href="#Clause">Clause</a>s must simultaneously be true;
+                that is, they are conjoined.
+          </ul>
+          An <a href="#LTMS">LTMS</a> has a Propositional Theory.</dd>
+      
+      <a name="PruneAndSearch"></a>
+      <dt>Prune and Search</dt>
+      <dd>A <a href="#FindCandidatesStyle">Find Candidates Style</a>. Prunes
+          the current set of <a href="#Candidate">Candidate</a>s.</dd>
+
+      <a name="PTheory"></a>
+      <dt>PTheory</dt>
+      <dd>A short name for a <a href="Propositional Theory</a>.</dd>
+
+      <a name="Rank"></a>
+      <dt>Rank</dt>
+      <dd>The relative plausibility of a <a href="#Transition">Transition</a>.
+          If the <a href="#Transition">Transition</a> is
+          <a href="#NominalMode">Nominal Mode</a>, the Rank is 0. Otherwise,
+          for <a href="#FailureMode">Failure Mode</a>, the Rank is a positive
+          number, essentially the negative of the logarithm of its prior
+          probability.</dd>
+
+      <a name="Read"></a>
+      <dt>Read</dt>
+      <dd>To incorporate a <a href="Model">Model</a> into Livingstone from a
+          <a href="#ModelFile">Model File</a> in one of the
+          <a href="#ModelFileFormat">Model File Format</a>s.</dd>
+
+      <a name="Reader"></a>
+      <dt>Reader</dt>
+      <dd>The part of Livingstone that <a href="#Read">Read</a>s a
+          <a href="#Model">Model</code> from a <a href="#ModelFile">Model
+          File</a>in one of the
+          <a href="#ModelFileFormat">Model File Format</a>s.</dd>. The Readers
+          also <a href="#Optimize">Optimize</a> the
+          <a href="#Model">Model</a>.</dd>
+
+      <a name="Reconfiguration"></a>
+      <dt>Reconfiguration</a>
+      <dd>Recovery from failure in the device. Livingstone can be compiled to
+          do either diagnosis or planning, but not both with the same
+          executable.</dd>
+
+      <a name="RecoveryMode"></a>
+      <dt>Recovery Mode</dt>
+      <dd><a href="#IVHM">IVHM</a> autonomously effects physical changes in
+          the device being modeled. The opposite is
+          <a href="#ShadowMode">Shadow Mode</a>.</dd>
+
+      <a name="Restore"</a>
+      <dt>Restore</dt>
+      <dd>Restores the state of livingstone to what it was when the
+          <a href="#Checkpoint">Checkpoint</a> was stored.</dd>
+
+      <a name="RTAPI"></a>
+      <dt>RTAPI</dt>
+      <dd>Real-Time Application Programming Interface, an API for handling
+          asynchronous input and output to Livingstone.</dd>
+
+      <a name="SameProposition"></a>
+      <dt>Same Proposition</dt>
+      <dd>A predicate that the value of one <a href="#Variable">Variable</a>
+         is equal to that of a second <a href="#Variable">Variable</a>.</dd>
+
+      <a name="SatisfactionSearch"></a>
+      <dt>Satisfaction Search</dt>
+      <dd>A search which returns solutions based on whether they are consistent
+          with some criterion.
+          Code: <code>opsat/opsat.h</code></dd>
+
+      <a name="Satisfiable"></a>
+      <dt>Satisfiable</dt>
+      <dd>A <a href="#Theory">Theory</a> is Satisfiable if there is a way to
+          <a href="#Assign">Assign</a> <a href="#TruthValue">Truth
+          Values</a> that <a href="#Satisfy">Satisfy</a> all of its
+          <a href="#Clause">Clauses</a>.</dd>
+
+      <a name="Satisfy"></a>
+      <dt>Satisfy</dt>
+      <dd>A <a href="#Clause">Clause</a> is said to be Satisified if at least
+          one of its <a href="#Proposition">Propositions</a> has a
+          <a href="#TruthValue">Truth Value</a> of TRUE.</dd>
+
+      <a name="SearchMethod"></a>
+      <dt>Search Method</dt>
+      <dd>Synonym for <a href="#SearchStyle">Search Style</a></dd>
+
+      <a name="SearchProcedure"></a>
+      <dt>Search Procudure</dt>
+      <dd>The code that makes <a href="#Assignment">Assignment</a>s to the
+          <a href="#AssumptionVariable">Assumption Variable</a> after a change
+          to an <a href="#AssignableVaraible">Assignable Variable</a>.</dd>
+
+      <a name="SearchStyle"></a>
+      <dt>Search Style</a>
+      <dd>One of the following:
+          <ul>
+            <li><a href="#CBFS">CBFS</a>
+            <li><a href="#Cover">Cover</a>
+          </ul></dd>
+
+      <a name="ShadowMode"></a>
+      <dt>Shadow Mode</dt>
+      <dd><a href="#IVHTM">IHVM</a> diagnoses and communicates its inferences,
+          but does not autonomously effect physical changes in the device
+          being modeled. The opposite is <a href="#RecoveryMode">Recovery
+          Mode</a>.</dd>
+
+      <a name="Skunkworks"></a>
+      <dt>Skunkworks</dt>
+      <dd>The suite of programs including Livingstone and Stanley.</dd>
+
+      <a name="Solver"></a>
+      <dt>Solver</dt>
+      <dd>From the point of view of the <a href="#ConflictDataBase">Conflict
+          Data Base</a>, the <a href="#LTMS">LTMS</a> is the "Solver."</dd>
+
+      <a name="Stanley"></a>
+      <dt>Stanley</dt>
+      <dd>The model-building GUI tool, written in Tcl. The Models it produces
+          are represented as JMPL files.</dd>
+
+      <a name="StateConstraint"></a>
+      <dt>State Constraint</dt>
+      <dd>A <a href="#Clause">Clause</a> that constrains the values of
+          <a href="#Variable">Variable</a>s within the same
+          <a href="#TimeStep>Time Step</a>. This is in constrast to
+          <a href="#Transition">Transition</a>s.</dd>
+
+      <a name="StateVariable"></a>
+      <dt>State Variable</dt>
+      <dd>When the <a href="#History">History</a> is
+          <a href="#Truncate">Truncate</a>d, the information for the removed
+          <a href="#TimeStep">Time Step</a>s is stored in a special data
+          structure called a State Variable. The State Variable is an
+          <a href="#AssumptionVariable">Assumption Variable</a>.</dd>
+
+      <a name="StateVector"></a>
+      <dt>State Vector</dt>
+      <dd>A set of <a href="#Variable">Variable</a>-Value pairs that specifies
+          the state of a device being modeled.</dd>
+
+      <a name="Summarize"></a>
+      <dt>Summarize</dt>
+      <dd>When perfoming a <a href="#Truncate">Truncate</a> operation, this is
+          the mechanism for inserting "stub"
+          <a href="#Clause">Clause</a>s that justify the 
+          <a href="#Variable">Variable</a>
+          <a href="#Assignment">Assignment</a>s at the
+          <a href="#Horizon">Horizon</a>.</dd>
+
+      <a name="Support"></a>
+      <dt>Support</a>
+      <dd>A <a href="#Clause">Clause</a> supports a
+         <a href="#Proposition">Proposition</a> if the latter can be
+         inferred from the former.
+         Code: <code>tms/clause.*; tms/proposition.*</code></dd>
+
+      <a name="Telemetry"></a>
+      <dt>Telemetry</dt>
+      <dd>The means of communication between the vehicle and the
+          <a href="#GPU">GPU</a>.</dd>
+
+      <a name="Theory"></a>
+      <dt>Theory</dt>
+      <dd>A logical <a href="#Model">Model</a> of a system, comprising the set
+          of <a href="#Variable">Variable</a>s and the set of
+          <a href="#Constraint">Constraint</a>s. Currently,
+          <a href="#L2">L2</a> can have only
+          <a href="#PropositionalTheory">Propositional Theories</a>.</dd>
+
+      <a name="TimePoint"></a>
+      <dt>Time Point</a>
+      <dd>Synonym for <a href="#TimeStep">Time Step</a>.</dd>
+
+      <a name="TimeStep"></a>
+      <dt>Time Step</a>
+      <dd>All <a href="#Clause">Clauses</a> having the same Time Step are
+          re-evaluated together. The <a href="#TransitionSystem">Transition
+          System</a> increments the Time Step.</dd>
+
+      <a name="TMS"></a>
+      <dt>TMS</dt>
+      <dd><a href="#TruthMaintenanceSystem">Truth-Maintenance System</a>.</dd>
+
+      <a name="Tracker"></a>
+      <dt>Tracker</dt>
+      <dd>Controls the growth of the
+          <a href="#TransitionSystem">Transition System</a>. A Tracker can be
+          one of two types, depending on the
+          <a href="#FindCandidatesStyle">Find Candidates Style</a>:
+          <ul>
+            <li>CBFS_tracker (with <a href="#Extend">Extend</a>)</li>
+            <li>cover_tracker (with
+                <a href="#FindFreshCandidates">Find Fresh Candidates</a>)</li>
+          </ul>
+          Code: <code>transition/tracker.*</code></dd>
+
+      <a name="Trajectory"></a>
+      <dt>Trajectory</dt>
+      <dd>A sequence of state transitions from the initial state to a
+          <a href="#Candidate">Candidate</a>.</dd>
+
+      <a name="Transition"></a>
+      <dt>Transition</dt>
+      <dd>A <a href="#Clause">Clause</a> that constrains the values of
+          <a href="#Variable">Variable</a>s between one
+          <a href="#TimeStep">Time Step</a> and the next
+          <a href="#TimeStep">Time Step</a>.
+
+          <p>A rule for changing a <a href="#ModeTransitionVariable">Mode
+          TransitionVariable</a> from one value (the "from" state) to another
+          value (the "to" state). The event is conjunction of
+          <a href="#Clause">Clauses</a>. The <a href="#Rank">Rank</a> of the
+          Transition specifies the relative plausibility that the value is the
+          "to" state.</p>
+
+          <p>There are several ways of partitioning Transitions. A ternary
+          partition, based on implementation, is:
+          <ul>
+            <li><a href="#AutonomousTransition">Autonomous Transition</a></li>
+            <li><a href="#CommandedTransition">CommandedTransition</a></li>
+            <li><a href="#IdleTransition">Idle Transition</a></li>
+          </ul>
+          And a binary partition, based on semantics, is:
+          <ul>
+            <li><a href="#NominalTransition">Nominal Transition</a></li>
+            <li><a href="#FailureTransition">Failure Transition</a></li>
+          </ul>
+     </dd>
+
+      <a name="TransitionedVariable"></a>
+      <dt>Transitioned Variable</dt>
+      <dd>Synonym for <a href="#ModeTransitionVariable">Mode Transition
+          Variable</a>.</dd>
+
+      <a name="TransitionSystem"></a>
+      <dt>Transition System</dt>
+      <dd>A specialization of the <a href="#ConflictDataBase">Conflict Data
+          Base</a> that handles time.</dd>
+
+      <a name="Truncate"></a>
+      <dt>Truncate</dt>
+      <dd>Removing the oldest data (that is,
+          <a href="#TimeStep">Time Steps</a>s before the
+          <a href="#Horizon">Horizon</a>) from the
+          <a href="#History">History</a>.</dd>
+
+      <a name="TruthValue"></a>
+      <dt>Truth Value</dt>
+      <dd>Livingstone uses a three-valued logic, so a 
+          <a href="#Proposition">Proposition</a> can have Truth Value of
+          TRUE, FALSE or UNKNOWN.</dd>
+
+      <a name="Unassign"></a>
+      <dt>Unassign</dt>
+      <dd>To bind the value UNKNOWN to an  <a href="#ObservedVariable">Observed
+          Variable</a>. This can not cause any conflicts. At start up, all
+          <a href="#ObservedVariable">Observed Variable</a>s are
+          Unassigned.</dd>
+
+      <a name="UnindexedTransition">
+      <dt>Unindexed Transition</dt>
+      <dd>A <a href="#CommandedTransition">Commanded Transition</a> that
+          asserts how the <a href="#Mode">Mode</a> remains unchanged when
+          another <a href="#Component">Component</a> is commanded. One
+          <a href="#Constraint">Constraint</a> is added for each uncommanded
+          <a href="#Component">Component</a>, asserting no change to the
+          <a href="#Mode">mode</a> of the uncommanded
+          <a href="#Component">Component</a> if the
+          <a href="#ModeTransition">Mode Transition</a> is nominal:
+          <code><pre>
+          modeVariable[timeStep]=m & modeTransition[timeStep]=nominal=>
+          modeVariable[timeStep+1]=m
+          </pre></code>
+          See also <a href="#IndexedTransition">Indexed Transition</a>.</dd>
+
+      <a name="UnitClause"></a>
+      <dt>Unit Clause</dt>
+      <dd>A <a href="#Clause">Clause</a> with exactly one
+         <a href="#Literal">Literal</a> that is not
+         <a href="#Assign">Assigned</a> and all other
+         <a href="#Literal">Literals</a> having the
+         <a href="#TruthValue">Truth Value</a> FALSE. The set of Unit Clauses
+         is the <a href="#Fringe">Fringe</a>.</dd>
+
+      <a name="UnitPropagation"></a>
+      <dt>Unit Propagation</a>
+      <dd>The same as <a href="#BooleanConstraintPropagation">Boolean
+          Constraint Propagation</a>. The <a href="#LTMS">LTMS</a> class
+          performs Unit Propagation.</dd>
+
+      <a name="Variable"></a>
+      <dt>Variable</dt>
+      <dd>The set of Variables used to describe the system is partitioned into
+          two subsets:
+          <ul>
+            <li><a href="#AssignableVariable">Assignable Variables</a>
+            <li><a href="#DependentVariable">Dependent Variables</a>
+          </ul>
+          These sets are further partitioned.
+          Code: <code>conflict_db/variable.*</code></dd>
+
+      <a name="Volatile"></a>
+      <dt>Volatile</dd>
+      <dd>A <a href="#Clause">Clause</a> is Volatile if its constituent
+          <a href="#Proposition">Propositions</a> change frequently. As with
+          register variables in C, the <a href="#TruthMaintenanceSystem">Truth
+          Maintenance System</a> may, if given a hint about a
+          <a href="#Clause">Clause's volatility</a>, be able to represent it
+          more efficiently.</dd>
+
+      <a name="Weight"></a>
+      <dt>Weight</dt>
+      <dd>A non-negative floating-point number indicating the degree of
+          confidence in an <a href="#Assignment">Assignment</a>.</dd>
+
+      <a name="Width"></a>
+      <dt>Width</dt>
+      <dd>In <a href="#l2bin">l2bin</a> files, the number of elements of each type
+          (<a href="#Clause">Clause</a>,
+          <a href="#Enumeration">Enumeration</a>,
+          <a href="#Proposition">Proposition</a>,
+          <a href="#Transition">Transition</a>,
+          <a href="#Variable">Variable</a>) requires
+          one byte if < 2**8, two bytes if < 2**16, etc. A width is the number
+          of bytes needed to represent the number of <a href="#Model">Model</a>
+          elements.</dd>
+
+      <a name="XMLBasedModelProgrammingLanguage"></a>
+      <dt>XML-Based Model Programming Language</dt>
+      <dd>An XML <a href="#ModelFileFormat">Model File Format</a>. The
+          <a href="#JMPLCompiler">JMPL Compiler</a> translates from
+          <a href="#JMPL">JMPL</a> to <a href="#XMPL">XMPL</a>.
+          <a href="#XMPL">XMPL</a> is verbose but can be parsed in a
+          relatively standard and robust way. See also
+          <a href="#JMPL">JMPL</a>, <a href="#L2Format">L2 Format</a>,
+          <a href="#l2bin">l2bin</a> and <a href="#MPL">MPL</a>.</dd>
+
+      <a name="XMPL"></a>
+      <dt>XMPL</dt>
+      <dd><a href="#XMLBasedModelProgrammingLanguage">XML-Based Model
+          Programming Language</a>.</dd>
+
+      <a name="xmpl2l2"></a>
+      <dt>xmpl2l2</dt>
+      <dd>An executable utility that translates a <a href="#Model">Model</a>
+          file from the <a href="#XMPL">XMPL</code>
+          <a href="#ModelFileFormat">Model File Format</a> to either the
+          <a href="#L2Format">L2</a> or <a href="#l2bin">l2bin</a> format.</dd>
+
+      <a name="Zenith"></a>
+      <dt>Zenith</dt>
+      <dd>As far from a <a href="#Horizon">Horizon</a> as can be -- that is,
+          the most recent <a href="#TimeStep">Time Step</a>. A
+          <a href="#TransitionedVariable">Transitioned Variable</a> maintains
+          pointers to the <a href="#ModeTransitionVariable">Mode Transition
+          Variable</a> at both the <a href="#Horizon">Horizon</a> and the
+          Zenith.</dd>
+
+      <a name="#ZenithTransition"></a>
+      <dt>Zenith Transition</dt>
+      <dd>An <a href="#AssumptionVariable">Assumption Variable</a> progressed
+          backward in time from a
+          <a href="#ModeTransitionVariable">Mode Transition Variable</a>,
+          representing the transition from the latest stored
+          <a href="#TransitionedVariable">Transitioned Variable</a> to the NOW
+          <a href="#TransitionedVariable">Transistioned Variable</a>.</dd>
+    </dl>
+
+    <hr>
+    <address><a href="mailto:lbrownston@ptolemy.arc.nasa.gov">Lee S.
+    Brownston</a></address>
+<!-- Created: Fri Jun  8 15:04:20 PDT 2001 -->
+<!-- hhmts start -->
+Last modified: Tue Feb 12 14:22:46 PST 2002
+<!-- hhmts end -->
+   <p><p>
+   <a href="../index.html">Back to Main Page</a>
+   <p><p>
+  </body>
+</html>

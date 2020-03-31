@@ -1,0 +1,29 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.7 2001/11/16 23:53:00 lbrown Exp $
+# needed for make clean and depend
+SUBDIRS=posix
+
+# The target is a library.
+TARGET=${loc_libdir}/liblivrti.so
+LIBTARGET=$(TARGET)
+
+DEFS+=-D_POSIX_C_SOURCE=199506L
+
+OBJECTS=posix/guardedqueue.o \
+	posix/livapi_rt.o \
+	posix/livapi_rt_debug.o \
+	posix/livingstone_dispatcher.o \
+	posix/threadobject.o \
+	posix/timeout_handlers.o
+
+# recur into the posix directory to get this to work
+posix/%.o : posix/%.cpp
+	$(MAKE) -C posix ${@:posix/%=%}
+
+# We need to link -llivdll -lpthread (at least) ; the former may
+# need to be built.
+DEPS=$(loc_libdir)/liblivdll.so
+LIBS+=-lpthread

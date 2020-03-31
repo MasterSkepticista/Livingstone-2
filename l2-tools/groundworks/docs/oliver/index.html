@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>Oliver</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+<br />
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr> 
+    <td><div class="pos1">
+		  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="topbox">
+			  <tr>
+				  <td align="left" valign="bottom"> 
+            <h2>Oliver. The new Livingstone Editor.</h2>
+				  </td>
+					<td align="right">
+					  <img width="48" height="40" src="meatball.gif" alt="NASA Logo" />
+				  </td>
+				</tr>
+			</table></div>
+		</td>
+	</tr>
+  <td>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="topnav">
+        <tr>
+  	      <td align="left" class="head">
+		  	  &nbsp;// <a href="http://www.arc.nasa.gov" title="Ames Reseach Center Hompage">Ames</a>
+					  			/ <a href="http://ic-www.arc.nasa.gov" title="Computational Sciences Division">IC</a>
+						  		/ <a href="http://ic-www.arc.nasa.gov/projects/mba/" title="Model Based Autonomous Systems">MBA</a>
+							  	/ <a href="index.html" title="Oliver Homepage">Oliver</a>
+		      </td>
+    	    <td align="right"> 
+			      <a href="index.html" class="topmenu" title="How do I get it?">&nbsp;::about::&nbsp;</a><a href="documentation.html" class="topmenu" title="How do I work it?">&nbsp;::documentation::&nbsp;</a><a href="screenshots.html" class="topmenu" title="What's it look like?">&nbsp;::screen shots::&nbsp;</a><a href="http://ic-www.arc.nasa.gov/cgi-bin/gnatsweb.pl" class="topmenu" title="What's wrong with it?">&nbsp;::gnats::&nbsp;</a>		  </td>
+	</tr>
+   </table>
+   </td>
+  </tr>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td valign="top" width="150"> <br />
+		  	<div>
+        <div class="headbox">References</div>
+        <a class="leftmenu" href="http://ic-www.arc.nasa.gov/projects/mba/projects/livingstone.html" title="Model-based reactive self-configuring autonomous system.">Livingstone</a>      
+        <a class="leftmenu" href="http://ic-www.arc.nasa.gov/projects/mba/projects/L2/doc" title="The first Livingstone Modeling Tool">Stanley/Skunkworks</a> 
+        <a class="leftmenu" href="http://sliinfonet.nasa.gov/sli_program/about.html" title="Space Launch Initiative(SLI)">Space Launch Initiative(SLI)</a> 
+        <a class="leftmenu" href="http://www2test.msfc.nasa.gov/SLI_INTERNAL/ivhm/about.html" title="Integrated Vehicle Health Management(IVHM)">Integrated Vehicle Health Management(IVHM)</a> 
+			  
+			  <br />
+			  <div class="dynacontent">
+			  Questions or Comments? Advice for me or from me? Please <a href="mailto:swragg@mail.arc.nasa.gov" class="dash" title="email the author">email me.</a>
+			  </div>	
+              
+            </div>
+          </td>
+          <td valign="top"> <br />
+            <table border="0" cellspacing="0" cellpadding="0" width="100%">
+              <tr> 
+                <td width="10"></td>
+                <td valign="top" class="mainbox"> 
+				  <h3>Why did you build this?</h3>
+				  <p>
+					Today most Livingstone models are hand coded or developed under Stanley.  Stanley is a well 
+					refined and widely used application, however it does not support several critical features which could 
+					not be added without making major changes to the architecture.  The most desirable of these features 
+					is the importing of automatically generated models.  This feature was required to support the 
+					Diagnostic Modeling Environment being developed by Northrop Grumman as part of the Space&nbsp;Launch&nbsp;Initiative(SLI) risk reduction program in IVHM.
+					My work on a new editor was funded through this effort and by the Ames Skunkworks group.
+				  </p>
+					<h3>What does it do?</h3>
+          <p>
+					Along with supporting the importing of generated models, the Editor has been designed with the following goals:
+					<ul>
+						<li>Simple and intuitive single frame user interface copied from standard IDEs such as Netbeans.</li>
+						<li>Java based application stored in a single jar file.  Easily distributed and executed on any platform.</li>
+						<li>Saves all modeling information in a single XML based file including all graphical, harness and initial state information.</li>
+						<li>Implements all Stanley supported features.</li>
+					</ul>		
+				  </p>
+					<h3>Does it work?</h3>
+				  <p>
+					You bet, but the application is at an early beta stage.  I have set up Gnats page to so users can submit bug/feature request, 
+					and I will submit my own list of known bugs very soon.  I need beta testers, so if you think this might be a useful tool, 
+					contact me and I'll will be glad to help you set things up, and even import existing modeling information.
+					</p>
+                </td>
+                <td width="145" valign="top" class="dynabox">Livingstone Applications
+				<br />
+				<br />
+				<div class="headbox">&nbsp;Project <a class="dash" href="#" title="NITEX(X34)">PITEX/NITEX</a></div>
+				<div class="dynacontent">The PITEX effort is a maturation and refinement of the diagnostic technology initiated in the NITEX work, last year, which demonstrated the use of model-based diagnosis of a Main Propulsion System (MPS) of a Reusable Launch Vehicle (RLV) prototype such as the X-34.
+The product of PITEX is an integrated software package containing monitor algorithms and the Livingstone inference engine. It also includes a model of the MPS in order to track and diagnose its operation.</div>
+				
+				<div class="headbox">&nbsp;Project <a class="dash" href="http://ic-www.arc.nasa.gov/projects/ivhm/x-37/index.html" title="X37">X37</a></div>
+				<div class="dynacontent">The NASA X-37 IVHM Technology Experiment for X-37 involved running Integrated Vehicle Health Management (IVHM) software on-board the X-37 spacecraft.</div>
+
+				<div class="headbox">&nbsp;Project <a class="dash" href="http://ic-www.arc.nasa.gov/projects/remote-agent/index.html" title="Remote Agent">Remote Agent</a></div>
+				<div class="dynacontent">For two days Remote Agent ran on the on-board computer of Deep Space 1, more than 60,000,000 miles (96,500,000 kilometers) from Earth. The tests were a step toward robotic explorers of the 21st century that are  less costly, more capable and more independent from ground control.</div>
+				
+				</td>
+              </tr>
+            </table>
+			<br />
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>	
+
+  <tr class="pos1"> 
+    <td height="20" colspan="2" class="head" align="right">2003 NASA Ames Research Center &nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

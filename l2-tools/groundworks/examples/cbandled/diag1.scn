@@ -1,0 +1,29 @@
+/// ********** DIAGNOSTIC TEST 1 *********************
+//  Create fresh model
+progress test.cb1.cmdIn=on
+progress test.cb2.cmdIn=on
+progress test.cb3.cmdIn=on
+progress test.cb4.cmdIn=on
+progress test.cb5.cmdIn=on
+progress test.cb6.cmdIn=on
+progress test.cb7.cmdIn=on
+progress test.cb8.cmdIn=on
+progress test.cb9.cmdIn=on
+progress test.cb10.cmdIn=on
+progress test.cb11.cmdIn=on
+progress test.cb12.cmdIn=on
+progress test.cb13.cmdIn=on
+progress test.cb14.cmdIn=on
+progress test.cb15.cmdIn=on
+fc
+assign test.led8.ledState=off
+assign test.led6.ledState=off
+assign test.led4.ledState=off
+assign test.led2.ledState=off
+fc
+assign test.led7.ledState=on
+assign test.led5.ledState=on
+assign test.led3.ledState=on
+assign test.led1.ledState=on
+fc
+

@@ -1,0 +1,154 @@
+# $Id: Makefile.in,v 1.35 2003/01/23 00:28:33 lbrown Exp $
+# The top-level makefile.
+
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# just the libraries that we actually need to build.
+# loc or libXERCES may be empty, if we use noxerces.mk
+LIB_TARGETS = \
+    $(loc_libXERCES) \
+    ${loc_libdir}/${L2LIB_FILE}
+CLEANFILES += objects
+CLEANFILES += $(LIB_TARGETS)
+
+LIB_INSTALL = \
+    $(libXERCES) \
+    ${libdir}/${L2LIB_FILE}
+
+# directories for the code in livdll
+SRCDIRS=@SRCDIRS@
+
+# directories for the code not in livdll; these often have executables
+INSTALL_DIRS = @SUBDIRS@
+
+# all subdirectories that we build
+SUBDIRS=$(SRCDIRS) @SUBDIRS@
+
+.PHONY: all
+all: $(LIB_TARGETS)
+
+
+###########################################################################
+# Rule to build a library that has everything in it:
+
+# First, how to rebuild the object lists.  I have the phony-target there
+# to force recurring into each.
+.PHONY: phony-target
+src/%/objects: phony-target
+	$(MAKE) -C $(@:src/%/objects=src/%) objects
+
+# $x/objects has files like foo.o ; we need to turn those into
+# $x/foo.o -- note it's not an error for an objects file to be missing.
+objects: @SRCDIR_OBJECTS@
+	{ for x in $(SRCDIRS) ; do \
+		cat $$x/objects 2>/dev/null | \
+	 	sed -e "s%^%$$x/%" -e "s% \([a-zA-Z]\)% $$x/\1%g" ; \
+	done ; } > $@
+
+# rule for shared object
+# double-colon quashes a warning if loc_libdir==libdir
+${loc_libdir}/lib${L2LIB}.so:: $(locXERCES) objects
+	@test -d $(loc_libdir) || { \
+		echo "$(INSTALL) -d $(loc_libdir)" ; \
+		$(INSTALL) -d $(loc_libdir) ; \
+	}
+	$(LINKLIB) -o $@ `cat objects` $(lXERCES) $(LIBS)
+
+# rule for static library
+# double-colon quashes a warning if loc_libdir==libdir
+${loc_libdir}/lib${L2LIB}.a:: objects
+	@test -d $(loc_libdir) || { \
+		echo "$(INSTALL) -d $(loc_libdir)" ; \
+		$(INSTALL) -d $(loc_libdir) ; \
+	}
+	$(AR) r $@ `cat objects`
+
+# installing it
+# double-colon quashes a warning if loc_libdir==libdir
+${libdir}/${L2LIB_FILE}:: $(loc_libdir)/${L2LIB_FILE}
+	@test -d $(libdir) || { \
+	    echo "$(INSTALL) -d $(libdir)" ; \
+	    $(INSTALL) -d $(libdir) ; \
+	}
+	@if test `cd $(libdir) && pwd` != `cd $(loc_libdir) && pwd` ; then \
+	    echo $(INSTALL) $< $@ ; \
+	    $(INSTALL) $< $@ ; \
+	fi
+
+###########################################################################
+# Rule to build livrti ; needed by executables that want to use it.
+# Phony to force recursion.
+.PHONY: ${loc_libdir}/liblivrti.so
+${loc_libdir}/liblivrti.so:
+	$(MAKE) -C src/realtime_api
+
+
+###########################################################################
+# clean-up rules
+.PHONY: clean distclean mostlyclean maintainer-clean
+clean mostlyclean:
+	./makerecur "$(MAKE)" $@ $(SUBDIRS)
+	$(RM) $(CLEANFILES)
+	@echo "******************************"
+	@echo "Successfully made $@"
+
+distclean maintainer-clean: clean xerces-clean
+
+###########################################################################
+# install / uninstall rules
+.PHONY: install install-here
+install: install-here
+	./makerecur "$(MAKE)" $@ $(INSTALL_DIRS)
+	@echo "******************************"
+	@echo "Successfully made $@"
+
+install-here: $(LIB_INSTALL)
+
+.PHONY: uninstall uninstall-here
+uninstall: uninstall-here
+	./makerecur "$(MAKE)" $@ $(INSTALL_DIRS)
+	@echo "******************************"
+	@echo "Successfully made $@"
+
+uninstall-here:
+	$(RM) $(LIB_INSTALL)
+
+###########################################################################
+# dependency rules
+.PHONY: depend dep
+depend: dep
+dep:
+	./makerecur "$(MAKE)" $@ $(SUBDIRS)
+	@echo "******************************"
+	@echo "Successfully made $@"
+
+
+###########################################################################
+# not actually phony, but this forces it to rebuild every time
+.PHONY: tags
+tags:
+	find .  -name CVS -prune \
+		-o -name '*.[ch]' -print \
+		-o -name '*.cpp' -print  \
+		-o -name '*.hpp' -print  \
+		-o -name '*.cc' -print   \
+		| ctags -p `pwd` -L -
+	$(MAKE) tags-links
+
+tags-links:
+	./makerecur "$(MAKE)" tags-links $(SUBDIRS)
+	@# also get the include directories; not all exist, so don't die
+	@# if one is missing (hence the 'true' at the end).
+	@for dir in $(SUBDIRS:src/%=include/%) ; do \
+	    echo "$(LN_S) `pwd`/tags $$dir/tags" ; \
+	    $(RM) $$dir/tags && $(LN_S) `pwd`/tags $$dir/tags ; \
+	done ; true
+
+
+
+###########################################################################
+
+Makefile: Makefile.in config.status
+	./reconf .

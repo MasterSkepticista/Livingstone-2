@@ -1,0 +1,53 @@
+@node File layout
+@section How files are laid out
+
+All files needed to develop or use L2, Skunkworks, and Stanley are under
+CVS.  That includes the source, the build system, non-standard software
+packages (a C++ CORBA implementation, for instance; and the Xerces XML
+parser), and documentation.  It does not include a C/C++ compiler, or a
+Java Virtual Machine: these are assumed to be present on any reasonable
+system.
+
+Some files require non-standard software packages to build them (for
+instance, configure or the HTML version of this manual) but are required
+for any build.  Such files in general are included in the CVS repository
+and any distribution.  The makefiles know how to generate them if
+necessary, so to work on them, the developer will have to ensure the tools
+are available.  This allows people to use L2 without having all the tools
+needed to work on the implementation.
+
+The CVS repository is at /home/cvs/ISG-Repository on the NASA Ames code IC
+Solaris 8 system.
+
+The following modules are defined:
+@table @file
+    @item mba/cpp
+        Holds the source for L2, along with this and other documentation.
+    @item l2-regress
+        Regression tests for L2, along with documentation for the test
+        suite.  Before checking in any change, run the tests.
+    @item support/xerces-unix-src
+        An XML parser that L2 uses to parse the XMPL format.  This comes
+        from Apache and is covered by the Artistic License.  Not needed
+        if XMPL isn't needed (i.e. in flight).
+    @item skunkworks
+        The Java Skunkworks interface and Tcl/Tk Stanley interface, used in
+        model development.
+@end table
+
+This documentation mostly talks about @file{mba/cpp}, which is organized as
+follows:
+@table @file
+    @item .
+        The top-level directory holds build and other read-me files,
+        and the configuration scripts (though part of the build system
+        is scattered elsewhere as well).
+    @item doc
+        Holds the L2 web page, including this documentation.
+
+    @item include
+        Stores all the header (@file{.h}) files for L2.
+
+    @item src
+        Stores all the source (@file{.cpp}) files for L2.
+@end table

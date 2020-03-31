@@ -1,0 +1,14 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.5 2002/06/04 20:32:56 lbrown Exp $
+
+# checkpoint_unit.o
+
+OBJECTS = checkpoint.o
+
+# checkpoint needs to know about Xerces; the rest don't
+XERCESCROOT = @XERCESCROOT@
+CPPFLAGS+=-I$(XERCESCROOT)/include
+

@@ -1,0 +1,110 @@
+
+
+
+
+enum cbCmd { on, off, reset, noCommand };
+enum onOffState { on, off };
+
+class currentSource {
+
+    // --- outputs ---
+    onOffState currentOut;
+
+    // --- mode names ---
+    private enum ModeType {nominal};
+    private ModeType mode;
+    stateVector [mode];
+
+    {
+
+	switch (mode) {
+	case nominal:
+	    currentOut = on;
+	}
+    }
+}              
+
+
+
+
+
+
+
+
+
+
+class cb {
+
+    // --- inputs --- 
+    cbCmd cmdIn;		/// Command to CB
+    onOffState currentIn;       /// Current flowing into CB.
+
+
+    // --- outputs --- 
+    onOffState currentOut;       /// Current flowing out of CB.
+
+    private enum ModeType {on, off, tripped, blown, unknownCbFault};
+    private ModeType mode;
+    stateVector [mode];
+
+    {
+	switch (mode) {
+
+	case on: 
+	    currentOut = currentIn;
+
+	case off: 
+	    currentOut = off;
+
+	    
+	case tripped:              /// Resettable failure
+	    currentOut = off;
+
+
+	case blown:                /// Blown CB
+	    currentOut = off;
+
+
+	case unknownCbFault:      /// Any behavior can occur here. 
+	    ;
+
+	}
+    }
+
+    // --- Transitions --- 
+    transition turnOn(off, on) {  cmdIn = on;  }
+    transition turnOff(on, off) {  cmdIn = off;  }
+    transition performReset(tripped, off) { cmdIn = reset; }
+
+    // --- Failures --- 
+    failure tripped(*, tripped, unlikely) {}
+    failure blown(*, blown, rare) {}
+    failure unknownCbFault(*, unknownCbFault, rare) {}
+}
+
+
+class led {
+
+    // --- inputs --- 
+    onOffState currentIn;
+
+    // --- outputs --- 
+    onOffState ledState;
+
+    // --- mode names --- 
+    private enum ModeType {nominal};
+    private ModeType mode;
+    stateVector [mode];
+
+    {
+	switch (mode) {
+
+	case nominal: 
+	    ledState = currentIn;
+	}
+    }
+
+    // No transitios or failures
+}
+
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Written to assume that classpath is rooted in the current directory. -->
+<!-- So this should be OK if you make this script in the root of a filesystem. -->
+<!-- If not, you may prefer to adjust the basedir, or move some directories around. -->
+<!-- The idea is that both Ant and NetBeans have to know what the package root is -->
+<!-- for the classes in your application. -->
+<project basedir="." default="compile l2tools" name="l2Tools">
+
+    <!-- Don't worry if you don't know the Ant syntax completely or need help on some tasks! -->
+    <!-- The standard Ant documentation is bundled. See Help | Help Sets | Ant 1.4.1 Manual. -->
+
+    <property name="l2tools" value=".."/>
+    <property name="javahSrc"  value="../java/src/livdll"/>
+    <property name="javahDestdir"  value="../../mba/cpp/include/livdll"/>
+    <property name="debug"  value="true"/>
+
+    <target name="clean l2tools">
+        <delete>
+            <fileset dir="${l2tools}/java/src">
+                <include name="*.class"/>
+                <include name="**/*.class"/>
+            </fileset>
+        </delete>
+    </target>
+    
+    <target depends="clean l2tools" name="compile l2tools">
+
+        <!-- DOES NOT WORK for l2-tools/**/* -->
+
+        <!-- Both srcdir and destdir should be package roots. -->
+        <!-- They could be different of course; in that case NetBeans can also be set -->
+        <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
+        <javac debug="true" deprecation="true" destdir="${l2tools}/java/src" srcdir="${l2tools}/java/src" source="1.4">
+            <!-- To add something to the classpath: -->
+            <!-- <classpath><pathelement location="${mylib}"/></classpath> -->
+            <classpath>
+                <pathelement location="${l2tools}/jars/browser.jar"/>
+                <pathelement location="${l2tools}/java/lib/openjgraph.jar"/>
+                <pathelement location="${l2tools}/java/lib/aelfred.jar"/>
+                <pathelement location="${l2tools}/java/lib/antlr.jar"/>
+                <pathelement location="${l2tools}/java/lib/domlight-1.0.jar"/>
+                <pathelement location="${l2tools}/java/lib/sax.jar"/>
+           </classpath>
+            <!-- To exclude some files: -->
+            <!-- <exclude name="com/foo/SomeFile.java"/><exclude name="com/foo/somepackage/"/> -->
+            <exclude name="bsh/"/>
+            <exclude name="Bsh.java"/>
+            <exclude name="gov/nasa/arc/l2tools/beans/"/>
+            <exclude name="gov/nasa/arc/l2tools/data/"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/lattice/"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/util/"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/Application.java"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/Environment.java"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/GUI.java"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/GUIBeanInfo.java"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/ProjectGUI.java"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/ProjectGUIBeanInfo.java"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/WorkspaceGUI.java"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/WorkspaceGUIBeanInfo.java"/>
+            <exclude name="gov/nasa/arc/l2tools/livdll/"/>
+            <exclude name="gov/nasa/arc/l2tools/swing/"/>
+            <exclude name="gov/nasa/arc/l2tools/tools/BshCommandLine.java"/>
+            <exclude name="gov/nasa/arc/l2tools/tools/BshCommandLineInputStream.java"/>
+            <exclude name="gov/nasa/arc/l2tools/Content.java"/>
+            <exclude name="gov/nasa/arc/l2tools/DataObject.java"/>
+            <exclude name="gov/nasa/arc/l2tools/Exception.java"/>
+            <exclude name="gov/nasa/arc/l2tools/Project.java"/>
+            <exclude name="gov/nasa/arc/l2tools/Workspace.java"/>
+        </javac>
+    </target>
+
+    <!-- target depends="compile l2tools" name="jar l2tools" -->
+    <target name="jar l2tools">
+        <!-- To make a standalone app: -->
+        <!-- 1. Create a myapp.mf manifest somewhere. -->
+        <!-- 2. Put in it two lines: -->
+        <!-- Manifest-Version: 1.0 -->
+        <!-- Main-Class: com.foo.Main -->
+        <!-- 3. Pass to <jar>: manifest="myapp.mf" -->
+        <jar basedir="${l2tools}/java/src" compress="true" jarfile="${l2tools}/jars/l2Tools.jar">
+            <exclude name="*.jar"/>
+            <exclude name="*.java"/>
+            <exclude name="*.java.~*"/>
+            <exclude name="**/*.java"/>
+            <exclude name="**/*.java.~*"/>
+            <exclude name="**/.nbattrs"/>
+            <exclude name="bsh/"/>
+            <exclude name="Bsh.java"/>
+            <exclude name="gov/nasa/arc/l2tools/beans/"/>
+            <exclude name="gov/nasa/arc/l2tools/data/"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/lattice/"/>
+            <exclude name="gov/nasa/arc/l2tools/gui/util/"/>
+            <exclude name="gov/nasa/arc/l2tools/livdll/"/>
+            <exclude name="gov/nasa/arc/l2tools/swing/"/>
+        </jar>
+    </target>
+    
+    <target name="javah"
+          description="generate LivingstoneEngineJNI.h and copy to 'javahDestdir'" >
+      <!-- compile  LivingstoneEngineJNI.java -->
+      <delete file="${javahSrc}/LivingstoneEngineJNI.class"/>
+      <javac srcdir="${l2tools}/java/src" destdir="${l2tools}/java/src" debug="${debug}" includes="livdll/LivingstoneEngineJNI.java"/>
+      <!-- generate LivingstoneEngineJNI.h in 'javahSrc' directory -->
+      <delete file="${javahSrc}/LivingstoneEngineJNI.h"/>
+      <javah outputFile="${javahSrc}/LivingstoneEngineJNI.h" classpath="${l2toolso}/java/src" class="livdll.LivingstoneEngineJNI"/>
+      <delete file="${javahDestdir}/LivingstoneEngineJNI.h"/>
+      <copy file="${javahSrc}/LivingstoneEngineJNI.h" todir="${javahDestdir}"/>
+      <echo message="generation/copy of LivingstoneEngineJNI.h completed"/>
+    </target>
+
+</project>

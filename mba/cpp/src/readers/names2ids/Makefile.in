@@ -1,0 +1,25 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+
+## First, the real executable here.
+TARGET=names2ids
+BINTARGET=$(TARGET)
+
+OFILES=$(TARGET:%=%.o)
+DEPS=${loc_libdir}/$(L2LIB_FILE) $(loc_libXERCES)
+
+$(TARGET): $(OFILES) $(DEPS)
+	$(LINKEXEC) -o $@ $(OFILES) -l$(L2LIB) $(lXERCES)
+
+
+## Then, a script to go from simple stanley/l2test scripts to ones that
+## qualify as input to names2ids
+BININSTALL+=$(bindir)/scr2names
+
+scr2names : scr2names.in Makefile
+	$(RM) $@
+	echo "#! @PERL@" > $@
+	cat scr2names.in >> $@
+	chmod 555 $@

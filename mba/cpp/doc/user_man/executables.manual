@@ -1,0 +1,51 @@
+@node Executables
+@chapter Executables
+
+When testing, there are several executables which might be useful.  In
+flight, Livingstone is likely to be a library linked into the flight
+software, rather than using one of the Unix executables we provide here.  
+
+See the file mba/cpp/BUILD for instructions on how to build each
+executable; this part of the documentation mainly says how to use each
+program.
+
+@menu
+* stanley/skunkworks::  A Java and Tcl/Tk interface to Livingstone
+* l2test::              The main command-line testing program
+* xmpl2l2::             Translating between file formats
+* l2flight::            A command-line program with just flight code
+* names2ids::           Translating names to IDs for l2flight
+* apigen::              Two utilities to help linking up with the API
+@end menu
+
+
+@c ****************************************
+@c Executables:stanley/skunkworks
+@include stanley.texi
+
+
+@c ****************************************
+@c Executables:l2test
+@include l2test.texi
+
+
+@c ****************************************
+@c Executables:xmpl2l2
+@include xmpl2l2.texi
+
+
+@c ****************************************
+@c Executables:l2flight
+@include l2flight.texi
+
+
+@c ****************************************
+@c Executables:names2ids
+@include names2ids.texi
+
+
+@c ****************************************
+@c Executables:apigen
+@include apigen.texi
+
+

@@ -1,0 +1,174 @@
+Description of the L2 file format
+=================================
+$Id: l2_file_format.txt,v 1.2 2001/03/14 04:37:56 bhudson Exp $
+
+Generalities:
+-------------
+The encoding is ascii; we do not use binary data.
+
+All numbers are in base 10.  Later, we may use a different base to save
+space (base 36 perhaps -- digits plus letters).
+
+IDs are 0-based.
+
+
+Overall format:
+---------------
+The file has several sections.
+
+The file is identified by a magic cookie: L211 (for L2 file format, version
+1.1 of the format)
+
+Afterwords, we have sections; these are identified as a single word on a
+line.  The allowable sections are (full name on left, abbrev. on right):
+        enums           e
+        variables       v
+        propositions    p
+        clauses         cl
+        transitions     t
+        background      b
+        observed        o
+        commands        cm
+        modes           m
+        initial         i
+
+Debugging information can be found in:
+        variables
+        enums
+        transitions
+The section name will be prefixed by 'dbg_' if debugging information is
+available.
+
+
+enums Section
+-------------
+Length:  1 + number of enumeration types.
+Prereqs: none
+Format:
+    First line: count
+    Lines 1 through n:
+        the number of members of enum i
+    For commands, the member which corresponds to no command being issued
+    is the member 0.  Otherwise, the order is unconstrained.
+Debugging information:
+        suffix the name of the enumeration, then the name of each member
+Sample line:
+        2
+Sample with debug info:
+        2 boolean true false
+
+variables section
+-----------------
+Length:  1 + number of variables
+Prereqs: enums
+Format:
+    First line: count
+    Lines 1 through n:
+        the type (enumID) of variable i
+Debugging information:
+        the fully-qualified name of variable i
+Sample line:
+        1
+Sample with debug info:
+        1 mode
+
+propositions section
+--------------------
+Length:  1 + number of props
+Prereqs: variables, enums
+Format:
+        Line 1:    pos neg eq ne
+        (counts of positive / negative propositions, then
+         of positive/negative equalities)
+        for positive or negative propositions (first pos+neg lines after
+        the counts):
+                varID valueID
+        valueID is a member of the type of varID
+        for equalities/inequalities (last eq+ne lines):
+                varID varID
+        the types of the two must match.
+No debug info.
+Sample line:
+        3 1
+
+clauses section
+---------------
+Length:  1 + number of clauses
+Prereqs: propositions
+Format:
+        First line: count
+        Lines 1 through n:
+                propID [propID [...]]
+        represents the conjunction of the propositions
+Debugging information:
+        prefix the name of the component
+Sample lines:
+        1
+        1 2 54 95
+Sample with debug info:
+        test.cb 1 2 54 95
+
+
+observed, commands, modes sections:
+-----------------------------------
+Length:  1 line
+Prereqs: variables
+Format:
+        varID [varID ...]
+
+        We add the attribute (observed, commanded, or mode) to
+        listed variables.
+No debug info.
+Sample line:
+        1 4 7 8
+
+transitions section
+-----------------------------
+Length:  1 + number of transitions
+Prereqs: clauses, variables, enums
+Format:
+        First line: count of nominal transitions
+        Secont line: count of failure transitions
+        Lines 1 through n:
+                varID memberID memberID clauseID [clauseID ...]
+                   ^      ^        ^       ^
+               mode-var  from      to    prereqs
+        Lines n+1 through n+f:
+                varID memberID memberID rank clauseID [clauseID ...]
+                   ^      ^        ^            ^
+               mode-var  from      to         prereqs
+        'rank' is the probability of the failure transition.
+        'prereqs' is a disjunction of clauses
+Debugging information:
+        prefix the transition name
+Sample line:
+        (nominal)
+        1 1 2 1
+        (failure)
+        1 0 1 1 2
+Sample line with debug info:
+        (nominal)
+        recover 1 1 2 1
+        (failure)
+        fault 1 0 1 1 2
+
+
+background section
+------------------
+Length:  1 + number of clauses in the background model
+Prereqs: clauses
+Format: count
+        Lines 1 to n:  clauseID
+Debugging information: none
+Sample line:
+        1
+
+initial section
+---------------
+Length: 1 + number of initializations
+Prereqs: variables, enums
+Format:  count
+         Lines 1 to n: varID memberID
+Debugging information: none
+Sample line:
+        48 1

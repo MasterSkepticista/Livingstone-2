@@ -1,0 +1,116 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+############## Makefile ################
+# top.mk will be included above here.
+
+# $Id: Makefile.in,v 1.7 2001/11/16 23:52:56 lbrown Exp $
+all : manuals
+
+
+# the name of the manual
+MAN = l2
+
+MANUALS = $(MAN).html
+.PHONY: manuals
+manuals: $(MANUALS)
+
+
+# the top texi file we use to create the manual
+TOP_TEXI = l2.texi
+
+# all texi files are generated and removed in a make clean
+TEXI_FILES = \
+	ack.texi \
+	api.texi \
+	apigen.texi \
+	executables.texi \
+	intro.texi \
+	l2.texi \
+	l2flight.texi \
+	l2test.texi \
+	names2ids.texi \
+	overview.texi \
+	stanley.texi \
+	xmpl2l2.texi
+
+# if the texi files are missing, but l2.info is up to date, don't rebuild
+# l2.info nor the texi files.  This allows distributing the info file
+# correctly.
+.SECONDARY: $(TEXI_FILES)
+
+
+CLEANFILES = $(MAN).aux $(MAN).cp $(MAN).fn $(MAN).fns $(MAN).ky \
+	$(MAN).log $(MAN).pg $(MAN).toc $(MAN).tp $(MAN).vr *.bak \
+	$(TEXI_FILES)
+
+# only remove l2.info if the maintainer asks to do so; info files should be
+# distributed already-generated, to avoid requiring a correct, up-to-date
+# version of texinfo on the host.
+MCLEANFILES = $(MANUALS)
+
+
+########################################
+## Make the manuals
+## Manuals that aren't included in the distribution are
+## removed by make clean.
+
+CLEANFILES += $(MAN).ps
+$(MAN).ps: $(MAN).dvi
+	dvips -o $@ $<
+
+CLEANFILES += $(MAN).dvi
+$(MAN).dvi: $(TEXI_FILES)
+	texi2dvi $(TOP_TEXI) || { $(RM) $@ ; exit 1 ; }
+
+CLEANFILES += $(MAN).pdf
+$(MAN).pdf: $(TEXI_FILES)
+	texi2dvi --pdf $(TOP_TEXI)  || { $(RM) $@ ; exit 1 ; }
+
+# this one isn't cleaned out
+$(MAN).html: $(TEXI_FILES)
+	makeinfo --no-split --html $(TOP_TEXI) || { $(RM) $@ ; exit 1 ; }
+
+CLEANFILES += $(MAN).info
+$(MAN).info: $(TEXI_FILES)
+	makeinfo --no-split $(TOP_TEXI) || { $(RM) $@ ; exit 1 ; }
+
+####################
+## Quote the { and } characters in C files for inclusion into texinfo.
+## Typically, we'll do
+## @example
+## @include foo.texi
+## @end example
+%.texi: %.c
+	sed 's%[{}]%@&%g' $< > $@ || { $(RM) $@ ; exit 1 ; }
+
+####################
+## Strip leading whitespaces from items.
+## I write them in for legibility, but the on-line info manual suffers when
+## I do that.
+%.texi: %.manual
+	@PERL@ ./strip_leading_ws $< > $@
+
+install: install-docs
+uninstall: uninstall-docs
+
+# a curse on info manuals ; or more precisely, who needs them?  HTML is easier
+# to handle for everyone -- no need to inform non-GNU-hacker people about the
+# info format.
+INSTALLED_MANUALS = #$(infodir)/$(MAN).info
+
+install-docs: $(INSTALLED_MANUALS)
+
+uninstall-docs:
+	$(RM) $(INSTALLED_MANUALS)
+
+$(infodir)/$(MAN).info: $(MAN).info
+	@test -d $(infodir) || \
+		echo "$(INSTALL) -d $(infodir)" && \
+		$(INSTALL) -d $(infodir) ;
+	$(INSTALL) -m 444 $< $@
+
+# bot.mk will be included below here
+########################################
+

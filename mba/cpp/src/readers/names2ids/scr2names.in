@@ -1,0 +1,28 @@
+while(<>) {
+    chomp;
+    s/^[ \t]*//;
+    next if !length;
+    my @line = split /[ =]+/;
+    my $cmd = $line[0];
+    $_ = $cmd;
+    if(/\/\//) { next; }
+    elsif(/^progress/) {
+        if($#line == -1) {
+            print "I\n";
+        } else {
+            print "c $line[1] $line[2]\n";
+        }
+    }
+    elsif(/^unassign/) {
+        print "o $line[1] unknown\n";
+    }
+    elsif(/^assign/) {
+        print "o $line[1] $line[2]\n";
+    }
+    elsif(/^fc/) {
+        print "d\n";
+    }
+    else {
+        print STDERR "Ignoring $cmd\n";
+    }
+}

@@ -1,0 +1,43 @@
+scenario test2In3WaySolenoidValveNominalScenario 2In3WaySolenoidValve
+assign test.pos2PipeIn.flow.rel=nominal
+assign test.pos2PipeIn.flow.sign=zero
+assign test.pos2PipeIn.pressure.rel=nominal
+assign test.pos2PipeIn.pressure.sign=positive
+assign test.pipeOut.flow.rel=nominal
+assign test.pipeOut.flow.sign=zero
+assign test.pipeOut.pressure.rel=nominal
+assign test.pipeOut.pressure.sign=zero
+assign test.pos1PipeIn.flow.rel=nominal
+assign test.pos1PipeIn.flow.sign=zero
+assign test.pos1PipeIn.pressure.rel=nominal
+assign test.pos1PipeIn.pressure.sign=zero
+fc
+progress test.valveCmdIn=position2Cmd
+assign test.pos2PipeIn.flow.rel=nominal
+assign test.pos2PipeIn.flow.sign=positive
+assign test.pos2PipeIn.pressure.rel=nominal
+assign test.pos2PipeIn.pressure.sign=positive
+assign test.pipeOut.flow.rel=nominal
+assign test.pipeOut.flow.sign=positive
+assign test.pipeOut.pressure.rel=nominal
+assign test.pipeOut.pressure.sign=positive
+assign test.pos1PipeIn.flow.rel=nominal
+assign test.pos1PipeIn.flow.sign=zero
+assign test.pos1PipeIn.pressure.rel=nominal
+assign test.pos1PipeIn.pressure.sign=zero
+fc
+progress test.valveCmdIn=position1Cmd
+assign test.pos2PipeIn.flow.rel=nominal
+assign test.pos2PipeIn.flow.sign=zero
+assign test.pos2PipeIn.pressure.rel=nominal
+assign test.pos2PipeIn.pressure.sign=positive
+assign test.pipeOut.flow.rel=nominal
+assign test.pipeOut.flow.sign=zero
+assign test.pipeOut.pressure.rel=nominal
+assign test.pipeOut.pressure.sign=zero
+assign test.pos1PipeIn.flow.rel=nominal
+assign test.pos1PipeIn.flow.sign=zero
+assign test.pos1PipeIn.pressure.rel=nominal
+assign test.pos1PipeIn.pressure.sign=zero
+fc
+

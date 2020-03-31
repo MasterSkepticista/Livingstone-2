@@ -1,0 +1,461 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+
+  <head>
+    <title>Configuration Parameters</title>
+  </head>
+
+  <body bgcolor="#FFFFEE">
+    <h1 align="center">Configuration Parameters</h1>
+
+    <p><p>
+    <a href="../index.html">Back to Main Page</a>
+    <p><p>
+
+    <p>Livingstone has 9 configuration parameters. These determine how
+    Livingstone uses resources and what algorithms it uses.</p>
+
+    <p>The configuration parameters are not independent of one another; some
+    are meaningful only if others have been specified.</p>
+
+    <h2>The Choices</h2>
+
+    <p>These are the 9 configuration parameters for Livingstone. One of them
+    (maximum rank) is implemented under two different names in Livingstone,
+    though they are mutually exclusive (one for each search method) and one
+    parameter would have sufficed.</p>
+
+    <h3>1. Find-Candidates Style</h3>
+
+    <p>The choice has to do with clearing the existing set of candidates
+    before searching for new ones. Either there is no clearing ("extend"),
+    only outdated ones are cleared ("prune and search") or all candidates
+    are cleared ("find fresh"). The preferred method, for correctness and
+    efficiency, is "tracker default", which is "prune and search" for the
+    CBFS tracker.</p>
+
+    <h3>2. History Length</h3>
+
+    <p>An upper bound can be placed on the number of time steps for which
+    complete information is kept. When this limit is reached, the transition
+    system "truncates" the history and summarizes the truncated information
+    in a special assumption variable called the "state variable." The default
+    value is 3. A zero value means that there is no upper bound; that is,
+    truncation will not be performed.</p>
+
+    <h3>3. Maximum Candidates</h3>
+
+    <p>An upper bound can be placed on the number of candidate diagnoses
+    returned by a "find candidates" tracker operation when the search method
+    is CBFS. The default value is 5. A zero value means that there is no upper
+    bound.</p>
+
+    <h3>4. Maximum Candidate Rank</h3>
+
+    <p>An upper bound can be placed on the "rank" of candidate diagnostes
+    returned by a "Find Candidates" tracker operation. For the CBFS
+    search method, the default value is 100; for the cover search method, the
+    default value is 8.</p>
+
+    <h3>5. Maximum Search Space</h3>
+
+    <p>An upper bound can be placed on the number of nodes searched when the
+    search method is CBFS. The default value is 1000. A zero value
+    means that there is no upper bound.</p>
+
+    <h3>6. Maximum Truncated Candidates</h3>
+
+    <p>Neither tracker currently uses this configuration parameter. The
+    default value is 5.</p>
+
+    <h3>7. Progress Style</h3>
+
+    <p>The choice is between Full Progress and Minimal Progress. Since the
+    latter is simply an optimization of the former, and should yield identical
+    results, it is preferred. Note, however, that Minimal Progress requires,
+    and automatically enables, model optimization. The default is Full
+    Progress unless Full Progress has been disabled at compile time.</p>
+
+    <p><b>Note on optimization</b> Sets of variables that are constrained to
+    have the same value can be
+    represented by only one "representative" variable in the set, the others
+    being excluded from the system. This can result in reductions of up to 50%
+    of the variables in a model. Similarly, logical equivalences (such as
+    <code>(TRUE || P) == TRUE</code> and <code>(TRUE && P) == P)</code> can be
+    exploited to reduce the number of clauses in the model.</p>
+    optimization.</p>
+
+
+    <h3>8. Search Method</h3>
+
+    <p>The choice is between the Conflict-Directed Best-First Search (CBFS) and
+    conflict coverage (cover), implemented by two trackers. Only the former is
+    now used. The default is CBFS unless this has been disabled at compile
+    time.</p>
+
+    <p>Note that once the tracker has been created, changing the search method
+    will have no further effect.</p>
+
+    <h3>9. Maximum Candidate Classes</h3>
+
+    <p>When the search method is CBFS, an upper bound can be placed on the
+    number of Candidates that differ in more than time step. Candidates are
+    partitioned into equivalence classes, defined by the equivalence relation
+    that two Candidates are equivalent if, ignoring time steps, their
+    Assignments are identical. The default value is zero, meaning that there is
+    no upper bound to the number of equivalence classes.</p>
+
+    <h2>How the Choices are Conveyed</h2>
+
+    <p>Configuration parameters are conveyed to Livingstone in three different
+    ways.</p>
+
+    <h3>1. Programmatically</h3>
+
+    <p>Methods on class Livingstone and on class L2_parameters can be called to
+    set the configuration parameters. To use this method, you will have to
+    write an alternative to <code>l2test</code> and <code>l2flight</code>. Be
+    sure to call these methods <b>after</b> the file is read in, or the 
+    <code>*.params</code> file will over-write your settings.</p>
+
+    <table width="100%" border="1">
+      <tr>
+        <th>Method</th>
+        <th>Value domain</th>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_cbfs_maxcand (unsigned max_value)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_cbfs_max_candidate_classes(unsigned
+            maxClassCount)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_cbfs_max_cutoff_weight (unsigned
+            max_value)</td>
+        <td>&nbsp;</td>
+      <tr>
+        <td>void Livingstone::set_cbfs_search (unsigned max_value)</td>
+        <td>&nbsp;</td>
+      </tr>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_cover_maxrank (unsigned max_value)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_fc_style (L2_parameters::FC_style style</td>
+        <td><code>L2_parameters::tracker_default, L2_parameters::extend,
+            L2_parameters::find_fresh,
+            L2_parameters::prune_and_search</code></td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_fc_style_str (const MBA_string&
+            fc_style)</td>
+        <td><code>"default", "extend", "ff", "find-fresh", "findfresh", "none",
+            "prune-and-search", "prune-search", "ps",
+            "the tracker default fc"</code></td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_history (unsigned value)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_max_truncated_candidates (unsigned
+            max_value)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_progress_style (L2_parameters::Progress_style
+            style)</td>
+        <td><code>L2_parameters::full, L2_parameters::min</code></td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_progress_style_str (const MBA_string&
+            style_str)</td>
+        <td><code>"full", "min"</code></td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_search_style(L2_parameters::Search_style
+            style)</td>
+        <td><code>L2_parameters::cbfs, L2_parameters::cover</code></td>
+      </tr>
+      <tr>
+        <td>void Livingstone::set_use_optimizer(bool val)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_cbfs_max_candidates(unsigned maxcand)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_cbfs_max_rank(unsigned weight)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_cbfs_search_space(unsigned nsearched)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_cover_max_rank(unsigned weight)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_find_candidates_style(L2Parameters::FC_style
+            style)</td>
+        <td><code>L2_parameters::tracker_default, L2_parameters::extend,
+            L2_parameters::find_fresh,
+            L2_parameters::prune_and_search</code></td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_history(unsigned h)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_max_truncated_candidates(unsigned n)</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_progress_style(L2Parameters::Progress_style
+            style)</td>
+        <td><code>L2_parameters::full, L2_parameters::min</code></td>
+      </tr>
+      <tr>
+        <td>void L2_parameters::set_search_style(L2Parameters::Search_style
+            style)</td>
+        <td><code>L2_parameters::cbfs, L2_parameters::cover</code></td>
+      </tr>
+    </table>
+
+    <h3>2. Via the <code>*.params</code> file</h3>
+
+    <p>A file with extension <code>.params</code> may be placed in the model
+    file directory. When the model file is read, the parameters file is also
+    read. This file need not exist.</p>
+
+    <p>One configuration parameter is declared per line. Each line is of the
+    form <code>&lt;parameter&gt;=&lt;value&gt;</code>. Blank lines are ignored,
+    as is whitespace within lines and as are lines whose first two
+    non-whitespace characters are not "L2".</p>
+
+    <table width="100%" border="1">
+      <tr>
+        <th>Parameter Name</th>
+        <th>Value Domain</th>
+      </tr>
+      <tr>
+        <td>L2FindCandidatesCmdType</td>
+        <td><code>default, extend, ff, find-fresh, findfresh, none,
+                    prune-and-search, prune-search, ps</code></td>
+      </tr>
+      <tr>
+        <td>L2MaxCBFSCandidates</td>
+        <td>int</td>
+      </tr>
+      <tr>
+        <td>L2MaxCBFSCandidateClasses</td>
+        <td>int</td>
+      </tr>
+      <tr>
+        <td>L2MaxCBFSCutoffWeight</td>
+        <td>int</td>
+      </tr>
+      <tr>
+        <td>L2MaxCBFSSearchSpace</td>
+        <td>int</td>
+      </tr>
+      <tr>
+        <td>L2MaxCoverCandidateRank</td>
+        <td>int</td>
+      </tr>
+      <tr>
+        <td>L2MaxHistorySteps</td>
+        <td>int</td>
+      </tr>
+      <tr>
+        <td>L2ProgressCmdType</td>
+        <td><code>full, min</code></td>
+      </tr>
+      <tr>
+        <td>L2NumTrajectoriesTracked</td>
+        <td>int</td>
+      </tr>
+      <tr>
+        <td>L2SearchMethod</td>
+        <td><code>cbfs, cover</code></td>
+      </tr>
+    </table>
+
+    <p>Stanley creates a <code>*.params</code> file when it creates the
+    <code>*.hrn</code>, <code>*.ini</code>, and <code>*.xmpl</code> files in
+    the model file directory. Stanley has its own set of default values to
+    write the the <code>*.params</code> file. These defaults (as well as
+    many other Stanley-specific configuration parameters) are saved in a
+    file named <code>skunkworks/preferences/prefDefaults</code>. Do not 
+    modify this file.  An extract from the file is:
+<code><pre>
+#
+# LIVINGSTONE PREFERENCES
+#
+L2SearchMethod = cbfs
+# 0 indicates unbounded classes
+L2MaxCBFSCandidateClasses = 0
+L2MaxCBFSCandidates = 5
+L2MaxCBFSSearchSpace = 1000
+L2MaxCBFSCutoffWeight = 100
+L2MaxCoverCandidateRank = 8
+# 0 indicates no history
+L2MaxHistorySteps = 3
+L2ProgressCmdType = min
+L2NumTrajectoriesTracked = 5
+L2FindCandidatesCmdType = prune-search
+</pre></code></p>
+
+    <p>Stanley's default values for the Livingstone configuration parameters
+    can be changed using the Stanley dialogs:
+    <code>Edit->Preferences->Skunkworks/User/Workspace->Edit User ...</code> or
+    <code>Edit->Preferences->Skunkworks/User/Workspace->Edit Workspace ...</code>
+
+    <h3>3. Via the command-line interface</h3>
+
+    <p>The build script for Livingstone creates two executables,
+    <code>l2test</code> and <code>l2flight</code>, the first of which takes
+    command-line options that set the configuration parameters. These options
+    are prefixed on the command line by a double hyphen (<code>--</code>), for
+    example, <code>--history=5</code>.</p>
+
+    <h4><code>l2test</code></h4>
+
+    <p>Command-line configuration parameters to the <code>l2test</code>
+    executable must precede the model file pathname. Note that the command-line
+    configuration parameters do not override those in the <code>*.params</code>
+    file; the latter dominate.</p>
+
+    <p>The command-line configuration parameters to <code>l2test</code> come
+    from the following set.</p>
+
+    <table width="100%" border="1">
+      <tr>
+        <th>Option (long form)</th>
+        <th>Option (short form)</th>
+        <th>Value Domain</th>
+        <th>Meaning</th>
+        <th>Remarks</th>
+      </tr>
+      <tr>
+        <td><code>cbfs</code></td>
+        <td>&nbsp;</td>
+        <td>[no value]</td>
+        <td>Use the CBFS search style</td>
+        <td>Unless disabled at compile time</td>
+      </tr>
+      <tr>
+        <td><code>cbfs-candidates</code></td>
+        <td>&nbsp;</td>
+        <td>int</td>
+        <td>Maximum number of candidates</td>
+        <td>Used with <code>--cbfs</code> unless disabled at compile time</td>
+      </tr>
+      <tr>
+        <td><code>cbfs-candidate-classes</code></td>
+        <td>&nbsp;</td>
+        <td>int</td>
+        <td>Maximum number of candidate classes</td>
+        <td>Used with <code>--cbfs</code> unless disabled at compile time</td>
+      </tr>
+      <tr>
+        <td><code>cbfs-search</code></td>
+        <td>&nbsp;</td>
+        <td>int</td>
+        <td>Maximum number of nodes to search</td>
+        <td>Used with <code>--cbfs</code> unless disabled at compile time</td>
+      </tr>
+      <tr>
+        <td><code>cover</code></td>
+        <td>&nbsp;</td>
+        <td>[no value]</td>
+        <td>Use the cover search style</td>
+        <td>Unless disabled at compile time.</td>
+      </tr>
+      <tr>
+        <td><code>cover-max-rank</code></td>
+        <td>&nbsp;</td>
+        <td>int</td>
+        <td>Maximum-rank candidate to consider</td>
+        <td>Used with <code>--cover</code> unless disabled at compile time</td>
+      </tr>
+      <tr>
+        <td><code>help</code></td>
+        <td><code>h</code></td>
+        <td>[no value]</td>
+        <td>Print usage message and exit</td>
+        <td>Not a configuration parameter</td>
+      </tr>
+      <tr>
+        <td><code>history</code></td>
+        <td><code>y</code></td>
+        <td>int</td>
+        <td>Set the maximum history to hold</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td><code>max-truncate</code></td>
+        <td>&nbsp;</td>
+        <td>int</td>
+        <td>The maximum number of candidates to keep through truncation</td>
+        <td>Neither tracker currently uses this value</td>
+      </tr>
+      <tr>
+        <td><code>optimize</code></td>
+        <td><code>O</code></td>
+        <td>[no value]</td>
+        <td>Optimize the model between reading in and loading</td>
+        <td>Not needed if <code>--progress=min</code></td>
+      </tr>
+      <tr>
+        <td><code>progress</code></td>
+        <td><code>p</code></td>
+        <td><code>full, min</code></td>
+        <td>Set progress style</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>v</code></td>
+        <td><code>[o][r][w]</code></td>
+        <td>Print information when reading, optimizing and writing</td>
+        <td>Not a Livingstone configuration parameter; specific to
+            <code>l2test</code></td>
+      </tr>
+      <tr>
+        <td><code>version</code></td>
+        <td>&nbsp;</td>
+        <td>[no value]</td>
+        <td>Print version number and exit</td>
+        <td>Not a configuration parameter</td>
+      </tr>
+    </table>
+
+    <h4><code>l2flight</code></h4>
+
+    <p>There are no command-line parameters to the <code>l2flight</code>
+    executable; use the <code>*.params</code> file.</p>
+
+    <hr>
+    <address><a href="mailto:lbrownston@ptolemy.arc.nasa.gov">Lee S. Brownston</a></address>
+<!-- Created: Wed Oct 10 13:42:42 PDT 2001 -->
+<!-- hhmts start -->
+Last modified: Thu Dec  5 09:56:05 PST 2002
+<!-- hhmts end -->
+    <p><p>
+    <a href="../index.html">Back to Main Page</a>
+    <p><p>
+  </body>
+</html>

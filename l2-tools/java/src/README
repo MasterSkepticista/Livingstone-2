@@ -1,0 +1,132 @@
+####
+#### See the file "l2-tools/disclaimers-and-notices.txt" for 
+#### information on usage and redistribution of this file, 
+#### and for a DISCLAIMER OF ALL WARRANTIES.
+####
+
+To compile the Skunkworks command line JAVA classes & Tools utilized by Stanley:
+--------------------------------------------------------------------------------
+which includes the Candidate Manager and the History Table and references to
+the Model Browser, whose source is *not* integrated into 
+l2-tools/java/src/gov/nasa/arc/l2tools,
+but is in l2-tools/jars/browser.jar
+
+The JDK javac compiler is preferred over IBM's jikes, since it 
+generates warnings which are not produced by javac.
+
+Ant (does not work for l2-tools/**/*)
+===
+cd ../../jars
+ant -buildfile l2Tools.xml "compile l2tools"
+
+Shell
+=====
+$JAVA_HOME/bin/javac -source 1.4 -classpath ${JAVA_HOME}/jre/lib/rt.jar:.:../../jars/browser.jar:../lib/openjgraph.jar forwill/Server.java
+$JAVA_HOME/bin/javac -classpath ${JAVA_HOME}/jre/lib/rt.jar:.:../../jars/browser.jar LivingstoneCorba/*.java
+$JAVA_HOME/bin/javac -classpath ${JAVA_HOME}/jre/lib/rt.jar:.:../../jars/browser.jar livdll/*.java
+
+To compile the JMPL to XMPL compiler JAVA classes utilized by L2 standalone, and by Stanley:
+--------------------------------------------------------------------------------------------
+whose source is integrated into 
+l2-tools/java/src/gov/nasa/arc/l2tools, and depends on
+l2-tools/java/lib third party jars
+
+$JAVA_HOME/bin/javac -source 1.4 -classpath ${JAVA_HOME}/jre/lib/rt.jar:../lib/aelfred.jar:../lib/antlr.jar:../lib/domlight-1.0.jar:../lib/sax.jar:. gov/nasa/arc/l2tools/io/jmpl/JmplCompiler.java
+
+$JAVA_HOME/bin/javac -classpath ${JAVA_HOME}/jre/lib/rt.jar:../lib/aelfred.jar:../lib/antlr.jar:../lib/domlight-1.0.jar:../lib/sax.jar:. gov/nasa/arc/l2tools/io/jmpl/JmplLint.java
+
+To compile the XMPL loader JAVA classes utilized by jmpl2smv:
+--------------------------------------------------------------------------------------------
+whose source is integrated into 
+l2-tools/java/src/gov/nasa/arc/l2tools, and depends on
+l2-toolss/java/lib third party jars
+
+$JAVA_HOME/bin/javac -classpath ${JAVA_HOME}/jre/lib/rt.jar:../lib/aelfred.jar:../lib/antlr.jar:../lib/domlight-1.0.jar:../lib/sax.jar:. gov/nasa/arc/l2tools/io/xmpl/XmplLoader.java
+
+LivingstoneCorba.idl special handling
+----------------------------------------------------------------
+If the IDL specs (LivingstoneCorba.idl) change,
+regenerate the LivingstoneCorba/* files: 
+cd LivingstoneCorba
+/bin/rm *
+cd ..
+
+JDK 1.4
+=======
+$JAVA_HOME/bin/idlj -fall -oldImplBase LivingstoneCorba.idl
+
+JDK1.3
+======
+$JAVA_HOME/bin/idlj -fall LivingstoneCorba.idl
+
+see LivingstoneCorbaAddition.text 
+for directions on how to modify 
+LivingstoneCorba/_LivingstoneCommandLineImplBase.java
+
+$JAVA_HOME/bin/javac -classpath ${JAVA_HOME}/jre/lib/rt.jar:.:../../jars/browser.jar LivingstoneCorba/*.java
+
+livdll/LivingstoneEngineJNI.java special handling
+--------------------------------------------------------------
+Ant  (does not work 04/20/06)
+===
+cd ../../jars
+ant -buildfile l2Tools.xml "javah"
+
+Shell
+=====
+$JAVA_HOME/bin/javac -classpath ${JAVA_HOME}/jre/lib/rt.jar:. livdll/LivingstoneEngineJNI.java
+# generate LivingstoneEngineJNI.h (fully qualified class name)
+$JAVA_HOME/bin/javah -classpath ${JAVA_HOME}/jre/lib/rt.jar:. -o livdll/LivingstoneEngineJNI.h livdll.LivingstoneEngineJNI
+# overwrite LivingstoneEngineJNI.h in L2 C++ code
+cp livdll/LivingstoneEngineJNI.h ~/L2Root/mba/cpp/include/livdll
+
+l2-tools/jars/browser.jar
+----------------------------------------------
+The Model Browser source is not integrated into 
+l2-tools/java/src/gov/nasa/arc/l2tools.  It is
+contained in this jar file.
+
+# expand browser.jar in another directory, other than this one ...
+${JAVA_HOME}/bin/jar xvf browser.jar
+# L2TOOLS_ROOT is up two levels from this directory
+
+$JAVA_HOME/bin/javac -classpath ${JAVA_HOME}/jre/lib/rt.jar:${L2TOOLS_ROOT}/java/src:${L2TOOLS_ROOT}/java/lib/aelfred.jar:${L2TOOLS_ROOT}/java/lib/antlr.jar:${L2TOOLS_ROOT}/java/lib/domlight-1.0.jar:${L2TOOLS_ROOT}/java/lib/sax.jar:. gov/nasa/arc/l2tools/gui/BrowserFrame.java
+
+${JAVA_HOME}/bin/jar cvf browser.jar *
+
+
+l2-tools/jars/l2Tools.jar -- .class & .java files
+----------------------------------------------
+cd l2-tools/java/src
+${JAVA_HOME}/bin/jar cvf l2Tools.jar *
+
+l2-tools/stanley-jmpl/README-L2Skunk-release.txt has instructions
+to build l2Tools.jar with .class files only
+
+
+l2-tools/jars/l2Tools.jar -- .class files (no .java files)
+----------------------------------------------
+Ant
+===
+cd ../../jars
+ant -buildfile l2Tools.xml "jar l2tools"
+
+
+NOTE:
+--------
+To use jikes compiler, rather than javac --
+replace `${JAVA_HOME}/bin/javac'
+`/usr/bin/jikes -depend'
+
+Delete all class files
+----------------------
+Ant
+===
+cd ../../jars
+ant -buildfile l2Tools.xml "clean l2tools"
+
+Shell
+=====
+find * -type f -name "*.class" -print | xargs /bin/rm
+
+

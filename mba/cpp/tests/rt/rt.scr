@@ -1,0 +1,19 @@
+/// Test 1
+progress rt1.cmdIn=on
+propagate
+assign rt1.commStatusOut=noComm
+fc
+progress rt1.cmdIn=reset
+assign rt1.commStatusOut=comm
+
+
+/// Test 2
+progress rt1.cmdIn=on
+propagate
+assign rt1.commStatusOut=noComm
+fc
+progress rt1.cmdIn=reset
+assign rt1.commStatusOut=noComm
+fc
+progress rt1.cmdIn=reset
+assign rt1.commStatusOut=noComm

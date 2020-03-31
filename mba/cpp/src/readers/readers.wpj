@@ -1,0 +1,910 @@
+Document file - DO NOT EDIT
+
+<BEGIN> BUILD_PPC603gnu_BUILDRULE
+archive
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_AR
+arppc
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_ARCHIVE
+$(PRJ_DIR)/PPC603gnu/readers.a
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_AS
+ccppc
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_CC
+ccppc
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_CFLAGS
+-g \
+	-O0 \
+	-Wall \
+	-fguiding-decls \
+	-nostdinc \
+	-nostdlib \
+	-fno-builtin \
+	-fvolatile \
+	-mstrict-align \
+	-I. \
+	-I$(WIND_BASE)/target/h \
+	-I$(PRJ_DIR)/../../include \
+	-I$(PRJ_DIR)/../../../../xerces/src \
+	-UWIN32 \
+	-U_WIN32 \
+	-DVXWORKS \
+	-DCPU=PPC603
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_CFLAGS_AS
+-g \
+	-mstrict-align \
+	-ansi \
+	-nostdinc \
+	-fvolatile \
+	-fno-builtin \
+	-fno-for-scope \
+	-P \
+	-x \
+	assembler-with-cpp \
+	-I. \
+	-I$(WIND_BASE)/target/h \
+	-DCPU=PPC603 \
+	-frepo
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_CPP
+ccppc -E -P -xc
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_LD
+ldppc
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_LDDEPS
+
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_LDFLAGS
+-X -N
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_LD_PARTIAL_FLAGS
+-X -r
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_NM
+nmppc
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_OPTION_DEFINE_MACRO
+-D
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_OPTION_INCLUDE_DIR
+-I
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_POST_BUILD_RULE
+$(SIZE) $@
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_PRJ_LIBS
+
+<END>
+
+<BEGIN> BUILD_PPC603gnu_MACRO_SIZE
+sizeppc
+<END>
+
+<BEGIN> BUILD_PPC603gnu_RO_DEPEND_PATH
+{$(WIND_BASE)/target/h/} {$(WIND_BASE)/target/src/} {$(WIND_BASE)/target/config/}
+<END>
+
+<BEGIN> BUILD_PPC603gnu_TC
+::tc_PPC603gnu
+<END>
+
+<BEGIN> BUILD_RULE_archive
+
+<END>
+
+<BEGIN> BUILD_RULE_objects
+
+<END>
+
+<BEGIN> BUILD_RULE_readers.out
+
+<END>
+
+<BEGIN> BUILD__CURRENT
+PPC603gnu
+<END>
+
+<BEGIN> BUILD__LIST
+PPC603gnu
+<END>
+
+<BEGIN> CORE_INFO_TYPE
+::prj_vxApp
+<END>
+
+<BEGIN> CORE_INFO_VERSION
+2.0
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/L2_file.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/L2_file.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/transition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/L2_file.cpp_objects
+L2_file.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/L2_file.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/L2_file_translator.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/L2_file_translator.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/L2_file_translator.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/readers/transition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/L2_file_translator.cpp_objects
+L2_file_translator.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/L2_file_translator.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/clause.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/clause.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/clause.cpp_objects
+clause.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/clause.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/enumeration.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/enumeration.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/enumeration.cpp_objects
+enumeration.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/enumeration.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_any.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_any.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/from_any.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_reader.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_dict.h \
+	$(PRJ_DIR)/../../include/readers/from_l2.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/from_xmpl.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h \
+	$(PRJ_DIR)/../../include/readers/from_bin.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_any.cpp_objects
+from_any.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_any.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_bin.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_bin.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/from_bin.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_reader.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/readers/from_memory.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_bin.cpp_objects
+from_bin.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_bin.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_l2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_l2.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/from_l2.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_reader.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/transition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_l2.cpp_objects
+from_l2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_l2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_memory.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_memory.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/from_memory.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_reader.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/transition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_memory.cpp_objects
+from_memory.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_memory.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_xmpl.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_xmpl.cpp_objects
+from_xmpl.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/from_xmpl.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/livingstone_reader.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/livingstone_reader.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/livingstone_reader.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/mba_utils/array.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_reader.h \
+	$(PRJ_DIR)/../../include/readers/from_any.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_dict.h \
+	$(PRJ_DIR)/../../include/readers/from_memory.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_translator.h \
+	$(PRJ_DIR)/../../include/readers/xlate_merge_eq_vars.h \
+	$(PRJ_DIR)/../../include/readers/xlate_strip.h \
+	$(PRJ_DIR)/../../include/readers/xlate_remove_duplicates.h \
+	$(PRJ_DIR)/../../include/readers/xlate_sort_props.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/livingstone_reader.cpp_objects
+livingstone_reader.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/livingstone_reader.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/modes.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/modes.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/transition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/modes.cpp_objects
+modes.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/modes.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/options.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/options.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/options.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/options.cpp_objects
+options.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/options.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/proposition.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/proposition.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/proposition.cpp_objects
+proposition.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/proposition.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_bin.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_bin.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/to_bin.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_writer.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/transition.h \
+	$(PRJ_DIR)/../../include/readers/xlate_sort_props.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_translator.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_bin.cpp_objects
+to_bin.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_bin.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_l2.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_l2.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/to_l2.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_writer.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/transition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/xlate_sort_props.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_translator.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_l2.cpp_objects
+to_l2.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_l2.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_t_system.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_t_system.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/to_t_system.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_writer.h \
+	$(PRJ_DIR)/../../include/transition/T_system.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/conflict_db/conflict_db.h \
+	$(PRJ_DIR)/../../include/conflict_db/assumption.h \
+	$(PRJ_DIR)/../../include/conflict_db/assignable.h \
+	$(PRJ_DIR)/../../include/conflict_db/variable.h \
+	$(PRJ_DIR)/../../include/tms/theory.h \
+	$(PRJ_DIR)/../../include/conflict_db/assignment.h \
+	$(PRJ_DIR)/../../include/conflict_db/dependent.h \
+	$(PRJ_DIR)/../../include/conflict_db/conflict.h \
+	$(PRJ_DIR)/../../include/conflict_db/command.h \
+	$(PRJ_DIR)/../../include/conflict_db/observable.h \
+	$(PRJ_DIR)/../../include/conflict_db/past_command.h \
+	$(PRJ_DIR)/../../include/conflict_db/state_variable.h \
+	$(PRJ_DIR)/../../include/conflict_db/transition.h \
+	$(PRJ_DIR)/../../include/tms/ltms.h \
+	$(PRJ_DIR)/../../include/mba_utils/array.h \
+	$(PRJ_DIR)/../../include/tms/ptheory.h \
+	$(PRJ_DIR)/../../include/tms/clause.h \
+	$(PRJ_DIR)/../../include/tms/proposition.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/readers/transition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/transition/transitioned.h \
+	$(PRJ_DIR)/../../include/readers/to_t_system_listener.h \
+	$(PRJ_DIR)/../../include/tms/ptheory_listener.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_t_system.cpp_objects
+to_t_system.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/to_t_system.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/transition.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/transition.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/transition.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/transition.cpp_objects
+transition.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/transition.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/variable.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/variable.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/variable.cpp_objects
+variable.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/variable.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_merge_eq_vars.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_merge_eq_vars.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/xlate_merge_eq_vars.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_translator.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h \
+	$(PRJ_DIR)/../../include/mba_utils/array.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/debuggers/livingstone_debug.h \
+	$(PRJ_DIR)/../../include/api/livingstone.h \
+	$(PRJ_DIR)/../../include/readers/livingstone_reader.h \
+	$(PRJ_DIR)/../../include/transition/termination.h \
+	$(PRJ_DIR)/../../include/api/parameters.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_dict.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_merge_eq_vars.cpp_objects
+xlate_merge_eq_vars.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_merge_eq_vars.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_remove_duplicates.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_remove_duplicates.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/xlate_remove_duplicates.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_translator.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_remove_duplicates.cpp_objects
+xlate_remove_duplicates.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_remove_duplicates.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_sort_props.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_sort_props.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/xlate_sort_props.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_translator.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/modes.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_sort_props.cpp_objects
+xlate_sort_props.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_sort_props.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_strip.cpp_dependDone
+TRUE
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_strip.cpp_dependencies
+$(PRJ_DIR)/../../include/readers/xlate_strip.h \
+	$(PRJ_DIR)/../../include/readers/common.h \
+	$(PRJ_DIR)/../../include/livingstone/l2conf.h \
+	$(PRJ_DIR)/../../include/livingstone/def_conf.h \
+	$(PRJ_DIR)/../../include/mba_utils/MBA_string.h \
+	$(PRJ_DIR)/../../include/mba_utils/pooled.h \
+	$(PRJ_DIR)/../../include/mba_utils/array_allocator.h \
+	$(PRJ_DIR)/../../include/livingstone/L2_assert.h \
+	$(PRJ_DIR)/../../include/readers/L2_file_translator.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_item.h \
+	$(PRJ_DIR)/../../include/mba_utils/slist_iterator.h \
+	$(PRJ_DIR)/../../include/mba_utils/hash_table.h \
+	$(PRJ_DIR)/../../include/mba_utils/pair.h \
+	$(PRJ_DIR)/../../include/mba_utils/prime.h \
+	$(PRJ_DIR)/../../include/readers/L2_file.h \
+	$(PRJ_DIR)/../../include/readers/varkind.h \
+	$(PRJ_DIR)/../../include/readers/enumeration.h \
+	$(PRJ_DIR)/../../include/readers/variable.h \
+	$(PRJ_DIR)/../../include/readers/modes.h \
+	$(PRJ_DIR)/../../include/readers/proposition.h \
+	$(PRJ_DIR)/../../include/readers/clause.h \
+	$(PRJ_DIR)/../../include/readers/transition.h
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_strip.cpp_objects
+xlate_strip.o
+<END>
+
+<BEGIN> FILE_$(PRJ_DIR)/xlate_strip.cpp_tool
+C/C++ compiler
+<END>
+
+<BEGIN> PROJECT_FILES
+$(PRJ_DIR)/clause.cpp \
+	$(PRJ_DIR)/enumeration.cpp \
+	$(PRJ_DIR)/proposition.cpp \
+	$(PRJ_DIR)/transition.cpp \
+	$(PRJ_DIR)/variable.cpp \
+	$(PRJ_DIR)/from_any.cpp \
+	$(PRJ_DIR)/L2_file.cpp \
+	$(PRJ_DIR)/from_l2.cpp \
+	$(PRJ_DIR)/to_t_system.cpp \
+	$(PRJ_DIR)/L2_file_translator.cpp \
+	$(PRJ_DIR)/livingstone_reader.cpp \
+	$(PRJ_DIR)/modes.cpp \
+	$(PRJ_DIR)/options.cpp \
+	$(PRJ_DIR)/from_bin.cpp \
+	$(PRJ_DIR)/from_xmpl.cpp \
+	$(PRJ_DIR)/to_bin.cpp \
+	$(PRJ_DIR)/to_l2.cpp \
+	$(PRJ_DIR)/xlate_strip.cpp \
+	$(PRJ_DIR)/xlate_remove_duplicates.cpp \
+	$(PRJ_DIR)/xlate_sort_props.cpp \
+	$(PRJ_DIR)/xlate_merge_eq_vars.cpp \
+	$(PRJ_DIR)/from_memory.cpp
+<END>
+
+<BEGIN> userComments
+Reader source library.
+<END>
+

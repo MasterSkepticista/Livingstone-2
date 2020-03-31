@@ -1,0 +1,100 @@
+\input texinfo
+
+@c %**start of header
+@setfilename l2.info
+
+@c Version is set independently of ../VERSION in case the manual falls out
+@c of date.
+@set VERSION 2.4
+@set L2VERSION Livingstone v@value{VERSION}
+
+@c Set my name.  Try hard to get a i-circumflex up there!  Haven't figured
+@c out how to do this for html (that is, how to @set in an @html).
+@iftex
+@set bhudson Beno@^{@dotless{i}}t Hudson
+@end iftex
+@ifnottex
+@set bhudson Benoit Hudson
+@end ifnottex
+
+@set DATE June 28, 2001
+@set TITLE The Livingstone Real-Time Diagnosis Engine
+@set AUTHOR @value{bhudson}
+
+@settitle @value{TITLE}
+@setchapternewpage odd
+
+@c %**end of header
+
+@ifinfo
+This file documents @value{L2VERSION} ; this is the @value{DATE} edition of
+the manual.
+
+@end ifinfo
+
+@c **********************************************************
+@c Title page
+@titlepage
+@title @value{TITLE}
+@author @value{AUTHOR}
+@end titlepage
+
+
+
+@c **********************************************************
+@c Table of Contents
+@ifnottex
+@node Top, Introduction, (dir), (dir)
+@top Livingstone
+
+Edition of @value{DATE}.
+
+@menu
+Livingstone:
+* Introduction::                What is Livingstone
+* Overview::                    General ideas behind Livingstone
+* Executables::                 How to run Livingstone under Unix / Windows
+* API::                         How to use Livingstone into your program
+
+Appendices:
+* Function Index::              Index of API functions and variables
+* Acknowledgements::            Dr. Livingstone I presume
+@end menu
+
+@end ifnottex
+
+@contents
+
+@c **********************************************************************
+@c Introduction
+@include intro.texi
+
+
+@c **********************************************************************
+@c Overview
+@include overview.texi
+
+
+@c **********************************************************************
+@c Executables
+@include executables.texi
+
+@c **********************************************************************
+@c API
+@include api.texi
+
+
+@c **********************************************************************
+@c Indices should be generated here.
+
+@node Function Index
+@unnumbered Function and Variable Index
+@printindex fn
+
+
+@c **********************************************************************
+@c Acknowledgments:
+
+@include ack.texi
+
+@bye

@@ -1,0 +1,36 @@
+//  This is a simplest test, diagnostically speaking.
+//  In this test, one LED goes out and two others stay
+//  on, allowing us to disambiguate which CB is tripped. 
+progress cb15.cmdIn=on
+progress cb14.cmdIn=on
+progress cb12.cmdIn=on
+progress cb11.cmdIn=on
+progress cb5.cmdIn=on
+assign led5.ledState=on
+fc
+// Now turn on CB8 with no LED output
+progress cb8.cmdIn=on
+assign led8.ledState=off
+fc
+// Turn on CB7, which disambiguates which CB is failed
+progress cb7.cmdIn=on
+assign led7.ledState=on
+fc
+// Reset CB8
+progress cb8.cmdIn=reset
+progress cb8.cmdIn=on
+assign led8.ledState=on
+fc
+// Return everything to the start state
+progress cb15.cmdIn=off
+assign led8.ledState=off
+assign led5.ledState=off
+assign led7.ledState=off
+fc
+progress cb14.cmdIn=off
+progress cb12.cmdIn=off
+progress cb11.cmdIn=off
+progress cb5.cmdIn=off
+progress cb7.cmdIn=off
+progress cb8.cmdIn=off
+// Back to start state

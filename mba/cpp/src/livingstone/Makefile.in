@@ -1,0 +1,12 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+OBJECTS=version.o L2_assert.o
+
+
+# ChangeLog should change every time we check anything in, which
+# slightly changes the version number if we're working with a pre-release
+# version.
+version.c : ${top_srcdir}/ChangeLog
+	./update_version_c

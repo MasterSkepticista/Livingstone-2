@@ -1,0 +1,875 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+
+  <head>
+    <title>The Livingstone API</title>
+  </head>
+
+  <body bgcolor="#FFFFEE">
+    <h1 align="center">The Livingstone API</h1>
+
+    <p><p>
+    <a href="../index.html">Back to Main Page</a>
+    <p><p>
+
+    <p>The Livingstone API has been centralized into class Livingstone. All
+    applications that use the Livingstone engine should create an instance
+    either of class <code>Livingstone</code> (for stripped-down flight code)
+    or of class <code>Livingstone_debug</code> (for human-readable interactive
+    applications).</p>
+
+    <p>In previous versions of Livingstone, the only API involved the
+    Tracker or Transition system. Such direct access is now deprecated. First,
+    the API functions are now more centralized. But, more important, the 
+    interface to these lower-level classes contain public methods that users
+    should never invoke because improper use may corrupt the tracker,
+    transition system, conflict data base or truth maintenance system.</p>
+
+    <h2>An Example</h2>
+
+    <p>The following code shows how to use the API methods to create,
+    initialize, and run a Livingstone engine.</p>
+
+    <p>In this code fragment illustrates a system in which the Livingstone
+    operations are specified programmatically, by method invocations.</p>
+
+    <code><pre>
+    int main(int argc, char** argv) {
+      // Create an instance of class Livingstone
+      Livingstone livingstone;
+      const MBA_string modelFilePathname("/here/is/my/model");
+      livingstone.set_file(modelFilePathname);
+      // Reading the model also reads in the configuration parameters
+      if (livingstone.read_file()) {
+        // Do this after reading the file so the correct Tracker is created
+        livingstone.create_tracker();
+        if (livingstone.initialize_tracker()) {
+          // Here is where you perform operations such as
+          // livingstone.observe(), livingstone.command(), livingstone.idle(),
+          // livingstone.diagnose()
+        } else {
+          cerr << "Failed to initialize tracker" << endl;
+        }
+      } else {
+        cerr << "Failed to read model file" << endl;
+      }
+    }
+    </pre></code>
+
+    <p>The next code fragment illustrates a system in which the command-line
+    interpreter of class <code>Livingstone_debug</code> supplies
+    interactivity.</p>
+
+    <code><pre>
+    int main(int argc, char** argv) {
+      // Create an instance of class Livingstone_debug
+      Livingstone_debug livingstone;
+      const MBA_string modelFilePathname("/here/is/my/model");
+      livingstone.set_file(modelFilePathname);
+      // Reading the model also reads in the configuration parameters
+      if (livingstone.read_file()) {
+        // Do this after reading the file so the correct Tracker is created
+        livingstone.create_tracker();
+        if (livingstone.initialize_tracker()) {
+          // To map between indices and print names
+          livingstone.create_debugger();
+          // Run the command-line interpreter
+          livingstone_debug.run();
+        } else {
+          cerr << "Failed to initialize tracker" << endl;
+        }
+      } else {
+        cerr << "Failed to read model file" << endl;
+      }
+    }
+    </pre></code>
+
+    <p>There are other variations on running Livingstone, especially with
+    regard to reading in the model and setting the configuration parameters.
+    But these examples are close to the existing uses in executables
+    <code>l2flight</code> and <code>l2test</code>.
+
+    <h2>Class <code>Livingstone</code></h2>
+
+    <h3><code>Livingstone()</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effect: Does nothing but set some instance variables to default
+    values.</p>
+
+    <p>Returns: Does not apply.</p>
+
+    <h3><code>bool read_file()</code></h3>
+
+    <p>Preconditons: (1) <code>set_filename()</code> has already been called;
+    (2) the supplied filename is the path of a readable model file with a
+    recognizable file extension.</p>
+
+    <p>Effect: The contents of the model file are read into an object of 
+    class <code>L2_file</code>. If the Progress style is Minimal Progress,
+    the <code>L2_file</code> object will undergo a set of model-shrinking
+    transformations called "optimization."</p>
+
+    <p>Returns: true if the model file was read into the <code>L2_file</code>
+    object; otherwise false.</p>
+
+    <p>NOTE: After reading a model file, it is necessary to create and
+    initialize the Tracker if the Livingstone engine is to use the model.</p>
+
+    <h3><code>void create_tracker()</code></h3>
+
+    <p>Preconditions: none, but if <code>read_file()</code> has not been
+    called previously, the Tracker will be of the default type, and not of the
+    type desired by the programmer.</p>
+
+    <p>Effect: Creates either a Cover Tracker or a CBFS (Conflict-Directed
+    Best-First Search) Tracker, according to the current Tracker style.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>bool initialize_tracker()</code></h3>
+
+    <p>Preconditions: (1) <code>create_tracker()</code> has already been
+     called and (2) <code>read_file()</code> has already been called
+     successfully.</p>
+
+    <p>Effect: The model that the reader read from a file or array into an
+    <code>L2_file</code> object is transferred to the Transition System, and
+    the model is intialized.</p>
+
+    <p>Returns: true if no exceptions were thrown; false otherwise.</p>
+
+    <h3><code>bool observe(unsigned int variableIndex,
+                          int valueIndex)</code></h3>
+
+    <p>Preconditions: (1) <code>initialize_tracker()</code> has been called
+    successfully; (2) <code>variableIndex</code> is the index of an
+    Observable Variable; (3) <code>valueIndex</code> is the index of a member
+    of the specified Observable Variable's domain.</p>
+
+    <p>Effect: Assign the specified value to the specified Observable
+    Variable.</p>
+
+    <p>Returns: true if the assignment was made; false if either 
+    (1) <code>variableIndex</code> is not the index of any Variable;
+    (2) <code>variableIndex</code> is the index of a Variable but not of an
+    Observable Variable; or (3) <code>valueIndex</code> is not the index of a
+    value in the domain of the Observable Variable.
+
+    <h3><code>bool command(unsigned int commandIndex,
+                           unsigned int valueIndex)</code></h3>
+
+
+    <p>Preconditions: (1) <code>initialize_tracker()</code> has been called
+    successfully; (2) <code>variableIndex</code> is the index of a Command
+    Variable; (3) <code>valueIndex</code> is the index of a member of the
+    specified Command Variable's domain.</p>
+
+    <p>Effect: Set the currently-installed Candiate to NULl, assign the
+    specified value to the specified Command Variable and progress to the next 
+    time step.</p>
+
+    <p>Returns: true if the assignment was made; false if either 
+    (1) <code>variableIndex</code> is not the index of any Variable;
+    (2) <code>variableIndex</code> is the index of a Variable but not of a
+    Command Variable; or (3) <code>valueIndex</code> is not the index of a
+    value in the domain of the Command Variable.
+
+    <h3><code>void idle()</code></h3>
+
+    <p>Preconditions:<code>initialize_tracker()</code> has been called
+    successfully.</p>
+
+    <p>Effect: Set the currently-installed Candidate to NULL and progress to
+    the next time step.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>unsigned diagnose()</code></h3>
+
+    <p>Preconditions: <code>initialize_tracker()</code> has been called
+    successfully.</p>
+
+    <p>Effect: Set the currently-installed Candidate to NULL and find the set
+    of Candidate diagnoses that explain the current observations, according
+    the to currently-set Find-Candidates style.</p>
+
+    <p>Returns: The number of Candidate diagnoses found.</p>
+    
+    <h3><code>unsigned int ncandidates() const</code></h3>
+
+    <p>Preconditions: <code>initialize_tracker()</code> has been called
+    successfully.</p>
+
+    <p>Effect: No side effects.</p>
+
+    <p>Returns: The number of Candidate diagnoses found on the most recent
+    <code>diagnose()</code> action; if there has been no
+    <code>diagnose()</code> action, returns 0.</p>
+
+    <h3><code>bool install(unsigned int candidateIndex)</code></h3>
+
+    <p>Preconditions: (1) <code>initialize_tracker()</code> has been called
+    successfully and (2) candidateIndex is the index of a Candidate in the set
+    of Candidate diagnoses found by the most recent <code>diagnose</code>
+    action. Method <code>diagnose()</code> must have been called for
+    there to be any Candidates to install.</p>
+
+    <p>Effect: Install (incorporate into the Propositional Theory) the
+    specified Candidate.</p>
+
+    <p>Returns: true if the Candidate was installed; false if candidateIndex is
+    not the index of any Candidate in the current Candidate set.</p>
+
+    <h3><code>bool have_installed() const</code></h3>
+
+    <p>Preconditions: <code>initialize_tracker()</code> has been called
+    successfully.</p>
+
+    <p>Effect: No side effect.</p>
+
+    <p>Returns: true if a Candidate has been installed since the last action
+    that clears the installed Candidate; false otherwise.</p>
+
+    <h3><code>int get_value(unsigned int variableIndex, boolean ok)
+              const</code></h3>
+
+    <p>Preconditions: (1) <code>initialize_tracker()</code> has been called
+    successfully and (2) <code>variableIndex</code> is the index of a
+    Variable.</p>
+
+    <p>Effects: sets parameter <code>validID</code> to false if
+    <code>variableIndex</code> is not the index of any Variable; otherwise
+    sets parameter <code>validID</code> to true.</p>
+
+    <p>Returns: -1 if either (1) variableIndex is not the index of any Variable
+    or (2) the Variable is currently unassigned; otherwise the index of the
+    specified Variable's value at the current Time Step.</p>
+
+    <h3><code>int get_value(unsigned int variableIndex, unsigned int timeStep,
+                            boolean validID)
+              const</code></h3>
+
+    <p>Preconditions: (1) <code>initialize_tracker()</code> has been called
+    successfully; (2) <code>variableIndex</code> is the index of a
+    Variable; and (3) <code>timeStep</code> is less than or equal to the
+    current Time Step.</p>
+
+    <p>Effects: sets parameter <code>validID</code> to false if
+    <code>variableIndex</code> is not the index of any Variable or the Variable
+    has no value at the specified Time Step; otherwise sets parameter
+    <code>validID</code> to true.</p> 
+
+    <p>Returns: -1 if either (1) there is an error in the parameters (bad
+    Variable index or Time Step) or (2) the Variable is unassigned at the
+    specified Time Step; otherwise the index of the Variable's value at the
+    specified Time Step.</p>
+
+    <h3><code>unsigned int nfailures() const</code></h3>
+
+    <p>Preconditions: <code>initialize_tracker()</code> has been called
+    successfully.</p>
+
+    <p>Effects: No side effects.</p>
+
+    <p>Returns: 0 if there is no currently-installed Candidate; otherwise, the
+    number of failures in the currently-installed Candidate.</p>
+
+    <h3><code>failure get_failure(unsigned failureIndex) const</code></h3>
+
+    <p>Preconditions: <code>initialize_tracker()</code> has been called
+    successfully.</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: If there is no currently-installed Candidate or
+    <code>failureIndex</code> is not the index of a Failure in the
+    currently-assigned Candidate, returns a special Failure object designated
+    "invalid"; otherwise, returns the Failure in the currently-installed
+    Candidate with index <code>failureIndex</code>.</p>
+ 
+    <h3><code>const L2_parameters *get_parameters() const</code></h3>
+
+    <p>Preconditions: None, but the <code>L2_parameters</code> will have only
+    default values until either (1) the model file is read; (2) n mutator
+    method of class <code>L2_parameters</code> has been called; or (3) a
+    parameter mutator method in class <code>Livingstone</code> has been
+    called.</p>
+
+    <p>Effects: No side effects.</p>
+
+    <p>Returns: A pointer to the <code>Livingstone</code> object's 
+    <code>L2_parameters</code> data member.</p>
+
+    <h3><code>void print_search_parameters() const</code></h3>
+
+    <p>Preconditions: None, but the <code>L2_parameters</code> will have only
+    default values until either (1) the model file is read; (2) a mutator
+    method of class <code>L2_parameters</code> has been called; or (3) a
+    parameter mutator method in class <code>Livingstone</code> has been
+    called.</p>
+
+    <p>Effects: Pretty-prints the configuration parameters to
+    <code>cout</code></p>
+
+    <p>Returns: void</p>
+
+    <h3><code>void print_search_parameters(ostream& os) const</code></h3>
+
+    <p>Preconditions: None, but the <code>L2_parameters</code> will have only
+    default values until either (1) the model file is read; (2) a mutator
+    method of class <code>L2_parameters</code> has been called; or (3) a
+    parameter mutator method in class <code>Livingstone</code> has been
+    called.</p>
+
+    <p>Effects: Pretty-prints the configuration parameters to output stream
+    <code>os</code>.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>bool verbose_writer() const</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: true if the writer is operating in verbose mode; false
+    otherwise.</p>
+
+    <h3><code>void set_verbosity(bool readerIsVerbose,
+                                 bool optimizerIsVerbose,
+                                 bool writerIsVerbose)</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: Sets the verbosity level of the reader, the optimizer, and
+    the writer to the levels specified by <code>readerIsVerbose</code>,
+    <code>optimizerIsVerbose</code>, and <code>writerIsVerbose</code>,
+    respectively.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>void set_verbose_writer(bool writerIsVerbose)</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: Sets the verbosity level of the writer to the level specified
+    by <code>writerIsVerbose</code>.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>void set_filename(const MBA_string&
+                                modelFilePathname)</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: Sets the model file pathname.</p>
+
+    <p>Returns: void</p>
+
+    <p>NOTE: If <code>modelFilePathname</code>
+    must not have a file extension. If the extension is not set by a call to
+    <code>set_filetype(const MBA_string&)</code>, the reader will search for
+    files with extensions of a pre-enumerated set (
+    <code>.bin</code>,
+    <code>.hrn</code>,
+    <code>.ini</code>,
+    <code>.l2</code>,
+    <code>.l2s</code>,
+    <code>.l2sbin</code>,
+    <code>.xmpl</code>).</p>
+
+    <h3><code>const MBA_string& get_filename() const</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: No side effects.</p>
+
+    <p>Returns: The current model file pathname, set by the most recent call
+    to <code>set_filename(const MBA_string&)</code>. The default value is the
+    empty string.</p>
+
+    <h3><code>void set_filetype(const MBA_string& format)</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: On any subsequent calls to <code>Livingstone::read_file</code>,
+    the reader will look only for files of the specified model file format,
+    rather than looking, in a pre-specified order, for files of any known
+    format. The format parameter can be "<code>l2</code>", "<code>l2s</code>"
+    (stripped), "<code>xmpl</code>", "<code>l2bin</code>", or
+    "<code>bin</code>". If any other value is given, the default value of
+    "<code>xmpl</code>" is assumed.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>const MBA_string& get_filetype() const</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: No side effects.</p>
+
+    <p>Returns: The current model file format, set by the most recent call
+    to <code>set_filetype(const MBA_string&)</code>. The default value is the
+    empty string.</p>
+
+    <h3><code>MBA_string get_search_style_str() const</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: No side effects.</p>
+
+    <p>Returns: The current search style as a string.
+    The default value depends on how Livingstone was configured. If the
+    Cover Tracker is disabled, the default value is
+    <code>L2_parameters::cbfs</code>; otherwise, the default value is
+    <code>L2_parameters::cover</code>.</p>
+
+    <h3><code>void set_search_style(L2_parameters::Search_style
+    searchStyle</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: Sets the current value of the search style configuration
+    parameter to <code>searchStyle</code>, which may be either
+    <code>L2_parameters::cbfs</code> or <code>L2_parameters::cover</code>,
+    depending on which search styles are enabled.</p>
+
+    <p>Returns: void</p>
+
+    <p>NOTE: Once <code>Livingstone::create_tracker()</code> is called,
+    changing the value of the search style has no retroactive effect.</code>
+
+    <h3><code>bool get_use_cbfs_tracker() const</code></h3>
+
+    <p>Preconditions: None</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: True if the current search style is
+    <code>L2_parameters::cbfs</code>. If not, it must be
+    <code>L2_parameters::cover</code>.</p>
+
+    <h3><code>unsigned get_cbfs_maxcand() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the current setting for the maximum number of Candidates
+    returned by the CBFS Tracker. The default value is 5.</p>
+
+    <h3><code>void set_cbfs_maxcand(unsigned max_value)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the maximum number of Candidates returned by the CBFS
+    Tracker. The default value is 5.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>unsigned get_cbfs_search() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the maximum size of the search space for the CBFS tracker. The
+    default value is 1000.</p>
+
+    <h3><code>void set_cbfs_search(unsigned max_value)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the maximum size of the search space for the CBFS tracker.
+    The default value is 1000.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>unsigned get_cbfs_max_cutoff_weight() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the maximum rank of a Candidate returned by the CBFS Tracker.
+    The default value is 100.</p>
+
+    <h3><code>void set_cbfs_max_cutoff_weight(unsigned max_value)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the maximum rank of a Candidate returned by the CBFS
+    Tracker. The default value is 100.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>unsigned get_cover_maxrank() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the maximum rank of a Candidate returned by the Cover Tracker.
+    The default value is 8.</p>
+
+    <h3><code>void set_cover_maxrank(unsigned max_value)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the maximum rank of a Candidate returned by the Cover
+    Tracker. The default value is 8.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>unsigned get_history() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the maximum number of time steps for which Variable values are
+    retained. The default value is 3.</p>
+
+    <h3><code>void set_history(unsigned historyLength)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the maximum number of time steps for which Variable values 
+    are retained. The default value is 3.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>L2_parameters::Progress_style get_progress_style()
+    const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the current value of the progress style. The
+    default value depends on how Livingstone was configured. If full progress
+    was disabled, the default value is <code>L2_parameters::min</code>;
+    otherwise, the default value is <code>L2_parameters::full</code>.</p>
+
+    <h3><code>MBA_string get_progress_style_str() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the current value of the progress style as a string. The
+    default value depends on how Livingstone was configured. If full progress
+    was disabled, the default value is <code>"min"</code>; otherwise, the
+    default value is <code>"full"</code>.</p>
+
+    <h3><code>void set_progress_style(L2_parameters::Progress_style
+    progress_style)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the current value of the progress style. The
+    <code>progress_style</code> parameter can be either 
+    <code>L2_parameters::full</code> (if full progress is not disabled) or
+    <code>L2_parameters::min</code> (if min progress is not disabled). The
+    default value depends on how Livingstone was configured. If full progress
+    was disabled, the default value is <code>L2_parameters::min</code>;
+    otherwise, the default value is <code>L2_parameters::full</code>. If the
+    progress style is set to <code>L2_parameters::min</code> optimization is
+    enabled.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>void set_progress_style_str(const MBA_string&
+    progressStyleString)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the current value of the progress style. The
+    <code>progressStyleString</code> parameter can be either 
+    <code>"full"</code> (if full progress is not disabled) or
+    <code>"min"</code> (if min progress is not disabled). The
+    default value depends on how Livingstone was configured. If full progress
+    was disabled, the default value is <code>"min"</code>;
+    otherwise, the default value is <code>"full"</code>. If the
+    progress style is set to <code>"min"</code> optimization is
+    enabled.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>get_use_full_progress() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: true if the current progress style is full progress; otherwise
+    false.</p>
+
+    <h3><code>unsigned get_max_truncated_candidates() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the maximum number of Candidates to retain through truncation.
+    The default value is 5.</p>
+
+    <h3><code>void set_max_truncated_candidates(unsigned max_value)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Set the maximum number of Candidates to retain through
+    truncation. The default value is 5.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>L2_parameters::FC_style get_fc_style() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: The current find-candidates style, one of
+    <code>L2_parameters::tracker_default</code>,
+    <code>L2_parameters::extend</code>,
+    <code>L2_parameters::prune_and_search</code> and
+    <code>L2_parameters::find_fresh</code>. The default value is
+    <code>L2_parameters::tracker_default</code>.</p>
+
+    <h3><code>void set_fc_style(L2_parameters::FC_style fc_style)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the find-candidates style, one of
+    <code>L2_parameters::tracker_default</code>,
+    <code>L2_parameters::extend</code>,
+    <code>L2_parameters::prune_and_search</code> and
+    <code>L2_parameters::find_fresh</code>. The default value is
+    <code>L2_parameters::tracker_default</code>.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>MBA_string get_fc_style_str() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: The current find-candidates style as a string, one of
+    <code>"the tracker default fc"</code>,
+    <code>"extend"</code>,
+    <code>"prune-and-search"</code> and
+    <code>"find-fresh"</code>. The default value is
+    <code>"the tracker default fc</code>.</p>
+
+    <h3><code>void set_fc_style_str(const MBA_string& fc_style)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Sets the find-candidates style from a string, one of
+    <code>"the tracker default fc"</code>,
+    <code>"extend"</code>,
+    <code>"prune-and-search"</code> and
+    <code>"find-fresh"</code>. The default value is
+    <code>"the tracker default fc"</code>.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>bool get_use_optimizer() const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: true if the optimization flag is set; otherwise false. The
+    default is false, but if
+    <code>Livingstone::set_progress_style(L2_parameters::Progress_style)</code>
+    or <code>Livingstone::set_progress_style_str(const MBA_string&)</code> is
+    ever called, the default will become true.</p>
+
+    <p>NOTE: The Livingstone engine itself does not automatically perform the
+    optimization; the application may decide to call
+    <code>Livingstone_reader::optimize()</code> on its instance of class
+    <code>Livingstone</code> or class <code>Livingstone_debug</code> (for
+    example, if optimization is enabled).</p>
+
+    <h3><code>void set_use_optimizer(bool b)</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: Set the flag to optimize.</p>
+
+    <p>Returns: void</p>
+
+    <p>NOTE: The Livingstone engine itself does not automatically perform the
+    optimization; the application may decide to call
+    <code>Livingstone_reader::optimize()</code> on its instance of class
+    <code>Livingstone</code> or class <code>Livingstone_debug</code> (for
+    example, if optimization is enabled).</p>
+
+    <p>WARNING: If the progress style is set to min progress and optimization
+    is not performed (e.g., because this flag is set to false), the Livingstone
+    engine will give incorrect results.</p>
+
+    <h3><code>const Tracker* get_tracker()</code></h3>
+
+    <p>Preconditions: none, but the return value will be the NULL pointer
+    before <code>Livingstone::create_tracker()</code> is called.</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: a const pointer to the Tracker, if it has been created;
+    otherwise, the NULL pointer.</p>
+
+    <h3><code>Tracker* get_tracker()</code></h3>
+
+    <p>Preconditions: none, but the return value will be the NULL pointer
+    before <code>Livingstone::create_tracker()</code> is called.</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: a pointer to the Tracker, if it has been created;
+    otherwise, the NULL pointer.</p>
+
+    <h3><code>SearchTermination get_search_termination_reason()
+    const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: the reason the last find-candidates search (if any)
+    terminated. The value can be SEARCH_CONTINUE, EMPTY_AGENDA, WEIGHT_CUTOFF
+    or MAX_OVERRUN. The value is meaningless before any search has been
+    performed.</p>
+
+    <h2>Class <code>Livingstone_debug</code></h2>
+
+    <h3><code>Livingstone_debug()</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effect: Allocates a buffer for parsing command lines.</p>
+
+    <p>Returns: Does not apply.</p>
+
+    <h3><code>void create_debugger()</code></h3>
+
+    <p>Preconditions: The Tracker must already have been created with a call to
+    <code>Livingstone::create_tracker()</code> and the present method must not
+    have been previously invoked.</p>
+
+    <p>Effects: Creates an <code>L2_string_map</code> object for mapping between
+    objects in the Livingstone engine and their print names. Creates a
+    debugging (that is, command-line enabled) Tracker of the type that was most
+    recently chosen. Sets the find-candidates style in the debugging
+    Tracker.</p>
+
+    <p>Returns: void</p>
+
+    <h3><code>Tracker_debug* get_debugger()</code></h3>
+
+    <p>Preconditions: none, but if <code>create_debugger()</code> hadn't been
+    successfully called, a NULL pointer is returned.</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: a pointer to the debugging (that is, command-line enabled)
+    Tracker, if there is one.</p>
+
+    <h3><code>L2_string_map* get_string_mapping()</code></h3>
+
+    <p>Preconditions: none, but if <code>create_debugger()</code> hadn't been
+    successfully called, a NULL pointer is returned.</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: a pointer to the <code>L2_string_map</code> object for mapping
+    between objects in the Livingstone engine and their print names.</p>
+
+    <h3><code>bool run()</code></h3>
+
+    <p>Preconditions: <code>create_debugger()</code> must have been
+    successfully called.</p>
+
+    <p>Effects: executes a command-line interpreter with input coming from
+    <code>cin</code></p>
+
+    <p>Returns: true if it received the "restart" command; false otherwise</p>
+
+    <h3><code>bool run(istream& input, bool is_interactive = false)</code></h3>
+
+    <p>Preconditions: <code>create_debugger()</code> must have been
+    successfully called.</p>
+
+    <p>Effects: executes a command-line interpreter with input coming from
+    parameter <code>input</code>.</p>
+
+    <p>Returns: true if (1) parameter <code>is_interactive</code> is true and
+    it received the "restart" command; false otherwise</p>
+
+    <h3><code>MBA_string search_termination_string(SearchTermination
+        searchTermination) const</code></h3>
+
+    <p>Preconditions: none</p>
+
+    <p>Effects: No side effects</p>
+
+    <p>Returns: A string mapping of the search termination reason, as follows:
+    </p><p>
+    <table border="1">
+      <tr><th>parameter      </th><th>return value   </th></tr>
+      <tr><td>SEARCH_CONTINUE</td><td>"in progress"  </td></tr>
+      <tr><td>EMPTY_AGENDA   </td><td>"empty agenda" </td></tr>
+      <tr><td>WEIGHT_CUTOFF  </td><td>"weight cutoff"</td></tr>
+      <tr><td>MAX_OVERRUN    </td><td>"max overrun"  </td></tr>
+      <tr><td>[anything else]</td><td>"unknown SearchTermination"</td></tr>
+    </table></p>
+
+    <h2>Class <code>L2_parameters</code></h2>
+
+    <p>An object of class <code>L2_parameters</code> is an instance variable
+    in class <code>Livingstone</code>. Its purpose is to hold the current
+    values of confliguration parameters for Livingstone. These parameters are
+    given meaningful default, and can be set in any combination of three ways:
+    <ul>
+      <li>When a model is read in, a file in the same directory whose name is
+          that of the model and whose file extension is "<code>.params</code>"
+          contains attribute-value pairs for the configuration parameters; the
+          reader parses these and sets the corresponding configuration
+          parameter.
+      <li>There are several public accessors and mutators in class
+          <code>L2_parameters</code>; a pointer to the
+          <code>L2_parameters</code> member can be obtained with method
+          <code>Livingstone::get_parameters()</code>. Alternatively, the
+          entire <code>L2_parameters</code> object can be replaced with method
+          <code>Livingstone::set_parameters(const L2_parameters&)</code>.
+      <li>There are several accessors and mutators in class
+          <code>Livingstone</code> that in turn delegate to the corresponding
+          accessors and mutators in class <code>L2_parameters</code>         
+    </ul>
+
+    <p>Since this API is not used very much (in favor of the
+    <code>.params</code> file and the <code>Livingstone</code> API), it will
+    not be described here. The API is very similar to that of class
+    <code>Livingstone</code> for the configuration parameters. See file
+    <code>mba/cpp/include/api/parameters.h</code> for the exact API.
+
+    <hr>
+    <address><a href="mailto:lbrownston@ptolemy.arc.nasa.gov">Lee S. Brownston</a></address>
+<!-- Created: Fri Sep 21 14:10:06 PDT 2001 -->
+<!-- hhmts start -->
+Last modified: Wed Feb 13 13:07:39 PST 2002
+<!-- hhmts end -->
+    <p><p>
+    <a href="../index.html">Back to Main Page</a>
+    <p><p>
+  </body>
+</html>

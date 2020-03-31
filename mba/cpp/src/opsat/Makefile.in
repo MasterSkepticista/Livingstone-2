@@ -1,0 +1,6 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.5 2002/09/26 00:11:38 lbrown Exp $
+OBJECTS = agenda_types.o cbfs_agenda.o cbfs_tracker.o cbfs_tracker_debug.o opsat.o

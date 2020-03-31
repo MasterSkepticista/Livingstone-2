@@ -1,0 +1,743 @@
+/// These were converted over from KSC's circuit breaker model.
+/// We assume a different start state, and not all of the scripts
+/// have been tested yet.
+//
+// Here is the layout of the circuit breakers
+// There are LED's at the leaves
+//                                            ---- 1
+//                                  ----  9 <
+//                                /           ---- 2
+//                       ---- 13 <
+//                      /         \           ---- 3
+//                     /            ---- 10 <
+//                    /                       ---- 4
+//    source ---- 15 <                                 
+//                    \                       ---- 5
+//                     \            ---- 11 <
+//                      \         /           ---- 6
+//                       ---- 14 <
+//                                \           ---- 7
+//                                  ---- 12 <
+//                                            ---- 8
+
+
+/// ********** TEST RESET 1 *********************
+//  Create fresh model
+//  In this test, only one LED is supposed to be on,
+//  so we can't disambiguate which CB is tripped. We track
+//  all of them
+//
+//  Initially, our set of likely diagnoses will include 
+//  include diagnoses such as at time step 0,
+//  cb15 tripped.    Given that the only information
+//  we have is that led8 is not lit, this is a perfectly
+//  good diagnosis.
+//
+//  On step 5, we reset cb8 and led8 lights.
+//  If the history depth is 7 or greater, then
+//  we go back into the past and withdraw the
+//  idea that cb15 tripped.  We find the
+//  correct diagnosis that cb8 tripped when we
+//  turned it on.
+//
+//  If our truncation depth is low, then we will commit
+//  to cb15 being blown before the reset occurs.  When
+//  resetting cb8 causes led8 to go on, finding a 
+//  diagnosis is a stretch.
+//
+//  The system will need to say that an unknown failure
+//  has occurred.  It will say, for example, that cb14
+//  is behaving in an unknown way.  In our unknown model,
+//  we don't rule out cb14 putting out power even though
+//  cb15 is giving it power.
+//
+//  This example was set up to illustrate how L2 works when
+//  you can go back and reconsider a failure.   So when you
+//  truncate off the cb15 failure, it L2 acts as Livingstone would.
+//  That is, it's forced to find an explanation for the observations
+//  resulting from an old failure, using only recent events.
+//
+
+progress cbAndLed.cb15.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+assign cbAndLed.led8.ledState=off
+fc
+progress cbAndLed.cb8.cmdIn=reset
+progress cbAndLed.cb8.cmdIn=on
+assign cbAndLed.led8.ledState=on
+fc
+
+/// Here is the min-progress version
+
+min-progress cbAndLed.cb15.cmdIn=on
+min-progress cbAndLed.cb14.cmdIn=on
+min-progress cbAndLed.cb12.cmdIn=on
+min-progress cbAndLed.cb8.cmdIn=on
+assign cbAndLed.led8.ledState=off
+fc
+min-progress cbAndLed.cb8.cmdIn=reset
+min-progress cbAndLed.cb8.cmdIn=on
+min-assign cbAndLed.led8.ledState=on
+fc
+
+
+
+/// ********** TEST RESET 2 *********************
+/// In this test, we turn on a second LED, which
+/// disambiguates the failure.   If the truncation
+/// length is low, we'll have the sambe behavior as above.
+
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb15.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+assign cbAndLed.led8.ledState=off
+fc
+progress cbAndLed.cb8.cmdIn=reset
+progress cbAndLed.cb8.cmdIn=on
+assign cbAndLed.led8.ledState=on
+fc
+
+/// Next test
+
+
+
+
+
+
+progress cbAndLed.cb15.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb11.cmdIn=on
+progress cbAndLed.cb5.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led8.ledState=off
+fc
+// Now turn on CB8 with no LED output
+
+
+fc
+
+
+
+
+
+
+
+/// ********** DIAGNOSTIC TEST 1 *********************
+//  Create fresh model
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+progress cbAndLed.cb3.cmdIn=on
+progress cbAndLed.cb4.cmdIn=on
+progress cbAndLed.cb5.cmdIn=on
+progress cbAndLed.cb6.cmdIn=on
+progress cbAndLed.cb7.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+progress cbAndLed.cb9.cmdIn=on
+progress cbAndLed.cb10.cmdIn=on
+progress cbAndLed.cb11.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb15.cmdIn=on
+fc
+assign cbAndLed.led8.ledState=off
+assign cbAndLed.led6.ledState=off
+assign cbAndLed.led4.ledState=off
+assign cbAndLed.led2.ledState=off
+fc
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led1.ledState=on
+fc
+
+
+/// ********** DIAGNOSTIC TEST 2 *********************
+//  Create fresh model
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+progress cbAndLed.cb3.cmdIn=on
+progress cbAndLed.cb4.cmdIn=on
+progress cbAndLed.cb5.cmdIn=on
+progress cbAndLed.cb6.cmdIn=on
+progress cbAndLed.cb7.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+progress cbAndLed.cb9.cmdIn=on
+progress cbAndLed.cb10.cmdIn=on
+progress cbAndLed.cb11.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb15.cmdIn=on
+fc
+assign cbAndLed.led8.ledState=off
+assign cbAndLed.led7.ledState=off
+assign cbAndLed.led6.ledState=off
+assign cbAndLed.led4.ledState=off
+assign cbAndLed.led2.ledState=off
+fc
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led1.ledState=on
+fc
+
+
+/// ********** DIAGNOSTIC TEST 3 **********************
+progress cbAndLed.cb15.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb11.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+progress cbAndLed.cb7.cmdIn=on
+progress cbAndLed.cb6.cmdIn=on
+assign cbAndLed.led8.ledState=off
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led6.ledState=off
+fc
+
+
+
+
+/// WARNING **********************************
+/// WARNING **********************************
+/// WARNING **********************************
+
+/// The scripts below here assume that the system
+/// starts with all circuit breakers on, but
+/// in fact they are off.
+
+
+/// ********** DIAGNOSTIC TEST 2 **********************
+//  Create fresh model
+
+
+assign cbAndLed.led7.ledState=off
+assign cbAndLed.led5.ledState=off
+assign cbAndLed.led3.ledState=off
+assign cbAndLed.led1.ledState=off
+fc
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led1.ledState=on
+
+
+fc
+/// ********** DIAGNOSTIC TEST 3 **********************
+// Create fresh model
+
+assign cbAndLed.led1.ledState=off
+assign cbAndLed.led2.ledState=off
+
+
+fc
+
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+
+
+fc
+/// ********** DIAGNOSTIC TEST 4 **********************
+// Create fresh model
+
+assign cbAndLed.led3.ledState=off
+assign cbAndLed.led4.ledState=off
+
+
+fc
+
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+
+
+fc
+/// ********** DIAGNOSTIC TEST 5 **********************
+// Create fresh model
+
+assign cbAndLed.led5.ledState=off
+assign cbAndLed.led6.ledState=off
+
+
+fc
+
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led6.ledState=on
+
+
+fc
+/// ********** DIAGNOSTIC TEST 6 **********************
+// Create fresh model
+
+assign cbAndLed.led7.ledState=off
+assign cbAndLed.led8.ledState=off
+
+
+fc
+
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led8.ledState=on
+
+
+fc
+/// ********** DIAGNOSTIC TEST 7 **********************
+// Create fresh model
+
+assign cbAndLed.led5.ledState=off
+assign cbAndLed.led6.ledState=off
+assign cbAndLed.led7.ledState=off
+assign cbAndLed.led8.ledState=off
+
+
+fc
+
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led6.ledState=on
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led8.ledState=on
+
+
+fc
+/// ********** DIAGNOSTIC TEST 8 **********************
+// Create fresh model
+
+assign cbAndLed.led1.ledState=off
+assign cbAndLed.led2.ledState=off
+assign cbAndLed.led3.ledState=off
+assign cbAndLed.led4.ledState=off
+
+
+fc
+
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+
+
+fc
+/// ************ DIAGNOSTIC TEST 9 **********************
+// Create fresh model
+
+offassign cbAndLed.led1.ledState
+offassign cbAndLed.led2.ledState
+offassign cbAndLed.led3.ledState
+offassign cbAndLed.led4.ledState
+offassign cbAndLed.led5.ledState
+offassign cbAndLed.led6.ledState
+offassign cbAndLed.led7.ledState
+offassign cbAndLed.led8.ledState
+
+
+fc
+
+
+// Create fresh model
+/// ************ DIAGNOSTIC TEST 10 **********************
+
+assign cbAndLed.led3.ledState=off
+assign cbAndLed.led4.ledState=off
+assign cbAndLed.led7.ledState=off
+assign cbAndLed.led8.ledState=off
+
+
+fc
+/// ************ DIAGNOSTIC TEST 11 **********************
+offassign cbAndLed.led1.ledState
+offassign cbAndLed.led2.ledState
+offassign cbAndLed.led5.ledState
+offassign cbAndLed.led6.ledState
+
+
+fc
+/// ************ DIAGNOSTIC TEST 12 **********************
+
+onassign cbAndLed.led2.ledState
+onassign cbAndLed.led4.ledState
+onassign cbAndLed.led6.ledState
+onassign cbAndLed.led8.ledState
+
+
+fc
+/// ************ DIAGNOSTIC TEST 13 **********************
+onassign cbAndLed.led1.ledState
+onassign cbAndLed.led3.ledState
+onassign cbAndLed.led5.ledState
+onassign cbAndLed.led7.ledState
+
+
+fc
+
+
+
+/// ************ Commanding test 1 ********************
+// Create fresh model
+progress cbAndLed.cb9.cmdIn=off
+progress cbAndLed.cb13.cmdIn=off
+progress cbAndLed.cb15.cmdIn=off
+
+/// ************ Commanding test 2  ********************
+// Create fresh model
+progress cbAndLed.cb15.cmdIn=off
+progress cbAndLed.cb1.cmdIn=off
+progress cbAndLed.cb2.cmdIn=off
+progress cbAndLed.cb3.cmdIn=off
+progress cbAndLed.cb4.cmdIn=off
+progress cbAndLed.cb5.cmdIn=off
+progress cbAndLed.cb6.cmdIn=off
+progress cbAndLed.cb7.cmdIn=off
+progress cbAndLed.cb8.cmdIn=off
+progress cbAndLed.cb9.cmdIn=off
+progress cbAndLed.cb10.cmdIn=off
+progress cbAndLed.cb11.cmdIn=off
+progress cbAndLed.cb12.cmdIn=off
+progress cbAndLed.cb13.cmdIn=off
+progress cbAndLed.cb14.cmdIn=off
+
+progress cbAndLed.cb15.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb10.cmdIn=on
+progress cbAndLed.cb4.cmdIn=on
+progress cbAndLed.cb3.cmdIn=on
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+progress cbAndLed.cb5.cmdIn=on
+progress cbAndLed.cb6.cmdIn=on
+progress cbAndLed.cb7.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+
+progress cbAndLed.cb9.cmdIn=on
+
+progress cbAndLed.cb11.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+
+/// ************ TEST RESET FUNCTIONALITY 1 ******************
+// Create fresh model
+assign cbAndLed.led1.ledState=off
+fc
+
+progress cbAndLed.cb1.cmdIn=reset
+assign cbAndLed.led1.ledState=off
+
+progress cbAndLed.cb1.cmdIn=reset
+
+
+/// ************ TEST RESET FUNCTIONALITY 2 ******************
+// Create fresh model
+assign cbAndLed.led1.ledState=off
+fc
+
+progress cbAndLed.cb1.cmdIn=reset
+assign cbAndLed.led1.ledState=on
+
+progress cbAndLed.cb1.cmdIn=reset
+
+
+
+
+/// ~%************ Tests Reset Fuse Tripped to On *************
+progress cbAndLed.cb1.cmdIn=on
+
+assign cbAndLed.led1.ledState=on
+/// ---------RESTORED--------
+assign cbAndLed.led1.ledState=off
+fc
+/// ~&~%==>Giving command to reset CB 1
+progress cbAndLed.cb1.cmdIn=reset
+
+assign cbAndLed.led1.ledState=on
+
+
+
+
+/// ~%************** TEST CONTROL ABILITY **********************
+/// ***** Single Fuse Cmd  Causes All LED's to Go Off ********
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led6.ledState=on
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led8.ledState=on
+
+
+fc
+/// ---------RESTORED--------
+/// ~&~%==>Giving command to turn off CB 15
+progress cbAndLed.cb15.cmdIn=off
+assign cbAndLed.led1.ledState=off
+assign cbAndLed.led2.ledState=off
+assign cbAndLed.led3.ledState=off
+assign cbAndLed.led4.ledState=off
+assign cbAndLed.led5.ledState=off
+assign cbAndLed.led6.ledState=off
+assign cbAndLed.led7.ledState=off
+assign cbAndLed.led8.ledState=off
+
+
+
+
+/// ~%********** Single Fuse Cmd Causes 2 LED's to Go Off ******
+progress cbAndLed.cb15.cmdIn=on
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led6.ledState=on
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led8.ledState=on
+
+/// ---------RESTORED--------
+/// ~&~%==>Giving command to turn off CB 9
+progress cbAndLed.cb9.cmdIn=off
+assign cbAndLed.led1.ledState=off
+assign cbAndLed.led2.ledState=off
+
+
+/// ~%************** Single Fuse Cmd Causes 4 LED's Off ********
+progress cbAndLed.cb9.cmdIn=on
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+/// ---------RESTORED--------
+/// ~&~%==>Giving command to turn off CB 13
+progress cbAndLed.cb13.cmdIn=off
+assign cbAndLed.led1.ledState=off
+assign cbAndLed.led2.ledState=off
+assign cbAndLed.led3.ledState=off
+assign cbAndLed.led4.ledState=off
+
+
+
+
+
+/// ~%******** Turn Off All Fuse Cmds, on Fuses to LED's 1,2 ****~%"
+progress cbAndLed.cb13.cmdIn=on
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+/// ---------RESTORED--------
+/// ~&~%==>Giving command to turn off all CB
+progress cbAndLed.cb1.cmdIn=off
+assign cbAndLed.led1.ledState=off
+progress cbAndLed.cb2.cmdIn=off
+assign cbAndLed.led2.ledState=off
+progress cbAndLed.cb3.cmdIn=off
+assign cbAndLed.led3.ledState=off
+progress cbAndLed.cb4.cmdIn=off
+assign cbAndLed.led4.ledState=off
+progress cbAndLed.cb5.cmdIn=off
+assign cbAndLed.led5.ledState=off
+progress cbAndLed.cb6.cmdIn=off
+assign cbAndLed.led6.ledState=off
+progress cbAndLed.cb7.cmdIn=off
+assign cbAndLed.led7.ledState=off
+progress cbAndLed.cb8.cmdIn=off
+assign cbAndLed.led8.ledState=off
+progress cbAndLed.cb9.cmdIn=off
+progress cbAndLed.cb10.cmdIn=off
+progress cbAndLed.cb11.cmdIn=off
+progress cbAndLed.cb12.cmdIn=off
+progress cbAndLed.cb13.cmdIn=off
+progress cbAndLed.cb14.cmdIn=off
+progress cbAndLed.cb15.cmdIn=off
+/// ~&~%==>Giving command to turn on CB 15, 13, 9, 2, 1
+progress cbAndLed.cb15.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb9.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+assign cbAndLed.led2.ledState=on
+progress cbAndLed.cb1.cmdIn=on
+assign cbAndLed.led1.ledState=on
+
+
+
+
+
+/// ~%*************  simple fail case ****************
+;;;;;;;;Simple Fail Case - Turn Off All Fuse Commands then Turn on all Fuses
+;;;;;;; Fuses  Downstream of LED's 1, 2, 3, 4.  Monitor indicates LED's 1
+;;;;;;; and 2 are failed Off and LED's 3 and 4 are On Nominal
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+progress cbAndLed.cb3.cmdIn=on
+progress cbAndLed.cb4.cmdIn=on
+progress cbAndLed.cb5.cmdIn=on
+progress cbAndLed.cb6.cmdIn=on
+progress cbAndLed.cb7.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+progress cbAndLed.cb9.cmdIn=on
+progress cbAndLed.cb10.cmdIn=on
+progress cbAndLed.cb11.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb15.cmdIn=on
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led6.ledState=on
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led8.ledState=on
+
+
+fc
+/// ---------RESTORED--------
+/// ~&~%==>Giving command to turn off all CB
+progress cbAndLed.cb1.cmdIn=off
+assign cbAndLed.led1.ledState=off
+progress cbAndLed.cb2.cmdIn=off
+assign cbAndLed.led2.ledState=off
+progress cbAndLed.cb3.cmdIn=off
+assign cbAndLed.led3.ledState=off
+progress cbAndLed.cb4.cmdIn=off
+assign cbAndLed.led4.ledState=off
+progress cbAndLed.cb5.cmdIn=off
+assign cbAndLed.led5.ledState=off
+progress cbAndLed.cb6.cmdIn=off
+assign cbAndLed.led6.ledState=off
+progress cbAndLed.cb7.cmdIn=off
+assign cbAndLed.led7.ledState=off
+progress cbAndLed.cb8.cmdIn=off
+assign cbAndLed.led8.ledState=off
+progress cbAndLed.cb9.cmdIn=off
+progress cbAndLed.cb10.cmdIn=off
+progress cbAndLed.cb11.cmdIn=off
+progress cbAndLed.cb12.cmdIn=off
+progress cbAndLed.cb13.cmdIn=off
+progress cbAndLed.cb14.cmdIn=off
+progress cbAndLed.cb15.cmdIn=off
+/// ~&~%==>Giving command to turn on CB 1, 2, 9, 13, 15
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+progress cbAndLed.cb3.cmdIn=on
+progress cbAndLed.cb4.cmdIn=on
+progress cbAndLed.cb9.cmdIn=on
+progress cbAndLed.cb10.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb15.cmdIn=on
+assign cbAndLed.led1.ledState=off
+assign cbAndLed.led2.ledState=off
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+
+
+
+/// ~%***************a more complex fail case***********
+;;;;;;; Fail Case - Turn Off All Fuse Commands then Turn on all Fuses
+;;;;;;; Downstream of LED's 1, 2, 3, 4.  Monitor indicates LED's 1 and 2
+;;;;;;; are Tripped and LED's 3 and 4 are On Nominal.  Reset Fail on
+;;;;;;; Fuse-9.  led1 transitions to On while led2 remains Off.  Fuse-2
+;;;;;;; is declared Tripped.  Reset Fail on Fuse-2.  Monitor indicates
+;;;;;;; that led2 is Off.  Fuse-2 is declared blown.
+
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+progress cbAndLed.cb3.cmdIn=on
+progress cbAndLed.cb4.cmdIn=on
+progress cbAndLed.cb5.cmdIn=on
+progress cbAndLed.cb6.cmdIn=on
+progress cbAndLed.cb7.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+progress cbAndLed.cb9.cmdIn=on
+progress cbAndLed.cb10.cmdIn=on
+progress cbAndLed.cb11.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb15.cmdIn=on
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led6.ledState=on
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led8.ledState=on
+
+
+fc
+/// ---------RESTORED--------
+
+/// ~&~%==>Giving command to turn off all CB
+progress cbAndLed.cb1.cmdIn=off
+assign cbAndLed.led1.ledState=off
+progress cbAndLed.cb2.cmdIn=off
+assign cbAndLed.led2.ledState=off
+progress cbAndLed.cb3.cmdIn=off
+assign cbAndLed.led3.ledState=off
+progress cbAndLed.cb4.cmdIn=off
+assign cbAndLed.led4.ledState=off
+progress cbAndLed.cb5.cmdIn=off
+assign cbAndLed.led5.ledState=off
+progress cbAndLed.cb6.cmdIn=off
+assign cbAndLed.led6.ledState=off
+progress cbAndLed.cb7.cmdIn=off
+assign cbAndLed.led7.ledState=off
+progress cbAndLed.cb8.cmdIn=off
+assign cbAndLed.led8.ledState=off
+progress cbAndLed.cb9.cmdIn=off
+progress cbAndLed.cb10.cmdIn=off
+progress cbAndLed.cb11.cmdIn=off
+progress cbAndLed.cb12.cmdIn=off
+progress cbAndLed.cb13.cmdIn=off
+progress cbAndLed.cb14.cmdIn=off
+progress cbAndLed.cb15.cmdIn=off
+/// ~&~%==>Giving command to turn on CB 1, 2, 9, 13, 15
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+progress cbAndLed.cb3.cmdIn=on
+progress cbAndLed.cb4.cmdIn=on
+progress cbAndLed.cb9.cmdIn=on
+progress cbAndLed.cb10.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb15.cmdIn=on
+assign cbAndLed.led1.ledState=off
+assign cbAndLed.led2.ledState=off
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+progress cbAndLed.cb9.cmdIn=reset
+assign cbAndLed.led1.ledState=on
+progress cbAndLed.cb2.cmdIn=reset
+assign cbAndLed.led2.ledState=off
+
+
+
+/// ~%************** Unknown-Fault-Mode Failure***********
+;;;;;;; Issue a Single Fuse Command that should Cause 2 LED's to Go Off;
+;;;;;;; however, One LED transitions to Off while the other remains On.
+;;;;;;; Fault Mode should be annunciated as "Unknown-Fault-Mode".
+
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led4.ledState=on
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led6.ledState=on
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led8.ledState=on
+
+
+fc
+/// ---------RESTORED--------
+/// ~&~%==>Giving command to turn off CB 9
+progress cbAndLed.cb9.cmdIn=off
+assign cbAndLed.led1.ledState=on
+assign cbAndLed.led2.ledState=off
+
+
+/// ********** exiting test-CB *****************
+
+
+

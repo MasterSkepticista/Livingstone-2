@@ -1,0 +1,16 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+DEFS+=-D_POSIX_C_SOURCE=199506L
+CPPFLAGS+=-I$(XERCESCROOT)/include
+
+OBJECTS = \
+	guardedqueue.o \
+	livapi_rt.o \
+	livapi_rt_debug.o \
+	livingstone_dispatcher.o \
+	threadobject.o \
+	timeout_handlers.o
+
+TARGET=objects

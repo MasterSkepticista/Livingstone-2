@@ -1,0 +1,294 @@
+<xmpl>
+    <componentinstance type="pneumaticValveAndMicroSwitches" name="test">
+        <ci:attributetype name="pneumaticValve.ModeType" members="stuckOpen nominal stuckClosed unknownFault"/>
+        <ci:attributetype name="thresholdValues" members="aboveThreshold belowThreshold"/>
+        <ci:attributetype name="signValues" members="positive zero negative"/>
+        <ci:attributetype name="openClosedValues" members="open closed"/>
+        <ci:attributetype name="closedMicroswitch.ModeType" members="nominal faulty"/>
+        <ci:attributetype name="closedIndicator" members="notClosed closed"/>
+        <ci:attributetype name="openMicroswitch.ModeType" members="nominal faulty"/>
+        <ci:attributetype name="openIndicator" members="notOpen open"/>
+        <ci:component type="openMicroswitch" name="test.openMs">
+            <ci:statevector vars="mode"/>
+            <ci:attribute type="openIndicator" name="positionReading"/>
+            <ci:attribute type="openClosedValues" name="sensedPosition"/>
+            <ci:attribute type="openMicroswitch.ModeType" name="mode"/>
+            <ci:transition to="faulty" probability="0.0025" from="*" name="toFaulty"/>
+            <ci:clause>
+                <ci:term>!mode=nominal</ci:term>
+                <ci:term>!sensedPosition=open</ci:term>
+                <ci:term>positionReading=open</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!mode=nominal</ci:term>
+                <ci:term>!sensedPosition=closed</ci:term>
+                <ci:term>positionReading=notOpen</ci:term>
+            </ci:clause>
+            <ci:transition to="nominal" from="nominal">
+                <ci:clause/>
+            </ci:transition>
+            <ci:transition to="faulty" from="faulty">
+                <ci:clause/>
+            </ci:transition>
+        </ci:component>
+        <ci:component type="closedMicroswitch" name="test.closedMs">
+            <ci:statevector vars="mode"/>
+            <ci:attribute type="closedIndicator" name="positionReading"/>
+            <ci:attribute type="openClosedValues" name="sensedPosition"/>
+            <ci:attribute type="closedMicroswitch.ModeType" name="mode"/>
+            <ci:transition to="faulty" probability="0.0025" from="*" name="toFaulty"/>
+            <ci:clause>
+                <ci:term>!mode=nominal</ci:term>
+                <ci:term>!sensedPosition=closed</ci:term>
+                <ci:term>positionReading=closed</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!mode=nominal</ci:term>
+                <ci:term>!sensedPosition=open</ci:term>
+                <ci:term>positionReading=notClosed</ci:term>
+            </ci:clause>
+            <ci:transition to="nominal" from="nominal">
+                <ci:clause/>
+            </ci:transition>
+            <ci:transition to="faulty" from="faulty">
+                <ci:clause/>
+            </ci:transition>
+        </ci:component>
+        <ci:component type="range" name="test.pv.lO2FeedLineOut.flow.bleed">
+            <ci:attribute type="thresholdValues" name="lowerBound"/>
+            <ci:attribute type="thresholdValues" name="upperBound"/>
+            <ci:clause>
+                <ci:term>!upperBound=aboveThreshold</ci:term>
+                <ci:term>lowerBound=aboveThreshold</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!lowerBound=belowThreshold</ci:term>
+                <ci:term>upperBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="lO2FeedLineFlow" name="test.pv.lO2FeedLineOut.flow">
+            <ci:attribute type="signValues" name="sign"/>
+            <ci:clause>
+                <ci:term>!bleed.lowerBound=aboveThreshold</ci:term>
+                <ci:term>sign=positive</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!sign=zero</ci:term>
+                <ci:term>bleed.lowerBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="range" name="test.pv.lO2FeedLineOut.temperature.lO2Tank">
+            <ci:attribute type="thresholdValues" name="lowerBound"/>
+            <ci:attribute type="thresholdValues" name="upperBound"/>
+            <ci:clause>
+                <ci:term>!upperBound=aboveThreshold</ci:term>
+                <ci:term>lowerBound=aboveThreshold</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!lowerBound=belowThreshold</ci:term>
+                <ci:term>upperBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="range" name="test.pv.lO2FeedLineOut.temperature.lO2">
+            <ci:attribute type="thresholdValues" name="lowerBound"/>
+            <ci:attribute type="thresholdValues" name="upperBound"/>
+            <ci:clause>
+                <ci:term>!upperBound=aboveThreshold</ci:term>
+                <ci:term>lowerBound=aboveThreshold</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!lowerBound=belowThreshold</ci:term>
+                <ci:term>upperBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="lO2TankTemperature" name="test.pv.lO2FeedLineOut.temperature"/>
+        <ci:component type="range" name="test.pv.lO2FeedLineOut.pressure.bleedRate">
+            <ci:attribute type="thresholdValues" name="lowerBound"/>
+            <ci:attribute type="thresholdValues" name="upperBound"/>
+            <ci:clause>
+                <ci:term>!upperBound=aboveThreshold</ci:term>
+                <ci:term>lowerBound=aboveThreshold</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!lowerBound=belowThreshold</ci:term>
+                <ci:term>upperBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="lO2FeedLinePressure" name="test.pv.lO2FeedLineOut.pressure"/>
+        <ci:component type="lO2FeedLine" name="test.pv.lO2FeedLineOut"/>
+        <ci:component type="range" name="test.pv.lO2FeedLineIn.flow.bleed">
+            <ci:attribute type="thresholdValues" name="lowerBound"/>
+            <ci:attribute type="thresholdValues" name="upperBound"/>
+            <ci:clause>
+                <ci:term>!upperBound=aboveThreshold</ci:term>
+                <ci:term>lowerBound=aboveThreshold</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!lowerBound=belowThreshold</ci:term>
+                <ci:term>upperBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="lO2FeedLineFlow" name="test.pv.lO2FeedLineIn.flow">
+            <ci:attribute type="signValues" name="sign"/>
+            <ci:clause>
+                <ci:term>!bleed.lowerBound=aboveThreshold</ci:term>
+                <ci:term>sign=positive</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!sign=zero</ci:term>
+                <ci:term>bleed.lowerBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="range" name="test.pv.lO2FeedLineIn.temperature.lO2Tank">
+            <ci:attribute type="thresholdValues" name="lowerBound"/>
+            <ci:attribute type="thresholdValues" name="upperBound"/>
+            <ci:clause>
+                <ci:term>!upperBound=aboveThreshold</ci:term>
+                <ci:term>lowerBound=aboveThreshold</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!lowerBound=belowThreshold</ci:term>
+                <ci:term>upperBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="range" name="test.pv.lO2FeedLineIn.temperature.lO2">
+            <ci:attribute type="thresholdValues" name="lowerBound"/>
+            <ci:attribute type="thresholdValues" name="upperBound"/>
+            <ci:clause>
+                <ci:term>!upperBound=aboveThreshold</ci:term>
+                <ci:term>lowerBound=aboveThreshold</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!lowerBound=belowThreshold</ci:term>
+                <ci:term>upperBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="lO2TankTemperature" name="test.pv.lO2FeedLineIn.temperature"/>
+        <ci:component type="range" name="test.pv.lO2FeedLineIn.pressure.bleedRate">
+            <ci:attribute type="thresholdValues" name="lowerBound"/>
+            <ci:attribute type="thresholdValues" name="upperBound"/>
+            <ci:clause>
+                <ci:term>!upperBound=aboveThreshold</ci:term>
+                <ci:term>lowerBound=aboveThreshold</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!lowerBound=belowThreshold</ci:term>
+                <ci:term>upperBound=belowThreshold</ci:term>
+            </ci:clause>
+        </ci:component>
+        <ci:component type="lO2FeedLinePressure" name="test.pv.lO2FeedLineIn.pressure"/>
+        <ci:component type="lO2FeedLine" name="test.pv.lO2FeedLineIn"/>
+        <ci:component type="pneumaticValve" name="test.pv">
+            <ci:statevector vars="mode"/>
+            <ci:attribute type="openClosedValues" name="valvePosition"/>
+            <ci:attribute type="openClosedValues" name="valvePositionValue"/>
+            <ci:attribute type="thresholdValues" name="pneumaticsLineIn"/>
+            <ci:attribute type="pneumaticValve.ModeType" name="mode"/>
+            <ci:transition to="stuckOpen" probability="0.005" from="*" name="toStuckOpen"/>
+            <ci:transition to="stuckClosed" probability="0.005" from="*" name="toStuckClosed"/>
+            <ci:transition to="unknownFault" probability="1.0e-5" from="*" name="toUnknownFault"/>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.pressure.bleedRate.upperBound=lO2FeedLineIn.pressure.bleedRate.upperBound</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.pressure.bleedRate.lowerBound=lO2FeedLineIn.pressure.bleedRate.lowerBound</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.temperature.lO2.upperBound=lO2FeedLineIn.temperature.lO2.upperBound</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.temperature.lO2.lowerBound=lO2FeedLineIn.temperature.lO2.lowerBound</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.temperature.lO2Tank.upperBound=lO2FeedLineIn.temperature.lO2Tank.upperBound</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.temperature.lO2Tank.lowerBound=lO2FeedLineIn.temperature.lO2Tank.lowerBound</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.flow.bleed.upperBound=lO2FeedLineIn.flow.bleed.upperBound</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.flow.bleed.lowerBound=lO2FeedLineIn.flow.bleed.lowerBound</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=open</ci:term>
+                <ci:term>lO2FeedLineOut.flow.sign=lO2FeedLineIn.flow.sign</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=closed</ci:term>
+                <ci:term>lO2FeedLineIn.flow.sign=zero</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!valvePosition=closed</ci:term>
+                <ci:term>lO2FeedLineOut.flow.sign=zero</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>valvePositionValue=valvePosition</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!mode=stuckOpen</ci:term>
+                <ci:term>valvePosition=open</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!mode=nominal</ci:term>
+                <ci:term>!pneumaticsLineIn=aboveThreshold</ci:term>
+                <ci:term>valvePosition=open</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!mode=nominal</ci:term>
+                <ci:term>pneumaticsLineIn=aboveThreshold</ci:term>
+                <ci:term>valvePosition=closed</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>!mode=stuckClosed</ci:term>
+                <ci:term>valvePosition=closed</ci:term>
+            </ci:clause>
+            <ci:transition to="stuckOpen" from="stuckOpen">
+                <ci:clause/>
+            </ci:transition>
+            <ci:transition to="nominal" from="nominal">
+                <ci:clause/>
+            </ci:transition>
+            <ci:transition to="stuckClosed" from="stuckClosed">
+                <ci:clause/>
+            </ci:transition>
+            <ci:transition to="unknownFault" from="unknownFault">
+                <ci:clause/>
+            </ci:transition>
+        </ci:component>
+        <ci:component type="pneumaticValveAndMicroSwitches" name="test">
+            <ci:attribute type="closedIndicator" name="closedMicroSwitch"/>
+            <ci:attribute type="openIndicator" name="openMicroSwitch"/>
+            <ci:clause>
+                <ci:term>pv.valvePositionValue=closedMs.sensedPosition</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>pv.valvePositionValue=openMs.sensedPosition</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>openMs.positionReading=openMicroSwitch</ci:term>
+            </ci:clause>
+            <ci:clause>
+                <ci:term>closedMs.positionReading=closedMicroSwitch</ci:term>
+            </ci:clause>
+        </ci:component>
+    </componentinstance>
+    <mplHarness name="test" version="1.00">
+        <obs name="test.closedMicroSwitch"/>
+        <obs name="test.openMicroSwitch"/>
+    </mplHarness>
+    <mplInit name="test" version="1.00">
+        <assign eq="test.closedMs.mode=nominal"/>
+        <assign eq="test.openMs.mode=nominal"/>
+        <assign eq="test.pv.mode=nominal"/>
+    </mplInit>
+</xmpl>

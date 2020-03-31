@@ -1,0 +1,22 @@
+####
+#### See the file "l2-tools/disclaimers-and-notices.txt" for 
+#### information on usage and redistribution of this file, 
+#### and for a DISCLAIMER OF ALL WARRANTIES.
+####
+After generating LivingstoneCorba/*.java
+with
+$JAVA_HOME/bin/idlj -fall LivingstoneCorba.idl
+edit
+LivingstoneCorba/_LivingstoneCommandLineImplBase.java
+to be
+       case 0:  // LivingstoneCorba/LivingstoneCommandLine/command
+       {
+         String command = in.read_string ();
+=>       // print command to Skunkworks cmd line
+=>       System.out.println(command);
+         this.command (command);
+=>       // reissue prompt
+=>       System.out.print("======> ");
+         out = $rh.createReply();
+         break;
+

@@ -1,0 +1,14 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+OBJECTS=\
+	L2_string_map.o \
+	L2_string_map_listener.o \
+	T_system_debug.o \
+	conflict_db_debug.o \
+	domain.o \
+	livingstone_debug.o \
+	ltms_debug.o \
+	tracker_debug.o \
+	trajectory.o

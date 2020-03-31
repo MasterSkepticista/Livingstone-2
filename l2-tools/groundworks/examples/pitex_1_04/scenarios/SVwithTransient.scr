@@ -1,0 +1,8 @@
+scenario SVwithTransient solenoidValvewithTransient
+assign test.pneumaticLineIn=aboveThreshold
+assign test.pneumaticLineOut=aboveThreshold
+progress test.valveCmdIn=close
+fc
+assign test.pneumaticLineOut=belowThreshold
+progress test.timerExpiration=on
+fc

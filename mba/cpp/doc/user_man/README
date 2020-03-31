@@ -1,0 +1,10 @@
+The files in this directory are used to build a manual for L2.
+
+Modify the *.manual files ; the other files are generated from them.
+
+If you change any of the files, make sure to update l2.manual to update
+the DATE and VERSION.
+
+That done, re-make the manuals which are stored in the CVS repository:
+        make manuals
+Only then should you check in.

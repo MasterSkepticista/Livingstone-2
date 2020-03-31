@@ -1,0 +1,51 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: l2test - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP12A.tmp" with contents
+[
+readersd.lib conflict_dbd.lib coverd.lib mba_utilsd.lib tmsd.lib xerces-c_1.lib debuggersd.lib transitiond.lib opsatd.lib livingstoned.lib apid.lib /subsystem:console /profile /debug /machine:I386 /out:"..\..\..\bin\l2test.exe" /libpath:"../../../../../support/xerces/Build/Win32/VC6/Debug" /libpath:"../../../lib" 
+.\Debug\l2test.obj
+\L2\mba\cpp\lib\coverd.lib
+\L2\mba\cpp\lib\debuggersd.lib
+\L2\mba\cpp\lib\opsatd.lib
+\L2\mba\cpp\lib\transitiond.lib
+\L2\mba\cpp\lib\readersd.lib
+\L2\mba\cpp\lib\livingstoned.lib
+\L2\mba\cpp\lib\apid.lib
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP12A.tmp"
+<h3>Output Window</h3>
+Linking...
+Microsoft (R) Incremental Linker Version 6.00.8168
+Copyright (C) Microsoft Corp 1992-1998. All rights reserved.
+
+readersd.lib conflict_dbd.lib coverd.lib mba_utilsd.lib tmsd.lib xerces-c_1.lib debuggersd.lib transitiond.lib opsatd.lib livingstoned.lib apid.lib /subsystem:console /profile /debug /machine:I386 "/out:..\..\..\bin\l2test.exe" "/libpath:../../../../../support/xerces/Build/Win32/VC6/Debug" "/libpath:../../../lib" 
+.\Debug\l2test.obj 
+\L2\mba\cpp\lib\coverd.lib 
+\L2\mba\cpp\lib\debuggersd.lib 
+\L2\mba\cpp\lib\opsatd.lib 
+\L2\mba\cpp\lib\transitiond.lib 
+\L2\mba\cpp\lib\readersd.lib 
+\L2\mba\cpp\lib\livingstoned.lib 
+\L2\mba\cpp\lib\apid.lib 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP12C.bat" with contents
+[
+@echo off
+copy ..\..\..\..\..\support\xerces\Build\Win32\VC6\Debug\xerces-c_1_1.dll ..\..\..\bin
+]
+Creating command line "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP12C.bat"
+Coping xerces-c_1_1.dll to bin directory
+        1 file(s) copied.
+
+
+
+<h3>Results</h3>
+l2test.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

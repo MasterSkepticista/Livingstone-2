@@ -1,0 +1,22 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# Allowable targets are:
+#	api_scr		-- normal utility executable
+TARGET=api_scr
+BINTARGET=api_scr
+CLEANFILES+=api_scr
+
+# dependencies
+DEPS_L=-l$(L2LIB) $(lXERCES)
+DEPS=$(loc_libXERCES) $(loc_libdir)/$(L2LIB_FILE)
+
+
+# build a command-line executable
+API_SCR_O=api_scr.o
+api_scr: $(API_SCR_O)
+	$(LINKEXEC) -o $@ $(API_SCR_O) $(DEPS_L) $(LIBS)
+
+# installing
+LIBINSTALL=$(DEPS:${loc_libdir}/lib%=${libdir}/lib%)

@@ -1,0 +1,198 @@
+@node Software components
+@section Major software components of L2
+
+
+L2 has three major software components:
+@image{components_image}
+@table @b
+    @item engine
+        The engine refers to the code that does the diagnosis and/or
+        recovery, along with the bookkeeping to make that task easier.
+    @item readers
+        The readers isolate the task of translating the model from one
+        format into another, in particular of loading the model from file
+        and issuing the calls to the engine to build the appropriate data
+        structures.
+    @item debuggers
+        The debuggers are non-flight code used in model development.
+        They are isolated in order to make it very easy to separate them
+        from the flight code.
+@end table
+
+In addition, three APIs are provided; one talks only to the readers,
+another to the readers and the engine, and a third to all three components.
+
+
+Data flows as follows:
+@image{dataflow_image}
+@itemize
+    @item The flight software issues commands and queries to the API, and
+          gets data back in response.
+    @item The API sends commands and data to the readers and the engine,
+          and gets data back from the engine.
+    @item The readers read data disk or memory, package it up and send
+          it to the engine.
+    @item The engine gets commands and data from both the readers (at
+          initialization time) and the API, and sends data to the API.
+    @item Non-flight: The human user can issue commands and queries to the
+          debuggers, and get data back.
+    @item Non-flight: The debuggers get callbacks from the readers and
+          the engine; can query the engine; and can issue commands to the
+          engine.
+@end itemize
+
+
+
+@menu
+* Components - Engine::
+* Components - Readers::
+* Components - Debuggers::
+@end menu
+
+@c ***************************************************************************
+
+@node Components - Engine
+@subsection The L2 engine
+
+The engine has four main levels.  Each level has a set of classes
+that implement the functionality in that level.
+
+@image{engine_classes}
+@menu
+The four main engine data types:
+* class LTMS::
+* class Conflict_db::
+* class T_system::
+* class Tracker::
+@end menu
+
+@node class LTMS
+@subsubsection LTMS
+
+@c Later, these should be nodes unto themselves.
+@anchor{class Proposition}
+@anchor{class Clause}
+
+The LTMS (logic-based truth maintenance system) is responsible for
+propagating values through the model @cite{de Kleer}.  At this level, we use a
+propositional theory: we have propositions (@pxref{class Proposition})
+which can be true or false ; and clauses (@pxref{class Clause}) in CNF.
+The system is satisfied by satisfying all clauses ; a clause is satisfied
+when any of its literals is true (that is, a proposition that appears as
+literals is true, or one that appears negated is false).  We use unit
+propagation, which is imcomplete but very fast (linear-time) and in
+practice adequate.
+
+Clauses can be volatile or non-volatile.  This is a nod to the fact that
+some clauses will be added once and only removed in truncation, while
+others -- those that implement assignable variables (@pxref{class
+Assignable}) -- will change often.  The propagation prefers to use
+non-volatile clauses to volatile ones, so that de-asserting a volatile
+clause will undo less of the inference.
+
+The LTMS class inherits from Ptheory.  This is intended to allow easily
+changing the propagation algorithms.  However, the evolution of the classes
+means that this is no longer a practical proposition; most likely, the two
+should be melded for a slight improvement in all aspects (code clarity,
+code size, CPU time, memory usage).
+
+
+@node class Conflict_db
+@subsubsection Conflict_db
+
+@c Later, these should be nodes unto themselves
+@anchor{class Assignment}
+@anchor{class Conflict}
+
+The conflict database has a notion of variables and values; it translates
+from that view to the propositional view by having a proposition for each
+variable=value assignment.  It name comes from the fact that it discovers
+and stores conflicts between assignments -- in particular, it stores them
+as a list of assignments to variables marked as being assumed variables
+(@pxref{class Assumption}).
+
+@anchor{class Candidate}
+Candidates are probably misplaced.  These store the result of a diagnosis,
+and thus should be more closely affiliated with the Tracker (@pxref{class
+Tracker}).
+
+@c Later, these should be nodes unto themselves
+@anchor{class Variable}
+@anchor{class Dependent}
+@anchor{class Assignable}
+@anchor{class Assumption}
+
+The Conflict_db stores several types of variables; they are related to each
+other through the common base class Variable which is sufficiently
+functional to be used in most places.
+
+Note that the Variable class holds a datum, which can be used by
+higher-level data structures (and is in fact used by the T_system) to hold
+extra information with a variable.  However, before starting to actually
+use this, we sullied the separation between the conflict_db level and the
+T_system level by adding time, previous, and next fields to the variables.
+The Conflict_db does not itself use these, and the variable merely keeps
+them up to date when variables are destroyed.  These fields should be moved
+to the datum that the T_system attaches.
+
+
+@node class T_system
+@subsubsection T_system
+
+The T_system is the system that handles transitions across time.  The class
+implements both the @uref{../L2_refman/progress.html , , progress
+algorithm} which moves time forward and the
+@uref{../L2_refman/truncate.html , , truncate algorithm} which ensures we
+only store a constant-size time window.
+
+The T_system also maps from the modeler's perspective on variable types to
+the conflict database's types.  Commands and observables are mapped to
+assignable variables ; modes become transitioned variables ; everything
+else becomes dependent variables.
+
+@c Later, this should be a node unto itself.
+@anchor{class Transitioned}
+
+The @code{Transitioned} class implements the mechanism by which modes work.
+Each component has a current mode variable, which is an instance of this
+class.  Historical mode variables are represented by instances of the
+Dependent class.  In addition to having a mode variable, each mode variable
+has an assumption variable, which corresponds to whether the transition
+was nominal or off-nominal; these are refered to as mode-transition
+variables (@pxref{CBFS}, @pxref{Cover}).
+
+
+@node class Tracker
+@subsubsection Candidate tracker and search methods
+
+@c These should definitely be moved elsewhere, to a place where we
+@c discuss the algorithms.
+@anchor{Cover}
+@anchor{CBFS}
+
+The Tracker class is essentially a list of candidates.  It also intercepts
+attempts to create new timesteps (with progress), and calls truncate if the
+history table is full.
+
+The CBFS_tracker and Cover_tracker classes are subclasses of Tracker, and
+implement CBFS or conflict coverage search, respectively.  Most likely,
+these could be melded in with Tracker, and the search methods separated
+out from the data structure.
+
+
+@c ***************************************************************************
+
+@include readers.texi
+
+
+@c ***************************************************************************
+
+@node Components - Debuggers
+@subsection Support for model debugging
+
+The debuggers are non-flight code which help in model development and
+debugging.  One main feature they include is a mapping from strings to the
+integer IDs and data structures used internally.  They also provide much
+more visibility into the internal structure than is stricly necessary or
+safe, much as does a C++ debugger.
+

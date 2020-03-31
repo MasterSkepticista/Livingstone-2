@@ -1,0 +1,179 @@
+
+
+// Enumerations are like defvalues
+enum VdecuCmd  {on, off, noCommand}; 
+enum DriverCmd     {turnOn, turnOff, reset, open, close, noCommand};
+enum ValveCmd      {open, close, noCommand };
+enum ValvePosition {opened, closed};
+enum CheckSum {ok, corrupted};
+
+/// The valve actuator class
+
+class ValveActuator {
+    // These are attributes of objects of this class
+    public ValveCmd cmdIn; 
+    public ValvePosition position;
+    private enum ModeType {open, closed, stuckClosed, stuckOpen};
+    private ModeType mode;
+
+    // Specify that this attribute is a state variable or mode.
+    // This way we don't have to specify the variable name in all
+    // our transition statements.
+    statevector[mode];    
+
+    {
+	switch (mode) {
+	case open:
+	    position == opened;
+
+	case closed:
+	    position == closed;
+
+	case stuckClosed:
+	    position==closed;
+
+	case stuckOpen:
+	    position==opened;
+	}
+    }
+    /* Now we introduce the transition system.
+       Failures are of the form "failure name(from,to,probability)"
+       Nominal transitions are  "transition name(from,to,cost) {when}"
+       The * means "from any state". */
+
+    transition close(open,closed) {cmdIn == close;}
+    transition open(closed,open) {cmdIn == open;}
+
+    // Not sure if these two failures have to have two different names
+    failure stuckOpen(*,stuckOpen,likely) {}
+    failure stuckClosed(*,stuckClosed,likely) {}
+}
+
+
+class ValveSensor {
+   ValvePosition sensedPosition; 
+   ValvePosition reportedPosition; 
+   private enum ModeType  {nominal, unknown};
+   private ModeType mode;
+   statevector[mode];
+
+    {
+	// This is about as minimal as a component model gets 
+	// The unknown mode introduces no constraints.
+
+	if (mode==nominal)
+	    sensedPosition==reportedPosition;
+    }
+    failure failUnknown(*,unknown,rare){}
+}
+
+
+class Driver  {
+    DriverCmd cmdIn;
+    ValveCmd cmdOut; 
+    private enum ModeType {off, on, resettable, failed};
+    private ModeType mode;
+    statevector[mode];
+
+    {
+	switch (mode) {
+
+	case off:
+	    cmdOut == noCommand;
+
+	case on:
+	    if (cmdIn==open) 
+		cmdOut == open;
+	    else
+		if (cmdIn == close)
+		    cmdOut == close;
+		else
+		    cmdOut == noCommand;
+
+	case resettable: 
+	    cmdOut ==  noCommand;
+
+	case failed:
+	    cmdOut ==  noCommand;
+	}
+    }
+    transition turnOn(off,on) {cmdIn == turnOn;}
+    transition turnOn(on,off) {cmdIn == turnOff;}
+    transition reset(resettable,off) {cmdIn == reset;}
+
+    failure hang(*,resettable,likely) {}
+    failure fry(*,failed,rare) {}
+}
+
+class Valve  {
+   DriverCmd cmdIn;
+   ValvePosition reportedPosition;
+   Driver vdriver;
+   ValveSensor sensor;
+   ValveActuator actuator;
+
+  {
+   vdriver.cmdIn= cmdIn;
+   vdriver.cmdOut= actuator.cmdIn;
+
+   actuator.position = sensor.sensedPosition;
+   reportedPosition = sensor.reportedPosition;
+   }
+}
+
+
+class Vdecu  {
+  VdecuCmd cmdIn;  
+  DriverCmd cmd1In;
+  DriverCmd cmd2In;  
+
+  DriverCmd cmd1Out;
+  DriverCmd cmd2Out;
+  private enum ModeType {on, off};
+  private ModeType mode; 
+  statevector[mode];
+
+  {
+      switch (mode) {
+
+      case off:
+	  cmd1Out==noCommand;
+	  cmd2Out==noCommand;
+
+      case on:
+	  cmd1Out==cmd1In;
+	  cmd2Out==cmd2In;
+      }
+  }
+    transition turnOn(off,on) { cmdIn == on;}
+    transition turnOff(on,off) { cmdIn == off;}
+}
+
+
+
+class TwoValveSystem  {
+   DriverCmd  cmd1;
+   DriverCmd  cmd2;
+   ValvePosition  pos1;
+   ValvePosition  pos2;
+   VdecuCmd  vdecuCmd;
+
+  Vdecu  vdecu1;
+  Valve  valve1;
+  Valve  valve2;
+
+  {
+   vdecuCmd= vdecu1.cmdIn;
+   cmd1= vdecu1.cmd1In;
+   cmd2=  vdecu1.cmd2In;
+   vdecu1.cmd1Out= valve1.cmdIn;
+   vdecu1.cmd2Out= valve2.cmdIn;
+
+   pos1= valve1.reportedPosition;
+   pos2= valve2.reportedPosition;
+   }
+}
+
+
+
+

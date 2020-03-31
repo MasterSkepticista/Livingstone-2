@@ -1,0 +1,747 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: conflict_db - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP10F.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\conflict_db\Assignable.cpp"
+"C:\L2\mba\cpp\src\conflict_db\Assignment.cpp"
+"C:\L2\mba\cpp\src\conflict_db\assumption.cpp"
+"C:\L2\mba\cpp\src\conflict_db\Candidate.cpp"
+"C:\L2\mba\cpp\src\conflict_db\Conflict.cpp"
+"C:\L2\mba\cpp\src\conflict_db\Conflict_db.cpp"
+"C:\L2\mba\cpp\src\conflict_db\Dependent.cpp"
+"C:\L2\mba\cpp\src\conflict_db\Variable.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP10F.tmp" 
+Creating command line "link.exe -lib /nologo /out:"../../lib/conflict_dbd.lib"  .\Debug\Assignable.obj .\Debug\Assignment.obj .\Debug\assumption.obj .\Debug\Candidate.obj .\Debug\Conflict.obj .\Debug\Conflict_db.obj .\Debug\Dependent.obj .\Debug\Variable.obj "
+<h3>Output Window</h3>
+Compiling...
+Assignable.cpp
+Assignment.cpp
+assumption.cpp
+Candidate.cpp
+Conflict.cpp
+Conflict_db.cpp
+Dependent.cpp
+Variable.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: mba_utils - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP110.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\mba_utils\array_allocator.cpp"
+"C:\L2\mba\cpp\src\mba_utils\Hash_table.cpp"
+"C:\L2\mba\cpp\src\mba_utils\stringops.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP110.tmp" 
+Creating command line "link.exe -lib /nologo /out:"../../lib/mba_utilsd.lib"  .\Debug\array_allocator.obj .\Debug\Hash_table.obj .\Debug\stringops.obj "
+<h3>Output Window</h3>
+Compiling...
+array_allocator.cpp
+Hash_table.cpp
+stringops.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: tms - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP111.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\tms\Clause.cpp"
+"C:\L2\mba\cpp\src\tms\LTMS.cpp"
+"C:\L2\mba\cpp\src\tms\Proposition.cpp"
+"C:\L2\mba\cpp\src\tms\Ptheory.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP111.tmp" 
+Creating command line "link.exe -lib /nologo /out:"../../lib/tmsd.lib"  .\Debug\Clause.obj .\Debug\LTMS.obj .\Debug\Proposition.obj .\Debug\Ptheory.obj \L2\mba\cpp\lib\mba_utilsd.lib "
+<h3>Output Window</h3>
+Compiling...
+Clause.cpp
+LTMS.cpp
+Proposition.cpp
+Ptheory.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: cover - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP112.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\cover\cover.cpp"
+"C:\L2\mba\cpp\src\cover\Cover_tracker.cpp"
+"C:\L2\mba\cpp\src\cover\Cover_tracker_debug.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP112.tmp" 
+Creating command line "link.exe -lib /nologo /out:"../../lib/coverd.lib"  .\Debug\cover.obj .\Debug\Cover_tracker.obj .\Debug\Cover_tracker_debug.obj \L2\mba\cpp\lib\tmsd.lib "
+<h3>Output Window</h3>
+Compiling...
+cover.cpp
+Cover_tracker.cpp
+Cover_tracker_debug.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: opsat - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP113.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\opsat\agenda_types.cpp"
+"C:\L2\mba\cpp\src\opsat\cbfs_agenda.cpp"
+"C:\L2\mba\cpp\src\opsat\cbfs_tracker.cpp"
+"C:\L2\mba\cpp\src\opsat\cbfs_tracker_debug.cpp"
+"C:\L2\mba\cpp\src\opsat\Opsat.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP113.tmp" 
+Creating command line "link.exe -lib /nologo /out:"../../lib/opsatd.lib"  .\Debug\agenda_types.obj .\Debug\cbfs_agenda.obj .\Debug\cbfs_tracker.obj .\Debug\cbfs_tracker_debug.obj .\Debug\Opsat.obj "
+<h3>Output Window</h3>
+Compiling...
+agenda_types.cpp
+cbfs_agenda.cpp
+cbfs_tracker.cpp
+cbfs_tracker_debug.cpp
+Opsat.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: XercesLib - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"..\..\..\..\..\Build\Win32\VC6\Debug\obj/Version.res" /i "\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\Platforms\Win32" /d "_DEBUG" "C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\Platforms\Win32\Version.rc"" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP114.tmp" with contents
+[
+/nologo /G6 /MDd /Ze /W3 /Gm /GX /ZI /Od /I "..\..\src" /I "..\..\src\dom" /I "..\..\..\..\..\src" /D "PROJ_XMLPARSER" /D "PROJ_XMLUTIL" /D "PROJ_PARSERS" /D "PROJ_SAX4C" /D "PROJ_DOM" /D "PROJ_VALIDATORS" /D "XML_SINGLEDLL" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "XML_USE_WIN32_TRANSCODER" /D "XML_USE_WIN32_MSGLOADER" /Fo"..\..\..\..\..\Build\Win32\VC6\Debug\obj/" /Fd"..\..\..\..\..\Build\Win32\VC6\Debug\obj/" /FD /c 
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\Platforms\Win32\Win32PlatformUtils.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\MsgLoaders\Win32\Win32MsgLoader.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\Transcoders\Win32\Win32TransService.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP114.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP115.tmp" with contents
+[
+/nologo /G6 /MDd /Za /W3 /Gm /GX /ZI /Od /I "..\..\src" /I "..\..\src\dom" /I "..\..\..\..\..\src" /D "PROJ_XMLPARSER" /D "PROJ_XMLUTIL" /D "PROJ_PARSERS" /D "PROJ_SAX4C" /D "PROJ_DOM" /D "PROJ_VALIDATORS" /D "XML_SINGLEDLL" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "XML_USE_WIN32_TRANSCODER" /D "XML_USE_WIN32_MSGLOADER" /Fo"..\..\..\..\..\Build\Win32\VC6\Debug\obj/" /Fd"..\..\..\..\..\Build\Win32\VC6\Debug\obj/" /FD /c 
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\BinFileInputStream.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\BinInputStream.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\BinMemInputStream.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\BitSet.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\HeaderDummy.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\KVStringPair.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\Mutexes.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\PlatformUtils.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\StringPool.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\TextOutputStream.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\TransService.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XML88591Transcoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLASCIITranscoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLChTranscoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLEBCDICTranscoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLException.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLIBM1140Transcoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLString.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLUCSTranscoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLUni.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLURL.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLUTF16Transcoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLWin1252Transcoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\util\XMLUTF8Transcoder.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\LocalFileInputSource.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\MemBufInputSource.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\StdInInputSource.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\URLInputSource.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLAttDef.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLAttr.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLBuffer.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLBufferMgr.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLContentModel.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLElementDecl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLEntityDecl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLNotationDecl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLRecognizer.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\framework\XMLValidator.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\internal\ElemStack.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\internal\ReaderMgr.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\internal\VecAttrListImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\internal\XMLReader.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\internal\XMLScanner.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\internal\XMLScanner2.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\sax\Dummy.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\sax\InputSource.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\sax\SAXParseException.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\parsers\DOMParser.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\parsers\SAXParser.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\AttrImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\CDATASectionImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\CharacterDataImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\CommentImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DeepNodeListImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DocumentFragmentImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DocumentImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DocumentTypeImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_Attr.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_CDATASection.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_CharacterData.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_Comment.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_Document.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_DocumentFragment.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_DocumentType.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_DOMException.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_DOMImplementation.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_Element.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_Entity.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_EntityReference.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_NamedNodeMap.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_Node.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_NodeFilter.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_NodeIterator.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_NodeList.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_Notation.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_ProcessingInstruction.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_Text.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOM_TreeWalker.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DomMemDebug.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DOMString.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\DStringPool.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\ElementDefinitionImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\ElementImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\EntityImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\EntityReferenceImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\NamedNodeMapImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\NodeImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\NodeIteratorImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\NodeListImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\NodeVector.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\NotationImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\ProcessingInstructionImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\RefCountedImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\TextImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\dom\TreeWalkerImpl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\CMBinaryOp.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\CMUnaryOp.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\ContentSpecNode.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\DFAContentModel.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\DTDAttDef.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\DTDAttDefList.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\DTDElementDecl.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\DTDValidator.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\DTDValidator2.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\MixedContentModel.cpp"
+"C:\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\src\validators\DTD\SimpleContentModel.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP115.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP116.tmp" with contents
+[
+kernel32.lib user32.lib /nologo /base:"0x10000000" /version:1.1 /subsystem:windows /dll /incremental:yes /pdb:"..\..\..\..\..\Build\Win32\VC6\Debug/xerces-c_1_1.pdb" /debug /machine:I386 /out:"..\..\..\..\..\Build\Win32\VC6\Debug/xerces-c_1_1.dll" /implib:"..\..\..\..\..\Build\Win32\VC6\Debug/xerces-c_1.lib" /pdbtype:sept 
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\Win32PlatformUtils.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\Win32MsgLoader.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\Win32TransService.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\BinFileInputStream.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\BinInputStream.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\BinMemInputStream.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\BitSet.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\HeaderDummy.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\KVStringPair.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\Mutexes.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\PlatformUtils.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\StringPool.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\TextOutputStream.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\TransService.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XML88591Transcoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLASCIITranscoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLChTranscoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLEBCDICTranscoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLException.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLIBM1140Transcoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLString.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLUCSTranscoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLUni.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLURL.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLUTF16Transcoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLWin1252Transcoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLUTF8Transcoder.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\LocalFileInputSource.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\MemBufInputSource.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\StdInInputSource.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\URLInputSource.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLAttDef.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLAttr.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLBuffer.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLBufferMgr.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLContentModel.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLElementDecl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLEntityDecl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLNotationDecl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLRecognizer.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLValidator.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\ElemStack.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\ReaderMgr.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\VecAttrListImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLReader.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLScanner.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\XMLScanner2.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\Dummy.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\InputSource.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\SAXParseException.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOMParser.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\SAXParser.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\AttrImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\CDATASectionImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\CharacterDataImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\CommentImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DeepNodeListImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DocumentFragmentImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DocumentImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DocumentTypeImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_Attr.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_CDATASection.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_CharacterData.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_Comment.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_Document.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_DocumentFragment.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_DocumentType.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_DOMException.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_DOMImplementation.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_Element.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_Entity.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_EntityReference.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_NamedNodeMap.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_Node.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_NodeFilter.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_NodeIterator.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_NodeList.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_Notation.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_ProcessingInstruction.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_Text.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOM_TreeWalker.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DomMemDebug.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DOMString.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DStringPool.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\ElementDefinitionImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\ElementImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\EntityImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\EntityReferenceImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\NamedNodeMapImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\NodeImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\NodeIteratorImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\NodeListImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\NodeVector.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\NotationImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\ProcessingInstructionImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\RefCountedImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\TextImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\TreeWalkerImpl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\CMBinaryOp.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\CMUnaryOp.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\ContentSpecNode.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DFAContentModel.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DTDAttDef.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DTDAttDefList.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DTDElementDecl.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DTDValidator.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\DTDValidator2.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\MixedContentModel.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\SimpleContentModel.obj"
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\obj\Version.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP116.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+Win32PlatformUtils.cpp
+Win32MsgLoader.cpp
+Win32TransService.cpp
+Generating Code...
+Compiling...
+BinFileInputStream.cpp
+BinInputStream.cpp
+BinMemInputStream.cpp
+BitSet.cpp
+HeaderDummy.cpp
+KVStringPair.cpp
+Mutexes.cpp
+PlatformUtils.cpp
+StringPool.cpp
+TextOutputStream.cpp
+TransService.cpp
+XML88591Transcoder.cpp
+XMLASCIITranscoder.cpp
+XMLChTranscoder.cpp
+XMLEBCDICTranscoder.cpp
+XMLException.cpp
+XMLIBM1140Transcoder.cpp
+XMLString.cpp
+XMLUCSTranscoder.cpp
+XMLUni.cpp
+Generating Code...
+Compiling...
+XMLURL.cpp
+XMLUTF16Transcoder.cpp
+XMLWin1252Transcoder.cpp
+XMLUTF8Transcoder.cpp
+LocalFileInputSource.cpp
+MemBufInputSource.cpp
+StdInInputSource.cpp
+URLInputSource.cpp
+XMLAttDef.cpp
+XMLAttr.cpp
+XMLBuffer.cpp
+XMLBufferMgr.cpp
+XMLContentModel.cpp
+XMLElementDecl.cpp
+XMLEntityDecl.cpp
+XMLNotationDecl.cpp
+XMLRecognizer.cpp
+XMLValidator.cpp
+ElemStack.cpp
+ReaderMgr.cpp
+Generating Code...
+Compiling...
+VecAttrListImpl.cpp
+XMLReader.cpp
+XMLScanner.cpp
+XMLScanner2.cpp
+Dummy.cpp
+InputSource.cpp
+SAXParseException.cpp
+DOMParser.cpp
+SAXParser.cpp
+AttrImpl.cpp
+CDATASectionImpl.cpp
+CharacterDataImpl.cpp
+CommentImpl.cpp
+DeepNodeListImpl.cpp
+DocumentFragmentImpl.cpp
+DocumentImpl.cpp
+DocumentTypeImpl.cpp
+DOM_Attr.cpp
+DOM_CDATASection.cpp
+DOM_CharacterData.cpp
+Generating Code...
+Compiling...
+DOM_Comment.cpp
+DOM_Document.cpp
+DOM_DocumentFragment.cpp
+DOM_DocumentType.cpp
+DOM_DOMException.cpp
+DOM_DOMImplementation.cpp
+DOM_Element.cpp
+DOM_Entity.cpp
+DOM_EntityReference.cpp
+DOM_NamedNodeMap.cpp
+DOM_Node.cpp
+DOM_NodeFilter.cpp
+DOM_NodeIterator.cpp
+DOM_NodeList.cpp
+DOM_Notation.cpp
+DOM_ProcessingInstruction.cpp
+DOM_Text.cpp
+DOM_TreeWalker.cpp
+DomMemDebug.cpp
+DOMString.cpp
+Generating Code...
+Compiling...
+DStringPool.cpp
+ElementDefinitionImpl.cpp
+ElementImpl.cpp
+EntityImpl.cpp
+EntityReferenceImpl.cpp
+NamedNodeMapImpl.cpp
+NodeImpl.cpp
+NodeIteratorImpl.cpp
+NodeListImpl.cpp
+NodeVector.cpp
+NotationImpl.cpp
+ProcessingInstructionImpl.cpp
+RefCountedImpl.cpp
+TextImpl.cpp
+TreeWalkerImpl.cpp
+CMBinaryOp.cpp
+CMUnaryOp.cpp
+ContentSpecNode.cpp
+DFAContentModel.cpp
+DTDAttDef.cpp
+Generating Code...
+Compiling...
+DTDAttDefList.cpp
+DTDElementDecl.cpp
+DTDValidator.cpp
+DTDValidator2.cpp
+MixedContentModel.cpp
+SimpleContentModel.cpp
+Generating Code...
+Linking...
+   Creating library ..\..\..\..\..\Build\Win32\VC6\Debug/xerces-c_1.lib and object ..\..\..\..\..\Build\Win32\VC6\Debug/xerces-c_1.exp
+<h3>
+--------------------Configuration: transition - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11A.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\transition\CandidateEqClass.cpp"
+"C:\L2\mba\cpp\src\transition\T_system.cpp"
+"C:\L2\mba\cpp\src\transition\Tracker.cpp"
+"C:\L2\mba\cpp\src\transition\Transitioned.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11A.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11B.tmp" with contents
+[
+/nologo /out:"../../lib/transitiond.lib" 
+.\Debug\CandidateEqClass.obj
+.\Debug\T_system.obj
+.\Debug\Tracker.obj
+.\Debug\Transitioned.obj
+"\Documents and Settings\Administrator\My Documents\Downloads\L2-OSA-win_2.7.8.3.tar\support\xerces\Build\Win32\VC6\Debug\xerces-c_1.lib"
+\L2\mba\cpp\lib\conflict_dbd.lib
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11B.tmp"
+<h3>Output Window</h3>
+Compiling...
+CandidateEqClass.cpp
+T_system.cpp
+Tracker.cpp
+Transitioned.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: debuggers - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11D.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\debuggers\conflict_db_debug.cpp"
+"C:\L2\mba\cpp\src\debuggers\domain.cpp"
+"C:\L2\mba\cpp\src\debuggers\L2_string_map.cpp"
+"C:\L2\mba\cpp\src\debuggers\L2_string_map_listener.cpp"
+"C:\L2\mba\cpp\src\debuggers\livingstone_debug.cpp"
+"C:\L2\mba\cpp\src\debuggers\ltms_debug.cpp"
+"C:\L2\mba\cpp\src\debuggers\T_system_debug.cpp"
+"C:\L2\mba\cpp\src\debuggers\tracker_debug.cpp"
+"C:\L2\mba\cpp\src\debuggers\trajectory.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11D.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11E.tmp" with contents
+[
+/nologo /out:"../../lib/debuggersd.lib" 
+.\Debug\conflict_db_debug.obj
+.\Debug\domain.obj
+.\Debug\L2_string_map.obj
+.\Debug\L2_string_map_listener.obj
+.\Debug\livingstone_debug.obj
+.\Debug\ltms_debug.obj
+.\Debug\T_system_debug.obj
+.\Debug\tracker_debug.obj
+.\Debug\trajectory.obj
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11E.tmp"
+<h3>Output Window</h3>
+Compiling...
+conflict_db_debug.cpp
+domain.cpp
+L2_string_map.cpp
+L2_string_map_listener.cpp
+livingstone_debug.cpp
+ltms_debug.cpp
+T_system_debug.cpp
+tracker_debug.cpp
+trajectory.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: readers - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11F.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /I "../../../../support/xerces/src/" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\readers\clause.cpp"
+"C:\L2\mba\cpp\src\readers\enumeration.cpp"
+"C:\L2\mba\cpp\src\readers\from_any.cpp"
+"C:\L2\mba\cpp\src\readers\from_bin.cpp"
+"C:\L2\mba\cpp\src\readers\from_l2.cpp"
+"C:\L2\mba\cpp\src\readers\from_memory.cpp"
+"C:\L2\mba\cpp\src\readers\from_xmpl.cpp"
+"C:\L2\mba\cpp\src\readers\L2_file.cpp"
+"C:\L2\mba\cpp\src\readers\L2_file_translator.cpp"
+"C:\L2\mba\cpp\src\readers\livingstone_reader.cpp"
+"C:\L2\mba\cpp\src\readers\modes.cpp"
+"C:\L2\mba\cpp\src\readers\options.cpp"
+"C:\L2\mba\cpp\src\readers\proposition.cpp"
+"C:\L2\mba\cpp\src\readers\to_bin.cpp"
+"C:\L2\mba\cpp\src\readers\to_l2.cpp"
+"C:\L2\mba\cpp\src\readers\to_t_system.cpp"
+"C:\L2\mba\cpp\src\readers\transition.cpp"
+"C:\L2\mba\cpp\src\readers\variable.cpp"
+"C:\L2\mba\cpp\src\readers\xlate_merge_eq_vars.cpp"
+"C:\L2\mba\cpp\src\readers\xlate_remove_duplicates.cpp"
+"C:\L2\mba\cpp\src\readers\xlate_sort_props.cpp"
+"C:\L2\mba\cpp\src\readers\xlate_strip.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11F.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP120.tmp" with contents
+[
+/nologo /out:"../../lib/readersd.lib" 
+.\Debug\clause.obj
+.\Debug\enumeration.obj
+.\Debug\from_any.obj
+.\Debug\from_bin.obj
+.\Debug\from_l2.obj
+.\Debug\from_memory.obj
+.\Debug\from_xmpl.obj
+.\Debug\L2_file.obj
+.\Debug\L2_file_translator.obj
+.\Debug\livingstone_reader.obj
+.\Debug\modes.obj
+.\Debug\options.obj
+.\Debug\proposition.obj
+.\Debug\to_bin.obj
+.\Debug\to_l2.obj
+.\Debug\to_t_system.obj
+.\Debug\transition.obj
+.\Debug\variable.obj
+.\Debug\xlate_merge_eq_vars.obj
+.\Debug\xlate_remove_duplicates.obj
+.\Debug\xlate_sort_props.obj
+.\Debug\xlate_strip.obj
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP120.tmp"
+<h3>Output Window</h3>
+Compiling...
+clause.cpp
+enumeration.cpp
+from_any.cpp
+from_bin.cpp
+from_l2.cpp
+from_memory.cpp
+from_xmpl.cpp
+L2_file.cpp
+L2_file_translator.cpp
+livingstone_reader.cpp
+modes.cpp
+options.cpp
+proposition.cpp
+to_bin.cpp
+to_l2.cpp
+to_t_system.cpp
+transition.cpp
+variable.cpp
+xlate_merge_eq_vars.cpp
+xlate_remove_duplicates.cpp
+Generating Code...
+Compiling...
+xlate_sort_props.cpp
+xlate_strip.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: livingstone - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP121.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /I "../../../../support/xerces/src/" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\checkpoint\checkpoint.cpp"
+"C:\L2\mba\cpp\src\livingstone\L2_assert.cpp"
+"C:\L2\mba\cpp\src\livingstone\version.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP121.tmp" 
+Creating command line "link.exe -lib /nologo /out:"../../lib/livingstoned.lib"  .\Debug\checkpoint.obj .\Debug\L2_assert.obj .\Debug\version.obj "
+<h3>Output Window</h3>
+Compiling...
+checkpoint.cpp
+L2_assert.cpp
+Generating Code...
+Compiling...
+version.c
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: api - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP122.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\api\livingstone.cpp"
+"C:\L2\mba\cpp\src\api\parameters.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP122.tmp" 
+Creating command line "link.exe -lib /nologo /out:"../../lib/apid.lib"  .\Debug\livingstone.obj .\Debug\parameters.obj "
+<h3>Output Window</h3>
+Compiling...
+livingstone.cpp
+parameters.cpp
+Generating Code...
+Creating library...
+<h3>
+--------------------Configuration: livdll - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP123.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /I "../../../support/xerces/src/" /I "../../include/jdk1.3" /I "../../include/jdk1.3/win32" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LIVDLL_EXPORTS" /FR"Debug/" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\livdll\livdll.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP123.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP124.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../include" /I "../../../support/xerces/src/" /I "../../include/jdk1.3" /I "../../include/jdk1.3/win32" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LIVDLL_EXPORTS" /FR"Debug/" /Fp"Debug/livdll.pch" /Yc"..\..\include\livdll\stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\L2\mba\cpp\src\livdll\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP124.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP125.tmp" with contents
+[
+readersd.lib conflict_dbd.lib coverd.lib mba_utilsd.lib tmsd.lib xerces-c_1.lib debuggersd.lib transitiond.lib opsatd.lib livingstoned.lib apid.lib /nologo /dll /incremental:yes /pdb:"Debug/livdll.pdb" /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"livdll.dll " /implib:"..\..\lib/livdll.lib" /pdbtype:sept /libpath:"../../../../support/xerces/Build/Win32/VC6/Debug" /libpath:"../../lib" 
+.\Debug\livdll.obj
+.\Debug\StdAfx.obj
+\L2\mba\cpp\lib\conflict_dbd.lib
+\L2\mba\cpp\lib\coverd.lib
+\L2\mba\cpp\lib\mba_utilsd.lib
+\L2\mba\cpp\lib\opsatd.lib
+\L2\mba\cpp\lib\tmsd.lib
+\L2\mba\cpp\lib\transitiond.lib
+\L2\mba\cpp\lib\debuggersd.lib
+\L2\mba\cpp\lib\readersd.lib
+\L2\mba\cpp\lib\livingstoned.lib
+\L2\mba\cpp\lib\apid.lib
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP125.tmp"
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+Compiling...
+livdll.cpp
+Linking...
+   Creating library ..\..\lib/livdll.lib and object ..\..\lib/livdll.exp
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP129.bat" with contents
+[
+@echo off
+copy ..\..\..\..\support\xerces\Build\Win32\VC6\Debug\xerces-c_1_1.dll ..\..\lib
+copy livdll.dll ..\..\lib
+]
+Creating command line "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP129.bat"
+copy xerces-c_1_1.dll & livdll.dll to lib
+        1 file(s) copied.
+        1 file(s) copied.
+
+
+
+<h3>Results</h3>
+livdll.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

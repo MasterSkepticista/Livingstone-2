@@ -1,0 +1,15 @@
+
+In addition to the automatic translation, I had to
+
+1.  Change the cmd input 
+
+    z_valve_module.z_cell_1.heater.preheat to
+    z_valve_module.z_cell_1.heater.preheatCmd
+
+    z_valve_module.z_cell_2.heater.preheat to
+    z_valve_module.z_cell_2.heater.preheatCmd
+
+  Why:  The code needs to know which vars are commands.  
+        It should get this from the interface=cmd spec
+        in the attribute, but right now it looks for
+        cmd in the var name.  Yes, very lame.

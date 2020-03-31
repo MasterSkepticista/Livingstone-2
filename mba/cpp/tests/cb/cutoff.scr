@@ -1,0 +1,29 @@
+/// This test works will with the pre-1.1 cutoff code
+
+progress cbAndLed.cb1.cmdIn=on
+progress cbAndLed.cb2.cmdIn=on
+progress cbAndLed.cb3.cmdIn=on
+progress cbAndLed.cb4.cmdIn=on
+progress cbAndLed.cb5.cmdIn=on
+progress cbAndLed.cb6.cmdIn=on
+progress cbAndLed.cb7.cmdIn=on
+progress cbAndLed.cb8.cmdIn=on
+progress cbAndLed.cb9.cmdIn=on
+progress cbAndLed.cb10.cmdIn=on
+progress cbAndLed.cb11.cmdIn=on
+progress cbAndLed.cb12.cmdIn=on
+progress cbAndLed.cb13.cmdIn=on
+progress cbAndLed.cb14.cmdIn=on
+progress cbAndLed.cb15.cmdIn=on
+//
+assign cbAndLed.led8.ledState=off
+assign cbAndLed.led6.ledState=off
+//assign cbAndLed.led2.ledState=off
+fc
+assign cbAndLed.led5.ledState=on
+assign cbAndLed.led3.ledState=on
+assign cbAndLed.led7.ledState=on
+assign cbAndLed.led1.ledState=on
+fc
+
+

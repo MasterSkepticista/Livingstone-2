@@ -1,0 +1,495 @@
+@node l2test
+@section Command-line testing: @command{l2test}
+
+The @command{l2test} program runs livingstone models in a non-graphical
+interface.  The input is the same as the scenarios that Stanley
+@ref{stanley/skunkworks} produces.
+
+@menu
+* l2test invocation::   The Unix command-line switches
+* l2test commands::     What to type at the l2test prompt
+@end menu
+
+
+@c ****************************************
+@c l2test:l2test invocation
+
+@node l2test invocation
+@subsection Invoking l2test from the Unix/Windows shell
+
+Invoke @command{l2test} as follows:
+@example
+        l2test [switches] model
+@end example
+
+The switches can be before or after the model name.  The model name is
+either the full filename for models in the l2 and l2bin formats; or the
+filename less the extension for models in XMPL format.  For example, if you
+were in directory @file{mba/cpp/bin} you might run:
+@example
+        ./l2test -y1 ../tests/cb/cb --cover
+@end example
+
+The @option{-y1} option means to set the history length to 1;
+@file{../tests/cb/cb} corresponds to the XMPL-format model in the files
+@file{../tests/cb/cb.xmpl}, @file{.hrn}, and @file{.ini}; while
+@option{--cover} means to use conflict coverage search in diagnosis.
+
+@noindent
+All options have a GNU-style long name, prefixed by two dashes; not all
+options have a Unix-style short name (one letter prefixed by a single
+dash).  Options that take an argument can be written as the short name,
+with an optional space, then the argument value ; or the long name, an
+equal sign, no spaces, then the argument value.  For example: @samp{-y1},
+@samp{-y 1}, and @samp{--history=1} are all legal and mean the same thing,
+whereas @samp{-y=1} and @samp{--history = 1} are illegal.
+
+@table @code
+@item -h
+@itemx --help
+        No arguments.  Prints a brief description of all the options, and
+        exits immediately.
+
+@item --version
+        Print the version number and exit.
+
+@item -v
+@itemx --verbose
+        Sets the verbosity of various stages of reading files.  Provide it
+        as a string following the option.  The characters in the string
+        mean:
+        @table @key
+            @item r
+                Be very verbose when reading the model from file.
+            @item o
+                Be verbose when optimizing or doing other translations
+                to the model.
+            @item w
+                Be very verbose when `writing' the model into the engine.
+            @item A
+                All of the above.
+            @item -
+                For the characters after the minus sign, turn the verbosity
+                @emph{off} no matter what they had previously been set to.
+            @item
+                For the characters after the plus sign, turn the verbosity
+                @emph{on} no matter what they had previously been set to.
+                This is the default.
+        @end table
+
+@item -O
+@itemx --optimize
+        Optimize the model after loading it.  Off by default, implicitely
+        turned on by @kbd{--progress=min}.
+
+
+@item -p
+@itemx --progress
+        Whether to use minimal-progress or full-progress when we issue a
+        command.  The argument is @kbd{min} in the former case, @kbd{full}
+        in the latter case.  If using min-progress, we automatically
+        optimize.
+
+@item -y
+@itemx --history
+        Specify the history length.  Zero means to never implicitely
+        truncate.
+
+@item --max-truncate
+        Specify the number of candidates to keep through a truncation.
+        If there are more candidates when we truncate, the extra candidates
+        are eliminated from consideration.
+
+
+@item --cbfs
+        Use CBFS search rather than any other.  This is the default.
+
+@item --cbfs-candidates
+        Specify the maximum number of candidates CBFS will return.
+        The default is 5.
+
+@item --cbfs-search
+        Specify how many candidates to consider when searching.  The
+        default is 1000.  This option bounds the total number of candidates
+        in memory at any one time to twice n.
+
+@item --cover
+        Use conflict coverage (aka `Cover') search rather than any other.
+
+@item --cover-max-rank
+        Maximum-rank candidate to consider.  If we cannot find a candidate
+        with likelier rank than this, no candidates are returned.
+
+@end table
+
+
+@c ****************************************
+@c l2test:l2test commands
+
+@node l2test commands
+@subsection Commands to type at the l2test prompt
+
+
+There are a slew of commands to type at the @command{l2test} prompt.  The
+main ones to know are: @kbd{progress}, @kbd{assign}, and @kbd{fc}.  These
+are the commands which make up a typical Stanley script.  Also of interest
+in debugging: @kbd{install}, @kbd{values}, @kbd{times}, and @kbd{explain}.
+
+@table @command
+
+@item progress
+@itemx full-progress
+@itemx min-progress
+        Argument: optional @kbd{@var{cmd}=@var{value}}
+
+        The first form will run a full-progress or min-progress depending
+        on the @command{progress-style} chosen.  Of note: min-progress may
+        give inaccurate results without warning if the model is not
+        optimized.
+
+        With no argument, idles the system.
+
+        With one argument, notifies livingstone of a command.
+
+        In either case, time is incremented by one, and truncation happens
+        if we run out of room in the history tables.
+
+@item progress-style
+        Argument: optional @kbd{min} or @kbd{full}.
+
+        Without the argument, prints out the current value.
+
+        With one argument, specifies whether @command{progress} runs min-
+        or full-progress.
+
+
+@item fc
+@itemx find-candidates
+        No arguments.
+
+        Runs a diagnosis to find candidates in some way specified by
+        the @command{fc-style} chosen.  The default for CBFS is
+        @command{extend}, for Cover is @command{prune-and-search}.
+
+@item ff
+@itemx find-fresh
+        No arguments.
+
+        Throws away all previous candidates and searches for new ones.
+        This is slower, but always finds the most-likely candidates.
+
+@item ps
+@itemx prune-search
+        No arguments.
+
+        Prune the current set of candidates; if none are consistent,
+        search for new ones as per @command{find-fresh}.
+
+@item find
+        No arguments.
+
+        Only available with cover.  This is a synonym to
+        @command{find-fresh}.
+
+
+@item extend
+        No arguments.
+
+        Only available with CBFS, and it's the default for CBFS.
+        Takes all candidates, and uses them as the prefix for new
+        candidates.  Consistent candidates are returned unchanged;
+        inconsistent ones may have new failures added.
+
+@item fc-style
+        Argument: optional name.
+
+        With no arguments, prints out the current value of fc-style.
+
+        With one argument, specifies which of the above diagnosis methods
+        is used on an @kbd{fc}.  Allowable values are the name of each
+        method, or @kbd{default} to revert to using the search
+        method-dependent value (extend for CBFS, prune-and-search for
+        cover).
+
+
+@item install
+        Argument: index of candidate.
+
+        Installs a candidate in order to allow looking up its effects.
+        The index is taken from the printout from the diagnosis method,
+        or from @command{candidates}.
+
+        Installing a candidate has no effect on the future evolution of the
+        system.
+
+@item candidates
+        No arguments.
+
+        Lists all the candidates we believe.
+
+
+@item truncate
+        Argument: timestep of horizon.
+
+        Truncates off all variables before the horizon and summarizes
+        the candidates into the different values of the @kbd{state}
+        variable.
+
+        The horizon must be an integer; `now' is not an allowable value.
+        If the horizon predates the oldest timestep, the call is ignored.
+
+
+@item values
+        Argument: optional timestep.
+
+        Prints out all variables with their values, for the given timestep.
+        The timestep may be the string `now' in which case we print the
+        current values.
+
+        With no argument, prints out all variables.
+
+        The printout is sorted alphabetically.  The timestep of a variable
+        is considered part of the name, slightly unfortunately (10#var is
+        thus sorted before 9#var).
+
+@item times
+        Argument: optional variable name.
+
+        With no argument, prints out the earliest and current times in the
+        history.
+
+        With one argument, prints out the value of the variable at each
+        timestep where it exists.
+
+@item oldest-time
+        No argument.
+
+        Prints out the oldest time kept in the history.
+
+@item cmds
+        No argument.
+
+        Prints out the commanded variables at the current timestep, sorted
+        alphabetically.  Also prints the value, which is always unknown.
+
+@item observables
+        No argument.
+
+        Prints out the observed (aka monitored) variables at the current
+        timestep, sorted alphabetically, along with their values.
+
+@item transitioned
+        No argument.
+
+        Prints out the transitioned variables (aka modes) at the current
+        timestep, sorted alphabetically, along with their values.
+
+@item transitions
+        Argument: mode variable.
+
+        Prints out information about how a mode variable's value is set and
+        how it transitions in response to commands (or lack thereof).
+
+        If one of the clauses doesn't make sense, remember that they are an
+        attempt to translate from CNF to something easier to read;
+        sometimes, the automatic translation doesn't work well.  Try
+        negating one of the non-mode clauses on the right and moving it to
+        the left side if that makes more sense.
+
+@item discrepancy
+        No arguments.
+
+        If the system is consistent, says so.  If not, prints out only the
+        observations and commands that conflict with the current mode
+        assignment.
+
+        This must be done before the diagnosis; otherwise, there is no
+        conflict anywhere.
+
+@item state-var-style
+        Argument: optional `short' or `long'
+
+        With no arguments, prints out the current value (default is long).
+
+        With one argument, changes it.  `long' format prints out each
+        @code{state=si} assignment in a candidate as the trajectory it
+        encodes.  This is much more useful for debugging.  `short' format
+        prints them out as-is, which is largely useless.
+
+@item assign-mode
+        Argument: @code{@var{mode}=@var{value}}
+
+        Sets the current value of the @var{mode} variable.  Any link to
+        previous timesteps is cut off at that point.  This is largely only
+        useful in debugging, and for testing a feature that will be useful
+        in future development of Livingstone.
+
+@item assign
+        Argument: @code{@var{observed}=@var{value}}
+
+        Sets the current value of the @var{observed} variable.  This
+        corresponds to a monitor sending an event to Livingstone.  At
+        start-up, all observables are unassigned.
+
+@item unassign
+        Argument: @code{@var{observed}}
+
+        Unset the value of the @var{observed} variable.  An unassigned
+        variable causes no conflicts.  At start-up, all observables are
+        unassigned.
+
+@item conflict
+        No arguments.
+
+        Look for and return a conflict in the current state.  Obscure.
+
+@item conflicts
+        No arguments.
+
+        Return all conflicts that we know of in the current state.
+        Obscure.
+
+@item constraints
+        Argument: optional substring.
+
+        Return all constraints that contain the substring; with no
+        argument, this means all constraints.
+
+        They are printed in something approaching human-readable format,
+        otherwise, this command is identical to the @command{clauses}
+        command.
+
+@item domains
+        Argument: optional substring.
+
+        Print the domains that contain the substring (or all domains if
+        empty substring).
+
+@item variables
+        No argument.
+
+        Prints all the variables being held in memory, in the order in
+        which they appear in the internal representation (which happens
+        to be a list).  Mainly for debugging the engine proper, rather
+        than models.
+
+@item assumptions
+        No argument.
+
+        Prints out only the assumption variables (the modeTransition
+        variables, and the initial `state' variable).
+
+@item assignables
+        No argument.
+
+        Prints out all the assignable variables.  This includes
+        observables; commands; the same at previous timesteps (with
+        full-progress); and assumptions.
+
+@item remove
+        Argument: clause.
+
+        Removes a clause from the theory.  The clause is still in memory,
+        but propagation ignores it.
+
+@item add
+        Argument: clause.
+
+        Adds a clause to the theory.  The clause must either already
+        be in the theory (in which case this has no effect), or have
+        been previously removed, either by @command{remove} or implicitely.
+
+@item propagate
+        No argument.
+
+        Propagate the values in the TMS to compute the logical inferences
+        of the current set of clauses.
+
+@item partial_propagate
+        No argument.
+
+        Does a partial propagation; only propagates 50 literals.
+
+@item props
+        Argument: optional substring.
+
+        Prints out propositions containing the substring, along with
+        whether the proposition is believed to be true, false, or is
+        unknown.  Without a substring, prints all propositions.
+
+@item true
+        Argument: optional substring.
+
+        Prints out propositions containing the substring, as long as they
+        are true.  Without a substring, prints all true propositions.
+
+@item clauses
+        Argument: optional substring.
+
+        Prints out clauses containing the substring.  Removed clauses
+        are not printed.  Without a substring, print all clauses (except
+        removed ones).
+
+@item time
+        No argument.
+
+        Toggles whether to collect some crude timing information about
+        how long some commands take.  The time printed is the amount of
+        time this process spent on the CPU, which should be only minimally
+        affected by the load on the CPU by other tasks.
+
+@item explain
+@itemx support
+        Argument: proposition to explain.
+
+        Explains why a certain proposition was determined to be true or
+        false.  There is no explanation for why a proposition has unknown
+        truth.  The difference between the two is that @command{explain}
+        prints the entire decision tree back to the observations, initial
+        modes, and transitions; whereas @command{support} only prints the
+        first level of the tree.
+
+@item checkpoint
+@itemx ckpt
+        Argument: optional name of the checkpoint.
+
+        Stores a checkpoint, which allows later restoring the state of
+        Livingstone to this point.
+
+@item restore
+        Argument: optional name or index of the checkpoint.
+
+        Restores the state of livingstone to what it was when the
+        checkpoint was stored.
+
+        With no argument, restores the last-stored checkpoint.  With a
+        numeric argument, restores the ith checkpoint.  With an arbitrary
+        string, restores the checkpoint with that name.
+
+@item list-checkpoints
+@itemx list-ckpt
+        No argument.
+
+        List all checkpoints, in alphabetical order first and numerical
+        order second.
+
+@item stats
+@itemx tracker-stats
+@itemx cdb-stats
+@itemx ltms-stats
+        No argument.
+
+        Print out some potentially interesting statistics about the engine.
+        The @command{stats} command prints out all the levels; the other
+        commands print out the statistics about only a given level.
+
+@item restart
+        No argument.
+
+        Throws away all current state of Livingstone, and restarts
+        as if you'd exited and then run Livingstone using the same
+        options as before.  In particular, the files are re-read;
+        this means that if the model or parameter files were changed 
+        in the interim, the change will be reflected after the restart.
+
+@end table

@@ -1,0 +1,634 @@
+<html>
+
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+
+<head>
+<title>Basic Functionality of L2</title>
+</head>
+
+<body>
+<h1>Basic Functionality of L2</h1>
+
+Consider the following problem. We are given a set of variables and a
+set of constraints on those variables.  Each constraint is a restriction 
+on the way the variables may be assigned. A subset of the variables are
+marked as assumptions.  We may change the value of assumptions as we
+see fit.  Given an assignment to some of the variables, our task is to
+find an assignment to the assumptions so that none of the constraints
+are violated.  This is the basic functionality of the L2 software.
+
+<p>
+
+When we use L2, the assumption variables will be related to the states
+of devices in a physical system.  For example, we might assume that a
+valve in a hydraulic system has stuck open, or that it is operating
+normally and is closed.  We are free to make either assumption and see
+how it effects the constraints.  Other variables will represent other
+quantities such as the fluid flow through the valve.  The constraints
+will capture a description of each device we are modeling.  For
+example, the constraints would capture the relationship that when the
+valve is closed, the fluid flow through the valve is zero.  This
+constraint restricts what values we can assign to the assumption
+variable representing the valve state, given a value for the fluid
+flow.  If we were to assign the valve state assumption variable to
+closed, the constraint would require the fluid flow variable to have
+the value zero.  If the fluid flow value were assigned to a non-zero
+value, L2 would be forced to change the value of the assumption
+variable to stuck closed.  This is the basic operation of L2: assign
+certain variables (namely observations of conditions from a set of
+devices, and the commands sent to the devices) to known values, then
+search for an assignment to the assumption variables that result in
+no constraints being violated.  The assumptions then represent a
+consistent belief about the state of the devices (that is, a diagnosis
+or state estimate).
+
+<p>
+
+A simple schematic of how the L2 functionality is implemented is shown
+below.  We will refine the diagram as we add detail.  A database is
+provided to store the users's constraints and definitions of the
+problem's variables and their types.  The collection of constraints
+and variables is often called the <i>theory</i>. The user may also
+make assignments to variables (e.g. setting the valve flow to zero).
+Once these assignments are made, a search procedure makes assignments
+to the assumption variables in the database.  The database notifies
+the search procedure if the assignments is has made are consistent
+with the constraints and the user-supplied assignments.  If not, the
+search procedure makes a different assignment.  The database makes use
+of a consistency checker that checks an assignment for consistency
+with a set of constraints.
+
+<pre>
+  | Constraints and variable definitions
+  |    
+  |    | Assignments to non-assumption variables
+  |    |
+ \/   \/
+ +----------------+                                        +----------------+
+ | database       | <----Assignment to assumptions ------  |search procedure|
+ +----------------+  ---- Consistency flag---------------> +----------------+
+  |              /\ 
+  | Assignments  |  Consistency flag
+ \/              | 
+ +---------------------+ 
+ | consistency checker |
+ +---------------------+ 
+</pre>
+
+<p>
+A simple extension to this picture is cost.  If more than one
+assignment to the assumption variables is consistent, which should be
+chosen?  By giving a cost to each value each assumption variable can
+be assigned, we create a criteria the search procedure can use to
+guide its search.  The search procedure might define the cost of the
+assignment to all of the assumption variables as the sum or product of
+the cost of assignment to each of the assumption variables.  The
+search procedure might search for the highest or lowest cost
+consistent assignment, depending upon what the cost represents in the
+problem.  In L2 applications, the cost typically represents the prior
+probability of the failure that an assignment to the assumption
+variable represents (e.g. that the valve is stuck open).  Adding cost
+to the assumption assignments doesn't significantly change the flow
+diagram shown above.  It simply means the variable definitions must
+include cost information for every value of every assumption variable,
+and the search procedure must be able to request this information from
+the database.  We won't include this in the illustration.
+
+<p>
+The illustration above could describe a whole family of software
+systems designed to find the best-cost assignment that satisfies a set
+of constraints.  We will now specialize this to the kinds of
+constraints and consistency checks that are currently implemented in
+L2.  The diagram below illustrates the kind of constraint
+satisfication available in L2.  Again, we will add detail in a
+subsequent diagram after explaining this diagram.
+
+<pre>
+  | Logical constraints involving equality, and finite domain variables
+  |    
+  |    | Assignments to non-assumption variables
+  |    |
+ \/   \/
+ +----------------+                                        +----------------+
+ | database       | <----Assignment to assumptions ------  |conflict-based  | 
+ |                |  ---- Conflicts ---------------------> |search procedure| 
+ | conflicts      |                                        |                |
+ +----------------+  ---- Consistency flag---------------> +----------------+
+  |              /\ 
+  | Assignments  |  Consistency flag & a conflict if any
+ \/              | 
+ +---------------------+ 
+ | consistency checker |
+ +---------------------+ 
+</pre>
+
+<p>
+The L2 database currently accepts only variables of finite domain,
+similar to enumerations in programming languages.  Each variable is
+only able to take on a finite number of distinct values.  That is, the
+variable <b>flow </b> may have values <i>{zero, non-zero}</i>,
+<i>{low, medium, high}</i> or <i>{zero, below10, below20, below30,
+above30 }</i>.  A variable may not have an infinite range of values,
+such as the integers or the real numbers.
+
+<p>
+Constraints concern the equality of the values of variables.  The
+simplest type of constraint is an equality between a variable and a
+value or between two variables.  If <b>flow1</b> and <b>flow2</b> are
+variables of domain <i>{low, medium,high}</i> then "flow1=high" and
+"flow1=flow2" are valid simple constraints.  The simple constraint
+"flow1!=high" specifies that the value of <b>flow1</b> can be any
+value except high.  Logical connectors such as AND, OR and IMPLIES can
+be used to combine simple constraints.  For example, we might wish to
+express the constraint "valve1=open IMPLIES flow1=high" or
+"valve1=open OR flow1=low".  We provide an object-oriented modeling
+language for introducing variables and constraints, described 
+<a href="../jmpl/intro_to_jmpl.html">here</a>.
+
+<p>
+As in the more general case above, we must defined our variables,
+assignment costs, and constraints. We may then set some assignments
+and allow the search procedure can begin setting the assumption
+variable values in the attempt to find the best cost set of 
+assumption values that are consistent.  In order to speed the search,
+we add an additional feature to the consistency checker, the ability
+to identify conflicts between assumption values.  Simply put, a
+conflict is a set of assignments to assumption variables that, when
+made, causes the database to infer two inconsistent values for the
+same variable.  Any assignment the search procedure chooses for the
+assumptions that includes a conflict will again infer those
+inconsistent values.  The conflicts can therefore be used to guide the
+search procedure to avoid many assignments that are inconsistent.
+<p>
+For example, suppose we have two valves connected in series, plus a
+number of other devices. Our assumptions will include the state of the
+two valves, plus the state of the other devices. Our constraints might
+include "valve1=closed IMPLIES flow1=zero" and "valve2=closed IMPLIES
+flow1=zero".  That is, if either valve is closed, flow stops.  Suppose
+the user assigns "flow1=high".  Also suppose the first assignment the
+search procedure assigns includes "valve1=closed" and "valve2=closed".
+Based on the two constraints above, the database is able to infer
+"flow1=zero".  This is in conflict with the assignment
+"flow1=high".  The consistency checker traces back through the
+constraints used to infer the two conflicting values.  The
+value "flow1=high" was assigned by the user and involves no assumptions.
+The value "flow1=zero" was inferred by the assumption assignments
+"valve1=closed" and "valve2=closed".  The set,  
+<i>{"valve1=closed", "valve2=closed"}</i> is returned by the
+consistency checker as a conflict.  A smart search procedure will not
+consider any assignments that includes both of these values.
+If we have many assumptions other than the valve states, this can have
+the effect of ruling out a huge number of combinations of assumptions.
+
+<h1>Implementation of the Basic Functionality</h1>
+
+The basic functionality described above is implemented by the
+Conflict_db, LTMS and search procedure classes.  The diagram below
+gives an overview of their interactions.  The remainder of the section
+provides more detail.
+
+<ul> 
+ <li> normal font marks a method that is used when initializing the theory
+ <li> <b>bold</b> marks a method that is used at tracking time
+ <li> <i>italic</i> marks the return value for such a method
+ <li> <small>small</small> marks a method that is inherited but supplanted
+       by new functionality in the temporal database
+</ul> 
+
+
+<pre>
+ +-----------------------+ 
+ | User or theory reader |
+ +-----------------------+ 
+  |
+  | Create finite domain of <i>{value_1, value_2, ... value_n}</i>
+  | Create dependent, assignable or assumption variable
+  | Create constraint between variables
+  | <b>Assign variable=value</b>
+  | <b>find_candidates</b>
+  | 
+ \/ 
+ +----------------+                                      +----------------+
+ | Conflict_db    | <----<b>Assign assumptions</b> ------------ |                |
+ |                | <--+-<b>Check consistency</b>  ------------ |                |
+ |                |    +- <i>Consistency flag</i>-------------> |conflict-based  | 
+ | clause->       |                                      |search procedure| 
+ |   value map    | <--+-<b>get_conflicts</b>  ---------------- |                |
+ |                |    +---- <i>Variable value conflicts</i>--> |                |
+ | conflict store |                                      +----------------+ 
+ +----------------+
+  |              /\ 
+  |              |   
+  |              +------+
+  | Create proposition  |  
+  | Create clause       | 
+  | <b>Add clause</b>          |  
+  | <b>Delete clause</b>       |
+  | <b>Propagate</b>           | <i>Consistency flag</i>
+  | <b>Find conflict</b>       | <i>Clause conflict, if any</i>
+  |                     | 
+ \/                     | 
+ +------------------------------------------+ 
+ | TMS: A propositional consistency checker |
+ | with truth maintenance ability           |
+ +------------------------------------------+ 
+</pre>
+
+
+The class hierarchy for this section is 
+<a href="./conflict_db/inherits.html">here</a>.
+
+<h2>The Conflict_db class</h2>
+
+The conflict_db class implements the database described above.  It
+allows the user to create variables of finite domains and
+equality-based constraints involving variables and values.  It allows
+the user make assignments to variables and query if the current set of
+assignments are consistent with the constraints.
+
+<p>
+The conflict_db supports two classes of variables, assignable and
+dependent. Assignable variables may be assigned.  Dependent variables 
+have their value supplied via the constraints and the assignable
+variables.  A subclass of the assignable variables are the
+assumptions.  These are the assignable variables that a search
+procedure may modify in order to make the theory (the collection of
+variables and constraints) consistent.  When a variable is created, it
+must be specified as either dependent, assignable, or assumption.
+For an assumption, we must also supply the cost (usually interpretted
+as prior probability) of each value in the domain of the variable and
+a default value.  The default will be assigned before the search
+procedure assigns a value.
+<p>
+In addition to creating finite domains and variables, the conflict_db
+can be used to create constraints, assign values to assignable and
+assumption variables, and check for consistency.  If the theory is
+inconsistent, the conflict_db reports the conflicting assumption set
+(a conflict).  In addition, all conflicts that have been discovered 
+are stored in the conflict_db for use by search procedures.
+<p>
+Much of the functionality presented in the Conflict_db is implemented
+in a propositional inference system, the LTMS class.  In order to make
+use of the LTMS class, the Conflict_db casts the functionality it
+provides on variables of finite domain into queries on a propositional
+theory.  
+
+<h3>Conversion to a Propositional Theory</h3>
+
+The conflict_db class determines the consistency of a set of
+assignments and constraints by converting them to a propositional
+theory.  A propositional theory consists of a set of propositions
+(items that may be either true or false) and a set of clauses.  Each
+clause constrains which sets of propositions may be true
+simultaneously.  Each proposition represents the truth or falsehood of
+a variable having a specific value.  A clause represents a disjunction
+(OR) of propositions or negated propositions.  In order for the clause
+to be satisfied, a proposition it contains must be true, or a negated
+proposition it constains must be false.  After being created, a clause
+may be deleted.  In this case, it still exists, but is temporarily
+suspended and does not constrain its propositions.  If a deleted
+clause is added, it again constrains its propositions.
+<p>
+To represent a new variable, the conflict_db creates a set of
+propositions and clauses that represent the possible assignments to
+the variable. For example, if the variable <b>flow </b> may have
+values <i>{zero, non-zero}</i>, the conflict_db creates a proposition
+"flow=zero" and a proposition "flow=non-zero" to represent the
+possible values.  To ensure that flow never takes on more than one
+value, the conflict_db creates a clause of the form <i>NOT "flow=zero"
+OR NOT "flow=non-zero"</i>.  To represent that flow always has a value
+(regardless of whether or not we can infer what it is), it also
+creates a clause of the form <i>"flow=zero" OR "flow=non-zero"</i>.
+For assignable variables, the conflict_db also creates a clause
+containing the proposition that represents each value of the variable.
+That is, for flow, we have a clause containing only the proposition
+"flow=zero".  In order for this clause to be satisfied, the
+proposition "flow=zero" is forced to be true.  These clauses allow us
+to represent the assignment of a value to a variable by the user or
+search procedure.   Temporarily adding this type of clause forces the
+variable to have a value.  Deleting the clause unconstrains the value.
+<p>
+In addition to the clauses created to represent the variables, the
+user can create clauses that constrain the possible assignments to the
+variables.  For example, the constraint "valve1=open OR flow1=low" is
+converted to a clause between the propositions representing the two
+value assignments in the constraint.  There are simple logical
+transformations for representing OR, AND, IMPLIES, IF and so on.  
+<p>
+The Conflict_db class uses the LTMS class to create propositions and
+clauses, add and delete clauses, determine consistency, and find
+conflicts. 
+
+<h2>LTMS methods required to support the Conflict_db class</h2>
+
+The LTMS class implements a propositional inference system with truth
+maintenance capabilities.  It performs unit propagation.  
+The LTMS must support the following methods in order to support
+the basic L2 functionality.  Additional methods for temporal
+functionality are described below. For detail, see 
+<a href="tms/class_ltms.html">LTMS documentation</a>
+
+<ul>
+<p><li> create_proposition (int time_step=0) <br>
+     Creates a new proposition with the passed time step (see below).
+     This is currently implemented as get_proposition(name,time),
+     which finds or creates a proposition of  the passed name.  We
+     do not need to store the names of propositions in the LTMS.
+     
+<p><li> create_clause (  void * datum,  Slist< Proposition *>& positive,  
+                      Slist< Proposition *>& negative,  bool vol,   bool in_theory,   unsigned int time_step = 0 )  <br>
+      Creates a clause (a disjunction of positive and negative propositions).
+
+<p><li>  void delete_clause(Clause)<br>
+      Pulls the previously created out of the theory.  The clause
+      still exists in the LTMS, but it no longer constrains the
+      propositions it contains.
+
+<p><li>  void add_clause(Clause) <br>
+      Puts the previously created clause into the theory.  The clause
+      now constrains the propositions it contains.
+
+<p><li>  bool propagate(void) <br>
+      Performs propositional inference.  Returns True if the theory is
+      consistent, False if it is inconsistent.  
+
+<p><li>  void last_conflict(Slist<Clause>, bool (*predicate)(Clause))<br>   
+      
+      If the theory is inconistent, this method returns the conflict
+      causing the inconsistency.
+
+      If the theory is consistent, this method does
+      nothing. Otherwise, it finds one of the clauses that was found
+      to be unsatisfied.  Intuitively, the truth values we have
+      inferred for the propositions of the clause are such that
+      the clause can never be satisifed.  Thus, those truth values
+      cannot all co-exist and they are in conflict.   Rather than
+      simply returning those propositions, we trace back to the
+      clauses that constrained those propositions to have their
+      current values.  We can then trace the propositions in that
+      clause, and so on.   This method traces back through the
+      chain of inference that allowed it to infer the unsatisfying
+      truth values of the unsatisfied clause, collecting up each
+      clause that returns T from proposition.
+
+      Note: This is used by the conflict_db to find a conflict in terms
+      of those clauses that represent assumption assignments.  Conflict_db
+      indicates this by attaching the assignment object to the clause
+      in the clause's datum slot.  Conflict_db then calls this method
+      with a predicate that looks in the datum slot and checks for an assignment.
+</ul>   
+
+<h1>Adding Temporal Functionality to L2</h1>
+
+The Conflict_db and LTMS allow us to find consistent sets of
+assumption assignments in a finite-domain constraint system.  This
+allows us to create many applications such as software for basic
+diagnosis. In order to make writing applications involving time
+easier, we specialize the conflict database to a database with simple
+temporal capabilities.  In the Conflict_db, there is a single
+collection of variables and clauses with no particular structure.
+Conceptually in the temporal specialization, we have sets of variables
+and clauses representing discrete time steps.  Time is represented as
+a sequence of positive integers. Each variable belongs to a single
+time step.  Clauses are divided into those clauses that constrain
+variables within the same time step, referred to as state constraints,
+and those that constrain variables within the current and next time
+step, referred to as transitions.  Transitions represent constraints
+such as, "if the valve is open now, it receives the command to close,
+and no failures happen, it will be closed in the next time step".
+<p>
+Given the variables from a single time step t0 and the state
+constraints, we could set the variables that represent observations
+and employ the same search procedure used on the Conflict_db to find a
+consistent set of assignments to the assumptions found in time step
+t0.  We may also request that the temporal database create a new time
+step.  Conceptually, the temporal database creates a new copy of the
+variables to represent the system at time step t1 and creates a new
+copy of the state constraints that constrain these variables.  It also
+creates a copy of the transition constraints to place constraints
+between some of the variables in t0 and some of the variables in t1.
+We may again set the observation variables in t0 and t1 and employ our
+search procedures to find a consistent assignment to all of the
+assumptions found in the variables of t0 and t1.  Rather than a
+diagnosis at a single time step, these assumptions will represent the
+evolution of the system over several time steps. 
+<p>
+Note that the search procedure has no knowledge that the variables
+represent different points in time, or that some constraints go across
+time and some apply within a time step.  It simply finds a consistent
+assignment for the entire constraint system.  Similarly to perform a
+consistency check, a consistency checker such as the LTMS need not
+know that some propositions represent variable assignments at
+different time points than other propositions.
+<p>
+Of course, we cannot simply keep adding variables and constraints for
+an indefinite number of time steps.  At some point we will reach a
+memory limit for storing the theory, or a computation limit for
+searching over the growing theory.  Our temporal database must
+therefore provide a way of cutting off parts of the theory as we
+continue to add new time steps.  We achieve this by summarizing all of
+the variables in the oldest time steps in the theory into a single
+assumption and a small set of constraints.  <p>
+
+Suppose we have 10 time steps and our search procedure has thus far
+found two consistent assignments to the assumptions.  Suppose one
+assignment causes the variable representing the valve flow to have
+value "high" at time step t5. We'll indicate this by "5#flow=high".
+Suppose the other assignment enforces "5#flow=low".  Each of these
+values is constrained by the clauses and variable assignments in time
+steps t0 through t4.  Suppose we introduce a new assumption variable
+"History" with two values "h1" and "h2".  Suppose we now introduce the
+constraints 
+<ul>
+<li> "History=h1 IMPLIES 5#flow=high" 
+<li> "History=h2 IMPLIES 5#flow=low" 
+</ul>
+The assignments to History now have the same effect as the constraints
+and two consistent assignments to the assumptions in time steps t0
+through t4.  We may then throw out all constraints and variables in
+those time steps.  What we lose is the ability to search for other
+consistent assignments to the assumptions in time steps t0 through t4.
+We summarize only those that are known when we perform the
+summarization.
+
+
+<p>
+For a more detailed explanation and a number of diagrams that
+will eventually work their way into this document, please see
+<a
+href="http://ic-www.arc.nasa.gov/ic/projects/mba/abstracts/kurien-proposal.html">James
+Kurien's thesis proposal</a>.
+
+
+<h1>Implementation of Temporal Functionality</h1>
+
+The T_system (for transition system) class subclasses the Conflict_db
+class and and provides the needed temporal functionality.  At a high
+level, the additional functionality the T_system provides is:
+<ul>
+<li> Create a copy of the variables and state clauses for a new time step
+<li> Create the transitions that will provide constraints between the
+     last time step and the new time step
+<li> Truncate off the oldest time steps
+</ul>
+<p>
+MORE HERE
+<p>
+In order to enable the T_system to create copies of a single time
+step, it creates variables and state clauses slightly differently.  
+Methods are provided such that when the first time step of the model
+is created by the user, all the initial variables and clauses are
+recorded as being a model of a single time step.  When a new time step
+is created, the T_system creates a copy of these variables and
+clauses to represent the new time step.
+<p>
+
+
+
+
+<p>
+
+
+
+<h2>Call diagram</h2>
+<ul> 
+ <li> normal font marks a method that is used when initializing the theory
+ <li> <b>bold</b> marks a method that is used at tracking time
+ <li> <i>italic</i> marks the return value for such a method
+ <li> <small>small</small> marks a method that is inherited but supplanted
+       by new functionality in the temporal database
+</ul> 
+<pre>
+ +-----------------------+ 
+ | User or theory reader |
+ +-----------------------+ 
+  |
+  | Create finite domain of <i>{value_1, value_2, ... value_n}</i>
+  | <small> Create dependent, assignable or assumption variable</small>
+  | Create constraint between variables
+  | <b>Assign variable=value</b>
+  | <b>find_candidates</b>
+  |
+  | Temporal
+  | ------------
+  | Create dependent, command or observable variable
+  | Create transitioned variable & corresponding assumption
+  | Create transition clause between time steps for transitioned variable 
+  | <b>progress</b> 
+  | <b>truncate_history</b> 
+  | 
+ \/ 
+ +----------------+                                      +----------------+
+ | T_system       | <----<b>Assign assumptions</b> ------------ |                |
+ |                | <--+-<b>Check consistency</b>  ------------ |                |
+ | clause->       |    +- <i>Consistency flag</i>-------------> |conflict-based  | 
+ |  value map     |                                      |search procedure| 
+ |                | <--+-<b>get_conflicts</b>  ---------------- |                |
+ | cmd->transition|    +---- <i>Variable value conflicts</i>--> |                |
+ |  mapping       |                                      +----------------+  
+ |                |
+ | conflict store |
+ +----------------+
+  |              /\ 
+  |              |   
+  |              +------+
+  | Create proposition  |  
+  | Create clause       | 
+  | <b>Add clause</b>          |  
+  | <b>Delete clause</b>       |
+  | <b>Propagate</b>           | <i>Consistency flag</i>
+  | <b>Find conflict</b>       | <i>Conflicting clauses if any</i>
+  |                     |
+  | Temporal            |
+  | ------------        |
+  | <b>move_support</b>        |
+  | <b>add_summary_clause</b>  | <i>Summarizing clause</i>
+  | <b>remove_theory</b>       |
+  |                     |
+ \/                     | 
+ +------------------------------------------+ 
+ | TMS: A propositional consistency checker |
+ | with truth maintenance ability           |
+ +------------------------------------------+ 
+</pre>
+
+<h3>Development note: Where strings are currently used internally</h3>
+
+In order to introduce at each time step only those transitions that
+might be enable by the command that was given, the T_system keeps a
+mapping from command assignments to the set of transition clauses that
+are enabled by that command assignment.  When a command variable's
+value is assigned, the T_system looks up the assignment, reads out the
+transition clauses it appears in, and inserts those into the theory.
+
+Currently, the command to transition mapping that the T_system stores
+is stored in terms of the string representation.  That is, it includes
+the string "cmd=value", rather than the assignment object or
+proposition that represents the command assignment.  It also
+represents the clause to be introduced in the string form,
+for example (roughly speaking) as the string <p>
+"valveCmd=closed AND valve=open AND valveTransition=nominal IMPLIES next(valve)=closed"
+<p>
+This string represents a <i>proto-transition</i> clause.  That is, 
+this string can be used to instantiate the valve transition clauses
+between any two time steps where valveCmd=closed.  If we instantiate
+this proto-transition between time steps t3 and t4, the following
+transition clause results (roughly speaking):
+<p>
+3#valveCmd=closed AND 3#valve=open AND 3#valveTransition=nominal IMPLIES 4#valve=closed
+<p>
+Strings are currently used because they provided a very easy way to
+find the appropriate propositions to constrain.  That is, if the
+proto-transition contains "valveCmd=closed" and we wish to instantiate
+it at time step 3, we can form the string "3#valveCmd=closed" and
+query the LTMS to find the proposition with that name.  This was easy
+to implement but is slow.  There is a faster technique that is not yet
+implemented.   The details follow but are probably not worthwhile for
+anyone not involved in development.
+<p>
+Develoment detail: A faster technique would be to have the variables
+at the front of the model (the unchanging "current" time step) where
+the transition clauses are being added record a pointer to the
+variable that represents the same quantity in the previous time step.
+When we move time forward, the current variables update their pointers
+to the variables in the next to current time step.  Then we can store
+the transitions in terms of the current variables.  When we need to
+find that same variable one step in the past, we may simply follow its
+pointer to its predecessor.
+<p>
+
+
+
+<h2>Additional methods of the LTMS class to support T_system</h2>
+
+For detail, see <a href="tms/class_ltms.html">LTMS documentation</a>
+<ul>
+<li><b>
+void move_support(Proposition* prop, Slist<Clause*> clauses,
+Proposition* new_prop); </b><br>
+
+<p><li><b>
+void add_summary_clause(Theory::time_step_t index, Proposition &new_prop, bool move_support,
+						Slist<Clause*> &new_clauses);
+</b><br>
+Inserts a new, deleted clause of the form new_prop -> P for each
+proposition P that in time step index that is currently supported by a 
+clause whose time step is less than index.  Conceptually the new clause
+summarizes the chain of support for P.   Once all propositions of
+interest have had their support before a given time step summarized,
+the theory before the index can be removed with remove_theory.
+
+<p><li><b>
+void remove_theory(Theory::time_step_t start, Theory::time_step_t end);
+</b><br>
+Removes all propositions and clauses with indices between start and end
+from the theory.  In addition, any clauses that include propositions from
+the removed indices are removed as well.  This is useful for removing
+clauses that have been summarized by add_summary_clause.
+
+</body>
+</html>

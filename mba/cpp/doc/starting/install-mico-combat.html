@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Install MICO and Combat
+    </title>
+  </head>
+
+  <body>
+    <h1></h1>
+  <pre>
+Livingstone2 obtained under the NASA Open Source Agreement
+does not include the CORBA (Common Object Request Broker) functionality,
+since the MICO package is licensed under the GNU Public License.  The
+NASA Open Source Agreement, based on the Mozilla license, does allow
+commercialization, which is incompatible with the GNU Public License,
+which does not.  Thus to run the Stanley model builder, you must down
+load and build MICO (the C++ implementation of CORBA) and Combat
+(the Tcl/Tk bindings for CORBA).  Livingstone2/L2Tools/Stanley has 
+been tested with the following versions of these two packages, although
+future versions are also hopefully compatible.
+
+o Mico - Object Request Broker for Stanley
+  http://www.mico.org/
+
+  For unix/linux (source distribution 2.3.12):
+  http://www.mico.org/mico-2.3.12.tar.gz
+
+  For windows: (binary distribution - MICO-2.3.6):
+  See Combat 0.7.3 for windows, below.
+
+
+o Combat - Tcl/Tk language bindings for Mico
+  http://www.fpx.de/Combat/
+
+  For unix/linux (source distribution):
+   http://www.fpx.de/Combat/download/combat-0.7.3.tar.gz
+
+  For windows (binary distribution - MICO-2.3.6/Combat):
+    http://www.fpx.de/Combat/download/combat-win32.zip
+
+Unix/Linux Installation
+=======================
+In a Cygwin window:
+> tcsh
+> cd ..../support/stanley-support-src
+> mkdir mico combat-0.7.3
+
+> cd combat-0.7.3
+# download combat-0.7.3.tar.gz here
+> gunzip combat-0.7.3.tar.gz
+> gtar -xvf combat-0.7.3.tar
+
+> cd ../mico
+> mkdir 2.3.12
+> cd 2.3.12
+# download mico-2.3.12.tar.gz here
+> gunzip mico-2.3.12.tar.gz
+> gtar -xvf mico-2.3.12.tar
+
+
+# Edit combat-0.7.3/Makefile.in
+----------------
+## CPPFLAGS  = @DEFS@ @CPPFLAGS@ @BUILD_CPPFLAGS@
+CPPFLAGS  = @DEFS@ -UHAVE_NAMESPACE -I. @CPPFLAGS@ @BUILD_CPPFLAGS@
+
+Edit combat.cc, and request.cc
+---------------------
+PLACE THIS
+#undef HAVE_NAMESPACE
+BEFORE THIS
+#ifdef HAVE_NAMESPACE
+---------------------
+
+# Continue L2Tools/Stanley/Livingstone Installation 
+------------------------------------------------------
+See l2-tools/stanley-jmpl/README-STANLEY-VJMPL.txt
+
+<br><br><br>
+
+
+Windows Installation
+====================
+In a Cygwin window:
+> tcsh
+> cd ..../l2-tools/stanley-jmpl/support
+> mkdir combat-win32
+# download combat-win32.zip here
+> unzip combat-win32.zip
+> chmod a+x combat.dll
+
+# Continue L2Tools/Stanley/Livingstone Installation 
+------------------------------------------------------
+See l2-tools/stanley-jmpl/README-WINDOWS.txt
+
+
+</pre>
+
+    <hr>
+    <address><a href="mailto:william.m.taylor@nasa.gov">Will Taylor</a></address>
+<!-- Created: Tue Feb 17 15:40:22 PST 2004 -->
+<!-- hhmts start -->
+Last modified: Fri Apr 28 17:27:15 PDT 2006
+<!-- hhmts end -->
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+  <head>
+    <title>The Unknown Mode</title>
+  </head>
+
+  <body bgcolor="#FFFFEE">
+    <h1 align="center">The Unknown Mode</h1>
+
+    <p><p>
+    <a href="../index.html">Back to Main Page</a>
+    <p><p>
+
+    <h2>The Problem</h2>
+
+    <p>A Livingstone model requires the modeler to enumerate the "modes" of
+    each component in the model. Not only nominal (that is, normal or intended)
+    modes but also failure modes must be modeled. To model a mode involves
+    modeling the way the component enters and exits that mode.</p>
+
+    <p>It is possible -- in fact, probably inevitable -- for a model to be
+    incomplete in that either it does not enumerate every possible failure
+    mode, or it does not enumerate every possible transition into a modeled
+    failure mode. Furthermore, it is possible that Livingstone not receive
+    all Commands given to the device being modeled, so it loses track of the
+    device's mode.</p>
+
+    <p>If this is the case, Livingstone may be unable to add assumptions to
+    make the model consistent. This leads to Livingstone being unable to find
+    any Candidates.</p>
+
+    <h2>The Solution</h2>
+
+    <p>Livingstone modelers have addressed this problem by adding to each
+    multi-mode component a catch-all failure mode that, by convention, is
+    called the "unknown" mode (though it doesn't have to be named that). 
+    A device that has only one mode (perforce a nominal mode) does not need to
+    have an unknown failure mode.</p>
+
+    <p>For the catch-all "unknown" failure mode, there must be 
+    <ul>
+      <li>a clauseless transition into the catch-all "unknown" failure mode from
+          any other mode, and</li>
+      <li>a clauseless transition from the catch-all "unknown" failure mode to
+          itself.</li>
+    </ul>
+    There must not be
+    <ul>
+      <li>any transitions out of the "unknown" failure mode, or</li>
+      <li>any clauses that assert anything about the "unknown" failure mode.</li>
+    </ul>
+    Because the catch-all "unknown" failure mode is minimally constrained,
+    Livingstone will infer that the device is in this "unknown" failure mode
+    whenever its engine is unable to infer that it is in any other mode.</p>
+
+    <h2>The Ambiguity of Unknown</h2>
+
+    <p>Having a component mode named <b>unknown</b> conflicts with the allowable 
+    Livingstone variable value of <b>unknown</b>.  This is because 
+    the <b>unknown</b> value means that Livingstone could not determine 
+    which multi-mode proposition was true.  To disambiguate this situation,
+    the catch-all failure mode should be named something other than <b>unknown</b>, 
+    say <b>unknownFault</b>.</p>
+
+
+    <h2>An Example</h2>
+
+    <p>As an example, consider a device named "Thingamajig". Its nominal and
+    identified failure modes are "modeA", "modeB" and "modeC".</p>
+
+    <h3>Add the Catch-All Unknown Failure Mode</h3>
+
+    <p>To the enumerated nominal and failure modes, add the catch-all "unknown"
+    failure mode, here arbitrarily named "unknownFault":
+    <code><pre>
+    &lt;ci:attributetype name="thingamajig.ModeType"
+        members="modeA modeB modeC unknownFault"/&gt;
+    </pre></code></p>
+
+    <h3>Add the Transition into The Catch-All Unknown Failure Mode</h3>
+
+    <p>There must be a transition into the catch-all "unknown" failure mode from
+    any mode. To keep from inferring that this transition took place unless you
+    have no alternative, keep the probability low. The keyword "unknownFailureRank" 
+    signifies the lowest probability, exp(-10).
+    <code><pre>
+    &lt;ci:transition to="unknownFault" probability="unknownFailureRank" from="*" 
+        name="intoTheUnknown"/&gt;
+    </pre></code></p>
+
+    <h3>Add the Transition to Remain in The Catch-All Unknown Failure Mode</h3>
+
+    <p>There must be a transition from the catch-all "unknown" failure mode into
+    itself. This Transition must have a Clause with an empty set of Terms.
+    <code><pre>
+    &lt;ci:transition to="unknownFault" from="unknownFault"&gt;
+      &lt;ci:clause/&gt;
+    &lt;/ci:transition&gt;
+    </pre></code>
+
+    <h3>The Model Elements that Are Not There</h3>
+
+    <p>Make sure there is no other Transition in which the catch-all "unknown"
+    failure mode participates, and there is no Clause that asserts anything
+    about the catch-all "unknown" failure mode. Thus the name of the catch-all
+    "unknown" failure mode (in this example, "unknownFault") must appear exactly 4
+    times:
+    <ul>
+      <li>Once in the attribute type for the modes</li>
+      <li>Once in the transition into the catch-all "unknown" failure mode</li>
+      <li>Twice in the transition to remain in the catch-all "unknown" failure
+          mode</li>
+    </ul></p>
+
+  <h2>Side Effects</h2>
+
+  <p>Adding transitions to "unknown" failure modes will increase the number
+  of Candidate diagnoses that the Tracker finds. At best this is clutter; at
+  worst, when only a small number of Candidates are allowed, these "unknown"
+  Candidates displace more meaningful ones. The best policy is to give
+  transitions to "unknown" failure modes very low probabilities. This way, the
+  more meaningful Candidates, if any, will be returned first. The symbol
+  "unknownFailureRank" was designed for this purpose.</p>
+
+  <h2>Software Support</h2>
+
+  <p>Currently, nothing in Livingstone or Skunkworks requires that components
+  with multiple modes include a catch-all "unknown" failure mode. The
+  Livingstone XMPL reader or the JMPL compiler could be modified to check for
+  the existence of such a mode and possibly to insert such a mode when it is
+  found to be absent.</p>
+
+  <p>In Stanley, beginning with release 2.7.1, when the user creates a new component, 
+  a catch-all "unknown"
+  failure mode is automatically added with a name of <b>unknownFault</b>.
+  Stanley will not allow the user to name a new mode (ok or fault) <b>unknown</b>.
+  </p>
+
+  <h2>References</h2>
+
+  <p>The IJCAI paper on the Sherlock system mentions unknown failure modes.</p>
+
+  <p>Johan de Kleer and Brian C. Williams. 1989. Diagnosis with Behavioral
+  Modes, In <i>Proceedings of the International Joint Conference on Artificial
+  Intelligence</i>, Detroit, MI, pp. 1324-1330; also in <i>Readings in
+  Model-based Diagnosis</i>, Hamscher et al. eds., Morgan Kaufman, 1992, pp.
+  124-130.</p>
+
+    <hr>
+    <address><a href="mailto:lbrownston@ptolemy.arc.nasa.gov">Lee S. Brownston</a></address>
+    <address><a href="mailto:taylor@email.arc.nasa.gov">revised by Will Taylor</a></address>
+<!-- Created: Mon Oct  1 14:11:46 PDT 2001 -->
+<!-- hhmts start -->
+Last modified: Wed May  1 10:41:19 PDT 2002
+<!-- hhmts end -->
+    <p><p>
+    <a href="../index.html">Back to Main Page</a>
+    <p><p>
+
+  </body>
+</html>

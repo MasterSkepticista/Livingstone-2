@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>The Livingstone Reference Manual and doxygen</title>
+    
+  </head>
+
+  <body bgcolor="#FFFFEE">
+    <h1 align="center">The Livingstone Reference Manual and
+    <b><code>doxygen</code></b></h1>
+
+    <table border="0" width="100%"><tr><td width="10%">&nbsp;</td><td>
+
+    <p>The Livingstone Reference Manual uses the <b><code>doxygen</code></b>
+    document-generation system.</p>
+
+    <p><b><code>doxygen</code></b> is like <b><code>Javadoc</code></b> in that
+    it creates HTML documentation by extracting information from declarations,
+    definitions and comments in source files. Unlike
+    <b><code>Javadoc</code></b>, however, <b><code>doxygen</code></b> works
+    with C, C++ and IDL source files and can produce several different document
+    types. It also has many more features.</p>
+
+    <p>Because the Reference Manual involves hundreds of files and can be
+    reproduced (and customized) by anyone with the source code, these pages are
+    not distributed with the Livingstone source code. An up-to-date version of
+    these pages is served from the Skunkworks web site at
+    <a href=
+    "http://ic.arc.nasa.gov/projects/mba/projects/L2/doc/L2_refman/index.html">
+    http://ic.arc.nasa.gov/projects/mba/projects/L2/doc/L2_refman/index.html
+    </a>. This documentation is based on the <code>*.h</code> files only, and
+    is not cross-indexed to source code.</p>
+
+    <p>If you have the Livingstone source code and wish to install the
+    Livingstone Reference Manual at your site, you can generate the HTML pages
+    by extracting them yourself using <b><code>doxygen</code></b>. The present
+    document aims to make this process a bit easier.</p>
+
+    <h2>Installing <b><code>doxygen</code></b></h2>
+
+    <p><b><code>doxygen</code></b> is open source; you can download and install
+    it from the <b><code>doxygen</code></b> web site at
+    <a href="http://www.doxygen.org">http://www.doxygen.org</a>. If you have
+    additional tools in your environment, such as Qt and GraphViz, you can
+    interact with <b><code>doxygen</code></b> via a GUI, produce documentation
+    in formats other than HTML (e.g., LaTex, RTF or PDF) and generate more
+    sophisticated graphics, but you can produce useful HTML pages with only
+    the minimal required GNU tools (<code>flex</code>, <code>bison</code> and
+    <code>make</code>).</p>
+
+    <p>You can download a binary file for several operating systems. If it is
+    available for your environment, save yourself a lot of trouble and do
+    so.</p>
+
+    <p>If you can not download a binary, you will have to build the binary from
+    source. Download the tarball from the <code>doxygen</code> web site,
+    extract the source, and run the <code>configure</code> script.</p>
+
+    <p>You will almost certainly have to supply command-line options to
+    <code>configure</code>. In particular,
+    <ul>
+      <li>if you are not root, you will have to supply as value for the
+          <code>--prefix</code> option some directory into which the
+          <code>doxygen</code> binary will be written; and</li>
+      <li>you will probably have to specify the platform with the
+          <code>--platform</code> option, selected from those listed in file
+          PLATFORMS, which is part of the distribution.
+    </ul></p>
+
+    <p>Inclusion and collaboration graphs, which are included in the
+    <a href=
+    "http://ic.arc.nasa.gov/projects/mba/projects/L2/doc/L2_refman/index.html">
+    on-line Reference Manual</a>, require GraphViz, which you can download and
+    install. Running <code>doxygen</code> from a GUI and producing documentation
+    in other formats require additional software components.</p>
+    
+    <p>You might want to put the directory containing the executable into your
+    <code>PATH</code> environment variable.</p>
+
+    <h2>Generating the Documentation</h2>
+
+    <p>We have supplied a <b><code>doxygen</code></b> project file
+    <code>mba/cpp/doc/L2_refman/Doxyfile</code>. The HTML pages it produces
+    suit our purposes, but you might wish to customize this file to make the
+    HTML better suited for your needs. The <code>doxygen</code> developers made
+    sure that the project file is copiously self-documented, and you can get
+    additional documenation about the configuration parameters at
+    <a href="http://www.doxygen.org">the Doxygen web site</a>. After you are
+    satisfied with the contents of this project file, you can create the
+    documentation with the command:
+<code><pre>
+doxygen Doxyfile
+</pre></code>
+    If you are using <code>doxygen</code>'s GUI, you can use it to modify the
+    project file and create the documentation.</p>
+
+    <p>The supplied project file will place all the generated HTML, including
+    the root frameset page <code>index.html</code>, in directory
+    <code>mba/cpp/doc/L2_refman/html/</code>. Feel free to change this.
+    However, please note that the "main page" of the documentation comes from a
+    comment in file <code>mba/cpp/include/api/livingstone.h</code>. This main
+    page contains HTML links to non-<b><code>doxygen</code></b>-generated web
+    pages in directory <code>mba/cpp/doc/L2_refman/</code> and its siblings. If
+    you do not wish to preserve the default directory structure, you should
+    edit either this C++ header file or the generated HTML page(s) to fix or
+    remove the broken links.</p>
+
+    </td><td width="10%">&nbsp;</td></table>
+
+    <hr>
+    <address><a href="mailto:lbrownston@ptolemy.arc.nasa.gov">Lee S. Brownston</a></address>
+<!-- Created: Thu Dec  6 16:10:57 PST 2001 -->
+<!-- hhmts start -->
+Last modified: Tue Feb 12 14:39:41 PST 2002
+<!-- hhmts end -->
+  </body>
+</html>

@@ -1,0 +1,10 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.8 2001/11/16 23:52:57 lbrown Exp $
+
+# conflict_db_unit.o assignment_unit.o candidate_unit.o variable_unit.o
+
+OBJECTS = assignable.o assignment.o assumption.o candidate.o conflict.o \
+	conflict_db.o dependent.o variable.o 

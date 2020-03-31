@@ -1,0 +1,50 @@
+enum _3WayCmd
+{position1Cmd, position2Cmd, close, noCommand} {
+};
+
+   
+/// attributes of this type will determine componentmodule color in OPS mode
+enum displayStateValues
+{noData, unknown, ok, failed, high, nominal, low, positive, zero, negative,
+ open, closed, thrusting, quiescent, wet, dry, empty, filling, full, emptying}
+ {};
+
+
+/// Says that a sign must be exactly one of positive, negative
+/// or zero.
+enum signValues
+{positive, zero, negative} {
+
+relation signValuesLessThan ( signValues to) {
+(((this = negative) & ((to = zero) | (to = positive))) |
+  ((this = zero) & (to = positive)));
+}
+
+relation signValuesMoreThan ( signValues to) {
+(((this = positive) & ((to = zero) | (to = negative))) |
+ ((this = zero) & (to = negative)));
+}
+
+relation signValuesMoreThanZero ( ) {
+this = positive;
+}
+};      
+
+
+enum relativeValues
+{low, nominal, high} {
+
+relation relativeValuesLessThan ( relativeValues to) {
+((this = low) & ((to = nominal) | (to = high))) |
+ ((this = nominal) & (to = high));
+}
+
+relation relativeValuesMoreThan ( relativeValues to) {
+((this = high) & ((to = nominal) | (to =low))) |
+      ((this = nominal) & (to = low));
+}
+
+relation relativeValuesMoreThanZero ( ) {
+((this = high) | (this = nominal) | (this =low));
+}
+};    

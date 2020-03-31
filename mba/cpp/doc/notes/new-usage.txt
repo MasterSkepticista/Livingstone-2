@@ -1,0 +1,130 @@
+
+Here is a report on the usage of new in the code as of 9/12/2000.
+J. Kurien
+
+
+
+80 occurrences of new in the flight code.  They break down as follows.
+
+12 are in the search code, and will need to be addressed by setting a max search depth at startup
+11 are in the transition system representation, and can be addressed by defining the history size at start up
+28 are in the MBA utilities.  Many of these will have to be fixed to draw memory from a static pool.
+30 are in the real time API
+
+There are 15 occurences of new in non-flight code
+
+
+Search      - These are involved in the search agenda
+-------------------------------------------------------------------
+cpp\src\conflict_db\conflict_db.cpp(242):		conflict = 	new Conflict(conflicting_assignments);
+cpp\src\cover\cover.cpp(180):			   Candidate* candidate = new Candidate();
+cpp\src\opsat\opsat.cpp(89):	Candidate *next_candidate = new Candidate();
+cpp\include\conflict_db\conflict_db.h(55):	Dependent* dep = new Dependent(*this,name,domain,time_step);
+cpp\include\cover\cover_tracker.h(26):			candidates.push_front(new Candidate()); 
+cpp\include\opsat\agenda_types.h(108):	   resource = new Resource< SummingCBFSElement >(alloc_init_size,
+cpp\include\opsat\binaryheap.h(26):				T ** tmpdata = new T * [length + alloc_length];
+cpp\include\opsat\binaryheap.h(47):			data = new T * [alloc_length];
+cpp\include\opsat\cbfs_agenda.h(99):	if ( (element = new CBFSElementType() ) != NULL)
+cpp\include\opsat\cbfs_agenda.h(140):			if ( (element = new CBFSElementType(**cand_it) ) != NULL)
+cpp\include\opsat\cbfs_agenda.h(146):		if ( (element = new CBFSElementType() ) != NULL)
+cpp\include\opsat\cbfs_agenda.h(184):			T *new_element = new T(sub_candidate, tmp_item, new_items);
+
+Transition Structure   - Most of this can be eliminated by fixing the history size at compile time
+---------------------------------------------------------------------------------------------------
+cpp\src\conflict_db\assignable.cpp(55):	  Assignment* assignment =  new Assignment( this, (*values_it),(*weights_it));
+cpp\src\conflict_db\conflict_db.cpp(34):	Domain* domain = new Domain(name,value_names);
+cpp\src\conflict_db\conflict_db.cpp(53):	Assignable* assignable = new Assignable(*this,name,domain,costs,time_step);
+cpp\src\conflict_db\conflict_db.cpp(61):	Assumption* assumption = new Assumption(*this,name,domain,costs,time_step);
+cpp\src\tms\clause.cpp(55):  literals = new Proposition*[num_lits];
+cpp\src\tms\ptheory.cpp(29):    Clause* clause_p = new Clause(datum, positive, negative, vol, time_step);
+cpp\src\tms\ptheory.cpp(62):    Proposition* new_prop = new Proposition(str, time_step);
+cpp\src\transition\T_system.cpp(703):	Transitioned* trans = new Transitioned(*this,name,domain);
+cpp\src\transition\transitioned.cpp(118):    Proto_transition  *ptrans = new Proto_transition(t_system,name,*this,next);
+cpp\src\transition\transitioned.cpp(137):    Proto_transition * ptrans = new Proto_transition(t_system,name,*this,next,
+cpp\src\transition\transitioned.cpp(201):	Transitioned::Entry_type * new_entry = new Transitioned::Entry_type;
+
+Utililities   -  This code will have to be modified for static allocation 
+--------------------------------------------------------------------------------------------------
+cpp\src\mba_utils\alloc.cpp(35):      Alloc_memory* new_mem = new Alloc_memory(increment * unit_size);
+cpp\include\mba_utils\MBA_string.h(100):      data = new char[length + 1];
+cpp\include\mba_utils\MBA_string.h(107):      data = new char[length + 1];
+cpp\include\mba_utils\MBA_string.h(124):    : value(new String_value(init_value)) {}
+cpp\include\mba_utils\MBA_string.h(127):    :value(new String_value(init_value, n)) {}
+cpp\include\mba_utils\MBA_string.h(220):  value = new String_value(cs);
+cpp\include\mba_utils\alloc.h(62):      : next(0), raw_memory(new char[size]), curr(0)
+cpp\include\mba_utils\alloc.h(96):    memory(new Alloc_memory(init * unit_size)) 
+cpp\include\mba_utils\hash_table.h(149):  { table = new Slist<value_type>[table_size]; }
+cpp\include\mba_utils\hash_table.h(292):  table = new Slist<value_type>[table_size]; 
+cpp\include\mba_utils\resource.h(79):    : allocator(new Alloc(sizeof(Type),
+cpp\include\mba_utils\resource.h(107):    return ::new char[size];
+cpp\include\mba_utils\slist.h(86):	Slist(const_reference obj) : head(new Slist_item<Type>(obj)) {};
+cpp\include\mba_utils\slist.h(118):    head = new Slist_item<Type>(value, head);
+cpp\include\mba_utils\slist.h(290):      copy_p->next = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(293):      head = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(308):      copy_p->next = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(311):      head = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(317):      copy_p->next = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(320):      head = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(371):      aux_p->next = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(374):      head = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(420):    end->next = new Slist_item<Type>(value);
+cpp\include\mba_utils\slist.h(422):    head = new Slist_item<Type>(value);
+cpp\include\mba_utils\slist.h(481):	Slist_item<Type>* new_item = new Slist_item<Type>(value,next);
+cpp\include\mba_utils\slist.h(642):      copy_p->next = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist.h(645):      head = new Slist_item<Type>(item_p->item);
+cpp\include\mba_utils\slist_item.h(190):    resource = new Resource< Slist_item<Type> >(alloc_init_size,
+
+
+
+Real time API
+---------------------------------------------------------------------------------------------------
+cpp\src\realtime_api\posix\livapi_rt.cpp(14):   dispatcher = new LivingstoneDispatcher(&thequeue, thesystem, liv_report);
+cpp\src\realtime_api\posix\livapi_rt.cpp(46):   LivingstoneMessage *msg = new LivingstoneMessage(COMMAND, cmd_index, cmd_value);
+cpp\src\realtime_api\posix\livapi_rt.cpp(54):   LivingstoneMessage *msg = new LivingstoneMessage(OBSERVATION, obs_index, value_index);
+cpp\src\realtime_api\posix\livapi_rt.cpp(60):   LivingstoneMessage *msg = new LivingstoneMessage(FIND_CANDIDATES);
+cpp\src\realtime_api\posix\livapi_rt.cpp(66):   int *delay = new int;
+cpp\src\realtime_api\posix\livapi_rt.cpp(73):   LivingstoneMessage *msg = new LivingstoneMessage(COMMAND, cmd_index, cmd_value);
+cpp\src\realtime_api\posix\livapi_rt.cpp(80):   int *delay = new int;
+cpp\src\realtime_api\posix\livapi_rt.cpp(87):   LivingstoneMessage *msg = new LivingstoneMessage(OBSERVATION, obs_index, value_index);
+cpp\src\realtime_api\posix\livapi_rt.cpp(97):   LivingstoneMessage *msg = new LivingstoneMessage(REPORT_FULL_STATE);
+cpp\src\realtime_api\posix\livingstone_dispatcher.cpp(20):	LivingstoneMessage *msgnew = NULL;
+cpp\src\realtime_api\posix\timeout_handlers.cpp(17):	LivingstoneMessage *mptr = new LivingstoneMessage(FIND_CANDIDATES);
+cpp\src\realtime_api\posix\timeout_handlers.cpp(33):	LivingstoneMessage *mptr = new LivingstoneMessage(FIND_CANDIDATES);
+cpp\src\realtime_api\win32\guardedqueue.cpp(17):	notEmpty = new GuardCondition(this);
+cpp\src\realtime_api\win32\guardedqueue.cpp(18):	notFull = new GuardCondition(this);
+cpp\src\realtime_api\win32\guardedqueue.cpp(19):	isEmpty = new GuardCondition(this);
+cpp\src\realtime_api\win32\livapi_rt.cpp(23):		dispatcher = new LivingstoneDispatcher(&thequeue, thesystem, fp);
+cpp\src\realtime_api\win32\livapi_rt.cpp(61):	LivingstoneMessage *msg = new LivingstoneMessage(COMMAND, cmd_index, cmd_value);
+cpp\src\realtime_api\win32\livapi_rt.cpp(69):	LivingstoneMessage *msg = new LivingstoneMessage(OBSERVATION, obs_index, value_index);
+cpp\src\realtime_api\win32\livapi_rt.cpp(75):	LivingstoneMessage *msg = new LivingstoneMessage(FIND_CANDIDATES);
+cpp\src\realtime_api\win32\livapi_rt.cpp(86):		DWORD *delay = new DWORD;
+cpp\src\realtime_api\win32\livapi_rt.cpp(99):		int *delay = new int;
+cpp\src\realtime_api\win32\livapi_rt.cpp(106):	LivingstoneMessage *msg = new LivingstoneMessage(COMMAND, cmd_index, cmd_value);
+cpp\src\realtime_api\win32\livapi_rt.cpp(117):		DWORD *delay = new DWORD;
+cpp\src\realtime_api\win32\livapi_rt.cpp(128):		int *delay = new int;
+cpp\src\realtime_api\win32\livapi_rt.cpp(136):	LivingstoneMessage *msg = new LivingstoneMessage(OBSERVATION, obs_index, value_index);
+cpp\src\realtime_api\win32\livapi_rt.cpp(146):	LivingstoneMessage *msg = new LivingstoneMessage(REPORT_FULL_STATE);
+cpp\src\realtime_api\win32\livingstone_dispatcher.cpp(13): report_func(*(new ReportTransitions(fp, sys))), ThreadObject()
+cpp\src\realtime_api\win32\livingstone_dispatcher.cpp(21):	LivingstoneMessage *msgnew = NULL;
+cpp\src\realtime_api\win32\timeout_handlers.cpp(18):	LivingstoneMessage *mptr2 = new LivingstoneMessage(FIND_CANDIDATES);
+cpp\src\realtime_api\win32\timeout_handlers.cpp(41):	LivingstoneMessage *mptr2 = new LivingstoneMessage(FIND_CANDIDATES);
+
+
+Non-flight    This code need not be updated.
+--------------------------------------------------------------------------------------------------
+cpp\src\livdll\livdll.cpp(144):      new Livingstone<CBFS_tracker>( (int)max_candidates, (int)max_search, (int)max_history);
+cpp\src\livdll\livdll.cpp(171):      new Livingstone_debug<CBFS_tracker_debug, CBFS_tracker>( livingstone, cout);
+cpp\src\livdll\livdll.cpp(199):      new Livingstone<Cover_tracker>( (int)max_rank, (int)dummy, (int)max_history);
+cpp\src\livdll\livdll.cpp(228):      new Livingstone_debug<Cover_tracker_debug, Cover_tracker>( livingstone, cout);
+cpp\src\livdll\livdll.cpp(439):    err_str = new char[150];
+cpp\src\livdll\livdll.cpp(511):    err_str = new char[150];
+cpp\src\livdll\livdll.cpp(687):    err_str = new char[150];
+cpp\src\livdll\livdll.cpp(1234):    err_str = new char[150];
+cpp\src\liv_utils\api_gen\api_gen.cpp(14):	char * mystring = new char [length];
+cpp\src\transition\T_system_reader.cpp(625):	SAXParser * parser = new SAXParser;
+cpp\include\transition\T_system_debug.h(23):			system(t_sys), db_debugger (new Conflict_db_debug(t_sys,outstream) )
+cpp\include\livingstone\livingstone_debug.h(28):     tracker_debugger(new Search_tracker_debug_type(liv->tracker,outstream)) 
+cpp\include\transition\tracker_debug.h(18):	  system(tracker), t_system_debugger (new T_system_debug(tracker->t_system,outstream) )
+cpp\include\transition\tracker_reader.h(27):	Tracker_reader (Tracker &trkr) : tracker(&trkr), reader(new T_system_reader(trkr.t_system)){};
+
+

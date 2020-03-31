@@ -1,0 +1,127 @@
+
+
+// This sequence moves from the start state specified
+// in the .ini file to the actual start state.  The
+// two are distinct because of limitations in the
+// original Livingstone infrastructure.
+
+// The commands and monitors below are equivalent to the
+// function (setup-model-for-test) in the Lisp version of
+// this model.
+
+progress outlet.valve_1.cmd_in=open
+progress z_flow_module.shut_off_1.cmd_in=open
+progress z_flow_module.shut_off_2.cmd_in=open
+progress z_valve_module.valve_1.cmd_in=open
+progress z_valve_module.valve_2.cmd_in=open
+progress spump.inlet.valve_1.cmd_in=open
+progress spump.vent.valve_1.cmd_in=open
+
+assign spump.sorpressure=low 
+assign spump.heat=low
+assign z_valve_module.z_cell_1.cell.press=low
+assign z_valve_module.z_cell_1.cell.amps=off
+assign z_valve_module.z_cell_1.cell.temp=low
+assign z_valve_module.z_cell_1.cell.flow_out=off
+assign z_valve_module.z_cell_2.cell.press=low 
+assign z_valve_module.z_cell_2.cell.amps=off 
+assign z_valve_module.z_cell_2.cell.temp=low 
+assign z_valve_module.z_cell_2.cell.flow_out=off 
+assign z_flow_module.flow_sensor_1.flowrate=off
+assign z_flow_module.flow_sensor_2.flowrate=off
+
+///   Not sure that we need all this
+// Recieved Command (PREHEAT (HEATER (Z_CELL_1 Z_VALVE_MODULE)))=OFF
+// Recieved Command (PREHEAT (HEATER (Z_CELL_2 Z_VALVE_MODULE)))=OFF
+//
+//New non-empty monitors are (((HEAT SPUMP) LOW)
+//                            ((AMPS (CELL (Z_CELL_2 Z_VALVE_MODULE)))
+//                             OFF)
+//                            ((AMPS (CELL (Z_CELL_1 Z_VALVE_MODULE)))
+//                             OFF)
+//                            ((FLOW_OUT
+//                              (CELL (Z_CELL_1 Z_VALVE_MODULE)))
+//                             OFF)
+//                            ((TEMP (CELL (Z_CELL_1 Z_VALVE_MODULE)))
+//                             LOW)
+//                            ((SORPRESSURE SPUMP) LOW)
+//                            ((PRESS (CELL (Z_CELL_1 Z_VALVE_MODULE)))
+//                             LOW)
+//                            ((MEASURED_FLOW (SENS_1 Z_FLOW_MODULE))
+//                             OFF)
+//                            ((PRESS (CELL (Z_CELL_2 Z_VALVE_MODULE)))
+//                             LOW)
+//                            ((MEASURED_FLOW (SENS_2 Z_FLOW_MODULE))
+//                             OFF)
+//                            ((TEMP (CELL (Z_CELL_2 Z_VALVE_MODULE)))
+//                             LOW)
+//                            ((FLOW_OUT
+//                              (CELL (Z_CELL_2 Z_VALVE_MODULE)))
+//                             OFF))
+
+/// Real script appears to start here, but we may need to
+/// add in some of the above.
+
+progress spump.heater_a.cmd_in=on
+assign spump.heat=nominal
+assign spump.sorpressure=high
+
+progress z_valve_module.z_cell_1.heater.preheatCmd=on
+progress z_flow_module.control_2.cmd_in=low
+progress z_flow_module.control_1.cmd_in=low
+progress z_valve_module.z_cell_1.switch.cmd_in=on
+progress z_valve_module.z_cell_2.heater.preheatCmd=on
+progress z_valve_module.z_cell_2.switch.cmd_in=on
+progress outlet.valve_3.cmd_in=open
+
+assign z_valve_module.z_cell_2.cell.amps=nominal 
+assign z_valve_module.z_cell_1.cell.amps=nominal 
+assign z_valve_module.z_cell_1.cell.flow_out=on 
+assign z_valve_module.z_cell_1.cell.temp=nominal 
+assign z_valve_module.z_cell_1.cell.press=high 
+assign z_flow_module.flow_sensor_1.flowrate=low
+assign z_valve_module.z_cell_2.cell.press=high 
+assign z_flow_module.flow_sensor_2.flowrate=low
+assign z_valve_module.z_cell_2.cell.temp=nominal 
+assign z_valve_module.z_cell_2.cell.flow_out=on 
+
+/// This is causing a failure at this point.  The assignments
+/// may need to be interspersed with the cmds.
+
+
+progress z_valve_module.z_cell_1.heater.preheatCmd=off
+progress spump.vent.valve_1.cmd_in=close
+progress z_flow_module.control_2.cmd_in=off
+progress spump.inlet.valve_1.cmd_in=close
+progress z_flow_module.control_1.cmd_in=off
+progress z_valve_module.z_cell_1.switch.cmd_in=off
+progress z_valve_module.z_cell_2.heater.preheatCmd=off
+progress spump.inlet.valve_3.cmd_in=open
+progress z_valve_module.z_cell_2.switch.cmd_in=off
+progress outlet.valve_3.cmd_in=close
+progress spump.vent.valve_3.cmd_in=open
+
+assign z_valve_module.z_cell_2.cell.amps=off
+assign z_valve_module.z_cell_1.cell.amps=off
+assign z_valve_module.z_cell_1.cell.flow_out=off
+assign z_valve_module.z_cell_1.cell.temp=low
+assign z_valve_module.z_cell_1.cell.press=low
+assign z_flow_module.flow_sensor_1.flowrate=off
+assign z_valve_module.z_cell_2.cell.press=low
+assign z_flow_module.flow_sensor_2.flowrate=off
+assign z_valve_module.z_cell_2.cell.temp=low
+assign z_valve_module.z_cell_2.cell.flow_out=off
+fc
+
+// This next assignment should cause a failure of
+// either spump.inlet.valve_1 spump.vent.valve_1
+assign spump.sorpressure=low
+fc 
+
+progress spump.vent.valve_1.cmd_in=open
+progress spump.inlet.valve_1.cmd_in=open
+
+// This should cause a unknown heater fault
+assign spump.heat=low
+fc
+exit

@@ -1,0 +1,7 @@
+config.cache
+config.log
+config.status
+Makefile
+stamp-h.in
+g++ gcc
+bin lib share man info

@@ -1,0 +1,115 @@
+//
+// * See the file "l2-tools/disclaimers-and-notices.txt" for 
+// * information on usage and redistribution of this file, 
+// * and for a DISCLAIMER OF ALL WARRANTIES.
+//
+//
+// Livingstone CORBA interfaces (new versions)
+//
+
+module LivingstoneCorba {
+
+    //
+    // Forward declarations
+    //
+
+    interface LivingstoneEngineManager;
+    interface LivingstoneCommandLine;
+    interface LivingstoneEventListener;
+
+    //
+    // Supporting datatypes
+    //
+
+    struct SingleLivingstoneAttributeReport {
+        string name;
+        sequence<string> range;
+        string initialValue;
+    };
+
+    struct LivingstoneAttributeReport {
+        sequence<SingleLivingstoneAttributeReport> attributes;
+    };
+
+    struct Assignment {
+        string name;
+        string value;
+        long time;
+    };
+
+    struct LivingstoneAssignmentReport {
+        sequence<Assignment> assignments;
+    };
+
+    //
+    // Interfaces
+    //
+
+    exception LivingstoneException { long id; string description; };
+
+    interface LivingstoneEngineManager {
+        string describe();
+        LivingstoneCommandLine getCommandLine(in string search_method, in long max_candidate_classes_returned, in long max_candidates_returned, in long max_candidates_searched, in long max_cutoff_weight, in long max_history_cutoff, in long max_trajectories_tracked, in string progress_cmd_type, in string fc_cmd_type);
+        LivingstoneCommandLine getRunningCommandLine();
+        void exit();
+    };
+
+    interface LivingstoneCommandLine {
+        void command(in string command);
+        string getHistoryTimes() raises (LivingstoneException);
+        void enableGUIUpdate();
+        void disableGUIUpdate();
+        // commands separated by \n
+        void warpCommands(in string commands);
+        void release(); // this should be called finalize
+        void addLivingstoneEventListener(in LivingstoneEventListener listener) raises (LivingstoneException);
+        void removeLivingstoneEventListener(in LivingstoneEventListener listener) raises (LivingstoneException);
+    };
+
+    interface LivingstoneEventListener {
+        void start();
+        // void setScenarioTrace(ScenarioTrace trace)
+        void reportVariables(in LivingstoneAttributeReport attributes);
+        void newState(in float time, in long stateID, in string transition, in LivingstoneAssignmentReport assignments);
+        void viewState(in float time, in long stateID, in string transition, in LivingstoneAssignmentReport assignments);
+        void asynchronousMsg(in short state, in string msg);
+        //void mapOver(Object parent, int depth, MapOverClosure arg);
+        void finish();
+        void startReplay();
+        void finishReplay();
+
+
+	// more general listener stuff
+
+	// IN these should be part of commandline interface
+//	void installCandidate(int number of the candidate in list) throw candidate out of range
+//	void getHistory()
+
+	// OUT
+	void gotCandidates(in long num);
+//	void gotCurrentHistory(History);
+	void gotInstallCandidate(in long index);
+	void gotAssignment(in string monitor);
+	void gotProgress(in string command);
+
+        // Stanley "slave" messages 
+
+        // return list of schematic modules, loadable by Stanley
+        string getModules ();
+        // load Stanley schematic module for use by metaDot
+        void loadModule (in string moduleName);
+        // return list of workspaces, loadable by Stanley
+        string getWorkSpaces ();
+        // load Stanley workspace for use by getModules, loadModule
+        void loadWorkSpace (in string workspace);
+        // Open Stanley to desired instance & dialog
+        void metaDot (in string nodeClassType, in string instanceName,
+                      in string dialogType, in string modeName);
+        // return list of instance names of the requested class type
+        string getInstances (in string nodeClassType,
+                             in string componentInstanceName); 
+      
+    };
+
+};
+

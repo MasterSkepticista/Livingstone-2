@@ -1,0 +1,5 @@
+@node apigen
+
+@section The apigen utilities.
+
+These translate model -> C enumerations; more info on the web page.

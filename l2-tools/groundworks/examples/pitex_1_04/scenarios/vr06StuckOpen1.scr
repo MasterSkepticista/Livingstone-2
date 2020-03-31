@@ -1,0 +1,33 @@
+scenario vr06StuckOpen rp1subsystem
+assign test.sv36.openMicroSwitch=notOpen
+assign test.sv02.openMicroSwitch=notOpen
+assign test.pv07.closedMicroSwitch=closed
+assign test.pv07.openMicroSwitch=notOpen
+progress test.sv36.valveCmdIn=open
+assign test.sv36.openMicroSwitch=open
+//assign test.mrtd203t.temperatureReading.ambient.upperBound=belowThreshold
+//assign test.mrtd203t.temperatureReading.ambient.lowerBound=belowThreshold
+//assign test.mrtd203t.temperatureReading.tankMixture.upperBound=belowThreshold
+//assign test.mrtd203t.temperatureReading.tankMixture.lowerBound=aboveThreshold
+assign test.mpre301p.pressureReading.pressurizationRate.upperBound=belowThreshold
+assign test.mpre301p.pressureReading.pressurizationRate.lowerBound=belowThreshold
+//assign test.mpre301p.pressureReading.heatingRate.upperBound=belowThreshold
+//assign test.mpre301p.pressureReading.heatingRate.lowerBound=belowThreshold
+assign test.mpre301p.pressureReading.bleedRate.upperBound=belowThreshold
+assign test.mpre301p.pressureReading.bleedRate.lowerBound=belowThreshold
+assign test.mpre301p.pressureReading.ventingRate.upperBound=belowThreshold
+assign test.mpre301p.pressureReading.ventingRate.lowerBound=aboveThreshold
+//assign test.mpre311p.pressureReading.pr02Crack=belowThreshold
+assign test.mpre311p.pressureReading.pressurizationRate.upperBound=belowThreshold
+assign test.mpre311p.pressureReading.pressurizationRate.lowerBound=belowThreshold
+//assign test.mpre311p.pressureReading.heatingRate.upperBound=belowThreshold
+//assign test.mpre311p.pressureReading.heatingRate.lowerBound=belowThreshold
+assign test.mpre311p.pressureReading.bleedRate.upperBound=belowThreshold
+assign test.mpre311p.pressureReading.bleedRate.lowerBound=belowThreshold
+assign test.mpre311p.pressureReading.ventingRate.upperBound=belowThreshold
+assign test.mpre311p.pressureReading.ventingRate.lowerBound=aboveThreshold
+assign test.mpre311p.pressureReading.controllerPressureBias=unknown
+fc
+progress test.sv36.valveCmdIn=close
+assign test.sv36.openMicroSwitch=notOpen
+fc

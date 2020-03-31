@@ -1,0 +1,74 @@
+@node xmpl2l2
+
+@section The xmpl2l2 model translation utility
+
+The @command{xmpl2l2} program translates models from one file format to
+another, possibly optimizing on the way.  The original intent was to
+produce l2-format files from xmpl-format ones, hence the name.
+
+Several options are allowed:
+
+@table @code
+@item -h
+@itemx --help
+        No arguments.  Prints a brief description of all the options, and
+        exits immediately.
+
+@item --version
+        Print the version number and exit.
+
+@item -v
+@itemx --verbose
+        Sets the verbosity of various stages of reading files.  Provide it
+        as a string following the option.  The characters in the string
+        mean:
+        @table @key
+            @item r
+                Be very verbose when reading the model from file.
+            @item o
+                Be verbose when optimizing or doing other translations
+                to the model.
+            @item w
+                Be very verbose when `writing' the model into the engine.
+            @item A
+                All of the above.
+            @item -
+                For the characters after the minus sign, turn the verbosity
+                @emph{off} no matter what they had previously been set to.
+            @item
+                For the characters after the plus sign, turn the verbosity
+                @emph{on} no matter what they had previously been set to.
+                This is the default.
+        @end table
+
+@item -O
+@itemx --optimize
+        Optimize the model.
+
+@item -s
+@itemx --strip
+        Strip the model of debugging information.
+
+@item -b
+@itemx --binary
+        Output to l2bin format (which is a binary format).
+
+@item -a
+@itemx --ascii
+        Output to l2 format (which is ASCII-encoded).  If neither
+        @option{-a} nor @option{-b} is given, @option{-a} is assumed.
+
+@item -o
+@itemx --output-file
+        Argument: the output filename.
+
+        With @option{-o}, only one of @option{-a} and @option{-b} is legal,
+        not both.  Without @option{-o}, the output filename is the name,
+        less one extension, of the input filename, with the added extension
+        @samp{.l2} for ascii l2 format files, or @samp{.l2bin} for binary
+        ones.
+
+        For instance: @samp{xmpl2l2 -b cb.l2} outputs the file
+        @file{cb.l2bin}.
+
+@end table

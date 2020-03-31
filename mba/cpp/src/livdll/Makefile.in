@@ -1,0 +1,11 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.10 2003/03/07 23:26:05 taylor Exp $
+JNI_INCLUDES = ${top_srcdir}/include/jdk1.4
+CPPFLAGS += \
+	-I${JNI_INCLUDES} \
+	-I${JNI_INCLUDES}/@os_type@
+
+OBJECTS = livdll.o

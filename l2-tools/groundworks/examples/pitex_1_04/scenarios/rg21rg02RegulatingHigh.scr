@@ -1,0 +1,6 @@
+scenario rg21rg02RegulatingHigh mainPropulsionSystem
+assign test.mpre107p.pressureReading.rg02.upperBound=aboveThreshold
+assign test.mpre107p.pressureReading.rg02.lowerBound=aboveThreshold
+assign test.mpre107p.pressureReading.rg21.upperBound=aboveThreshold
+assign test.mpre107p.pressureReading.rg21.lowerBound=aboveThreshold
+fc

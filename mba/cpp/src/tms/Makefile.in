@@ -1,0 +1,9 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.8 2001/11/16 23:53:01 lbrown Exp $
+
+# clause_unit.o ltms_unit.o proposition_unit.o ptheory_unit.o tms_unit.o
+
+OBJECTS = ptheory.o ltms.o clause.o proposition.o

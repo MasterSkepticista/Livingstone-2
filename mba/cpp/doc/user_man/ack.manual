@@ -1,0 +1,28 @@
+@node Acknowledgements
+@chapter Acknowledgements
+
+
+Livingstone was developed by a number of people over several years, and
+hails back to work on some previous diagnostic engines as well.
+
+Currently, the lead developer and main point of contact for Livingstone is
+@value{bhudson} (@code{bhudson@@arc.nasa.gov}); James Kurien
+(@code{jkurien@@arc.nasa.gov}) also works on the engine.  Will Taylor
+(@code{taylor@@ptolemy.arc.nasa.gov}) manages the release process and
+develops Stanley.  Questions should be directed to
+@code{liv-software@@ace.arc.nasa.gov}.
+
+The following people have all constributed code to Livingstone or
+Stanley/Skunkworks:
+Andrew Bachmann,
+Pat Cappelaere,
+Scott Christa,
+Sandra Hayden,
+Benoit Hudson,
+James Kurien,
+Bill Millar,
+Pandu Nayak,
+Shirley Pepke,
+Will Taylor,
+Brian Williams,
+Steven Wragg.

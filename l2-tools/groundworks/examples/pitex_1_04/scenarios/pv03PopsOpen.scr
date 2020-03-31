@@ -1,0 +1,6 @@
+scenario pv03PopsOpen mainPropulsionSystem
+assign test.pv03.openMicroSwitch=open
+assign test.pv03.closedMicroSwitch=notClosed
+fc
+assign test.mpre201p.pressureReading.pr02Crack=belowThreshold test.mpre201p.pressureReading.pressurizationRate.upperBound=belowThreshold test.mpre201p.pressureReading.pressurizationRate.lowerBound=belowThreshold test.mpre201p.pressureReading.heatingRate.upperBound=belowThreshold test.mpre201p.pressureReading.heatingRate.lowerBound=belowThreshold test.mpre201p.pressureReading.bleedRate.upperBound=belowThreshold test.mpre201p.pressureReading.bleedRate.lowerBound=aboveThreshold test.mpre201p.pressureReading.ventingRate.upperBound=belowThreshold test.mpre201p.pressureReading.ventingRate.lowerBound=aboveThreshold test.mpre201p.pressureReading.controllerPressureBias=unknown
+fc

@@ -1,0 +1,92 @@
+
+
+enum cmdType { one, two, three, four, five, six,  reset, noCommand };
+enum onOffState { on, off };
+
+class frameAxiomClass {
+
+    // --- inputs --- 
+    cmdType cmdIn;		/// Command to CB
+
+    // --- outputs --- 
+    onOffState currentOut;       /// Current flowing out of CB.
+
+    private enum ModeType  {one, two, three, four, five, six,
+				tripped, blown, unknownCbFault};
+
+    private ModeType mode;
+    stateVector [mode];
+
+    {
+	switch (mode) {
+
+	case one: 
+	    currentOut = on;
+
+	case two: 
+	    currentOut = on;
+	    
+	/// Got tired of typing, so 3 through 6 don't predict current
+
+	case tripped:              /// Resettable failure
+	    currentOut = off;
+
+
+	case blown:                /// Blown CB
+	    currentOut = off;
+
+
+	case unknownCbFault:      /// Any behavior can occur here. 
+	    ;
+
+	}
+    }
+
+    // --- Transitions --- 
+
+    transition one(two, one) { cmdIn = one; }
+    transition one(three, one) { cmdIn = one; }
+    transition one(four, one) { cmdIn = one; }
+    transition one(five, one) { cmdIn = one; }
+    transition one(six, one) { cmdIn = one; }
+
+    transition two(one, two) { cmdIn = two; }
+    transition two(three, two) { cmdIn = two; }
+    transition two(four, two) { cmdIn = two; }
+    transition two(five, two) { cmdIn = two; }
+    transition two(six, two) { cmdIn = two; }
+
+    transition three(one, three) { cmdIn = three; }
+    transition three(two, three) { cmdIn = three; }
+    transition three(four, three) { cmdIn = three; }
+    transition three(five, three) { cmdIn = three; }
+    transition three(six, three) { cmdIn = three; }
+
+
+    transition four(one, four) { cmdIn = four; }
+    transition four(two, four) { cmdIn = four; }
+    transition four(three, four) { cmdIn = four; }
+    transition four(five, four) { cmdIn = four; }
+    transition four(six, four) { cmdIn = four; }
+
+
+    transition five(one, five) { cmdIn = five; }
+    transition five(two, five) { cmdIn = five; }
+    transition five(three, five) { cmdIn = five; }
+    transition five(four, five) { cmdIn = five; }
+    transition five(six, five) { cmdIn = five; }
+
+
+    transition six(one, six) { cmdIn = six; }
+    transition six(two, six) { cmdIn = six; }
+    transition six(three, six) { cmdIn = six; }
+    transition six(four, six) { cmdIn = six; }
+    transition six(five, six) { cmdIn = six; }
+
+    transition reset(tripped, one) { cmdIn = reset; }
+
+    // --- Failures --- 
+    failure tripped(*, tripped, unlikely) {}
+    failure blown(*, blown, rare) {}
+    failure unknownCbFault(*, unknownCbFault, rare) {}
+}

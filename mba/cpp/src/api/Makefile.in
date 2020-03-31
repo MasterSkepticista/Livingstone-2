@@ -1,0 +1,9 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.4 2001/11/16 23:52:57 lbrown Exp $
+
+# api_unit.o livingstone_unit.o
+
+OBJECTS = livingstone.o parameters.o

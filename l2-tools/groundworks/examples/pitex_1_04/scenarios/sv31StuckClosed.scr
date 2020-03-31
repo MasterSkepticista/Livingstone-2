@@ -1,0 +1,6 @@
+scenario sv31StuckClosed mainPropulsionSystem
+assign test.sv31.openMicroSwitch=notOpen
+progress test.sv31.valveCmdIn=open
+fc
+assign test.mpre212p.pressureReading.pr02Crack=belowThreshold test.mpre212p.pressureReading.pressurizationRate.upperBound=belowThreshold test.mpre212p.pressureReading.pressurizationRate.lowerBound=belowThreshold test.mpre212p.pressureReading.heatingRate.upperBound=belowThreshold test.mpre212p.pressureReading.heatingRate.lowerBound=aboveThreshold test.mpre212p.pressureReading.bleedRate.upperBound=aboveThreshold test.mpre212p.pressureReading.bleedRate.lowerBound=aboveThreshold test.mpre212p.pressureReading.ventingRate.upperBound=aboveThreshold test.mpre212p.pressureReading.ventingRate.lowerBound=aboveThreshold test.mpre212p.pressureReading.controllerPressureBias=unknown
+fc

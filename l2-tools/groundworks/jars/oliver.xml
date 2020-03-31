@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Written to assume that classpath is rooted in the current directory. -->
+<!-- So this should be OK if you make this script in the root of a filesystem. -->
+<!-- If not, you may prefer to adjust the basedir, or move some directories around. -->
+<!-- The idea is that both Ant and NetBeans have to know what the package root is -->
+<!-- for the classes in your application. -->
+<project basedir="." default="merge oliver" name="oliver">
+
+    <!-- Don't worry if you don't know the Ant syntax completely or need help on some tasks! -->
+    <!-- The standard Ant documentation is bundled. See Help | Help Sets | Ant 1.4.1 Manual. -->
+
+    <target name="init">
+        <!-- You can set up any variables you want used throughout the script here. -->
+        <property name="skunkworks" value="../.."/>
+        <property name="groundworks" value=".."/>
+        <!-- To use e.g. Jikes, uncomment this line. -->
+        <!-- (Or make the same change in Tools | Options | Ant Settings | Properties.) -->
+        <!-- <property name="build.compiler" value="jikes"/> -->
+        <!-- You might like to set up some overridable paths, etc.: -->
+        <!-- <property name="mylib" value="../lib/mylib.jar"/> -->
+    </target>
+
+    <target depends="init, clean skunkworks" name="compile l2compiler">
+        <!-- Both srcdir and destdir should be package roots. -->
+        <!-- They could be different of course; in that case NetBeans can also be set -->
+        <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
+        <javac debug="true" deprecation="true" destdir="${skunkworks}/java/src" srcdir="${skunkworks}/java/src">
+            <!-- To add something to the classpath: -->
+            <!-- <classpath><pathelement location="${mylib}"/></classpath> -->
+            <classpath>
+                <pathelement location="${skunkworks}/java/lib/sax.jar"/>
+                <pathelement location="${skunkworks}/java/lib/domlight-1.0.jar"/>
+                <pathelement location="${skunkworks}/java/lib/antlr.jar"/>
+                <pathelement location="${skunkworks}/java/lib/aelfred.jar"/>
+            </classpath>
+            <!-- To exclude some files: -->
+            <!-- <exclude name="com/foo/SomeFile.java"/><exclude name="com/foo/somepackage/"/> -->
+            <exclude name="LivingstoneCorba/"/>
+            <exclude name="bsh/"/>
+            <exclude name="forwill/"/>
+            <exclude name="Bsh.java"/>
+            <exclude name="L2_error_Exception.java"/>
+            <exclude name="LivingstoneCorba.idl"/>
+            <exclude name="LivingstoneCorbaAddition.text"/>
+            <exclude name="LivingstoneEngine.java"/>
+            <exclude name="LivingstoneEngine.h"/>
+            <exclude name="README"/>
+            <exclude name="gov/nasa/arc/skunkworks/beans/"/>
+            <exclude name="gov/nasa/arc/skunkworks/data/"/>
+            <exclude name="gov/nasa/arc/skunkworks/gui/"/>
+            <exclude name="gov/nasa/arc/skunkworks/gutil/"/>
+            <exclude name="gov/nasa/arc/skunkworks/icons/"/>
+            <exclude name="gov/nasa/arc/skunkworks/livdll/"/>
+            <exclude name="gov/nasa/arc/skunkworks/livingstone/data/"/>
+            <exclude name="gov/nasa/arc/skunkworks/livingstone/gui/"/>
+            <exclude name="gov/nasa/arc/skunkworks/swing/"/>
+            <exclude name="gov/nasa/arc/skunkworks/tools/"/>
+            <exclude name="gov/nasa/arc/skunkworks/util/"/>
+        </javac>
+    </target>
+
+    <target depends="init" description="Clean all build products in the skunkworks directory." name="clean skunkworks">
+        <delete>
+            <fileset dir="${skunkworks}/java/src">
+                <include name="*~"/>
+                <include name="**/*~"/>
+                <include name="*.class"/>
+                <include name="**/*.class"/>
+            </fileset>
+        </delete>
+    <delete file="${groundworks}/lib/l2compiler.jar"/>
+    <!-- <delete file="${groundworks}/lib/l2compilerfull.jar"/> -->
+    </target>
+    
+    <target depends="init,compile l2compiler" name="jar l2compiler">
+        <!-- To make a standalone app: -->
+        <!-- 1. Create a myapp.mf manifest somewhere. -->
+        <!-- 2. Put in it two lines: -->
+        <!-- Manifest-Version: 1.0 -->
+        <!-- Main-Class: com.foo.Main -->
+        <!-- 3. Pass to <jar>: manifest="myapp.mf" -->
+        <jar basedir="${skunkworks}/java/src" compress="true" jarfile="${groundworks}/lib/l2compiler.jar">
+            <exclude name="**/.nbattrs"/>
+            <exclude name="LivingstoneCorba/"/>
+            <exclude name="bsh/"/>
+            <exclude name="forwill/"/>
+            <exclude name="Bsh.java"/>
+            <exclude name="L2_error_Exception.java"/>
+            <exclude name="LivingstoneCorba.idl"/>
+            <exclude name="LivingstoneCorbaAddition.text"/>
+            <exclude name="LivingstoneEngine.java"/>
+            <exclude name="LivingstoneEngine.h"/>
+            <exclude name="README"/>
+            <exclude name="gov/nasa/arc/skunkworks/beans/"/>
+            <exclude name="gov/nasa/arc/skunkworks/data/"/>
+            <exclude name="gov/nasa/arc/skunkworks/gui/"/>
+            <exclude name="gov/nasa/arc/skunkworks/gutil/"/>
+            <exclude name="gov/nasa/arc/skunkworks/icons/"/>
+            <exclude name="gov/nasa/arc/skunkworks/livdll/"/>
+            <exclude name="gov/nasa/arc/skunkworks/livingstone/data/"/>
+            <exclude name="gov/nasa/arc/skunkworks/livingstone/gui/"/>
+            <exclude name="gov/nasa/arc/skunkworks/swing/"/>
+            <exclude name="gov/nasa/arc/skunkworks/tools/"/>
+            <exclude name="gov/nasa/arc/skunkworks/util/"/>
+        </jar>
+    </target>
+    
+    <target depends="init,jar l2compiler" description="Merge l2compiler with libs" name="merge l2compiler">
+        <jlink compress="true" outfile="${groundworks}/lib/l2compilerfull.jar">
+            <mergefiles>
+                <pathelement location="${groundworks}/lib/l2compiler.jar"/>
+                <pathelement location="${skunkworks}/java/lib/sax.jar"/>
+                <pathelement location="${skunkworks}/java/lib/domlight-1.0.jar"/>
+                <pathelement location="${skunkworks}/java/lib/antlr.jar"/>
+                <pathelement location="${skunkworks}/java/lib/aelfred.jar"/>
+                <pathelement location="${skunkworks}/antlr"/>
+            </mergefiles>
+        </jlink>
+    </target>
+
+    <target depends="init, clean oliver" name="compile oliver">
+        <!-- Both srcdir and destdir should be package roots. -->
+        <!-- They could be different of course; in that case NetBeans can also be set -->
+        <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
+        <javac debug="true" deprecation="true" destdir="${groundworks}/src" srcdir="${groundworks}/src">
+            <!-- To add something to the classpath: -->
+            <!-- <classpath><pathelement location="${mylib}"/></classpath> -->
+            <classpath>
+                <pathelement location="${groundworks}/lib/l2compilerfull.jar"/>
+                <pathelement location="${groundworks}/lib/jhotdraw.jar"/>
+                <pathelement location="${groundworks}/lib/nanoxml.jar"/>
+                <pathelement location="${groundworks}/lib/js.jar"/>
+            </classpath>
+            <!-- To exclude some files: -->
+            <!-- <exclude name="com/foo/SomeFile.java"/><exclude name="com/foo/somepackage/"/> -->
+        </javac>
+    </target>
+
+    <target depends="init" description="Clean all build products in the oliver directory." name="clean oliver">
+        <delete>
+            <fileset dir="${groundworks}/src">
+                <include name="*~"/>
+                <include name="**/*~"/>
+                <include name="*.class"/>
+                <include name="**/*.class"/>
+            </fileset>
+        </delete>
+    <delete file="${groundworks}/jars/oliver.jar"/>
+    <delete file="${groundworks}/jars/oliverfull.jar"/>
+    <delete dir="${groundworks}/src/META-INF"/>
+    </target>
+
+    <target depends="init,compile oliver" name="jar oliver">
+        <!-- To make a standalone app: -->
+        <!-- 1. Create a myapp.mf manifest somewhere. -->
+        <!-- 2. Put in it two lines: -->
+        <!-- Manifest-Version: 1.0 -->
+        <!-- Main-Class: com.foo.Main -->
+        <!-- 3. Pass to <jar>: manifest="myapp.mf" -->
+        <jar basedir="${groundworks}/src" compress="true" jarfile="${groundworks}/jars/oliver.jar">
+            <exclude name="**/.nbattrs"/>
+            <exclude name="**/*.form"/>
+        </jar>
+    </target>
+    
+    <target depends="init,jar oliver" description="Merge oliver with libs" name="merge oliver">
+        <mkdir dir="${groundworks}/src/META-INF"/>
+        <copy file="${groundworks}/src/oliver/application/EDITOR.MF" tofile="${groundworks}/src/META-INF/MANIFEST.MF"/>
+        <jlink compress="true" outfile="${groundworks}/jars/oliverfull.jar">
+            <mergefiles>
+                <pathelement location="${groundworks}/jars/oliver.jar"/>
+                <pathelement location="${groundworks}/lib/l2compilerfull.jar"/>
+                <pathelement location="${groundworks}/lib/jhotdraw.jar"/>
+                <pathelement location="${groundworks}/lib/nanoxml.jar"/>
+                <pathelement location="${groundworks}/lib/js.jar"/>
+            </mergefiles>
+            <addfiles>
+                <pathelement path="${groundworks}/src/META-INF"/>
+            </addfiles>
+        </jlink>
+    </target>
+    
+</project>

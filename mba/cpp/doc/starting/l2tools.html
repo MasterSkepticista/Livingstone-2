@@ -1,0 +1,345 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+
+
+<body bgcolor=white background="../images/background.jpg" lang=EN-US
+link="#993300" vlink="#666600" style='tab-interval:.5in'>
+<!--[if gte mso 9]><xml>
+ <v:background id="_x0000_s1028" o:bwmode="white" o:targetscreensize="800,600">
+  <v:fill src="" o:title="exptextb" type="frame"/>
+ </v:background></xml><![endif]-->
+
+<div class=Section1>
+
+<p class=MsoNormal><a name="_top"></a><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+<title>Using L2 Tools</title>
+<h2>Using L2 Tools</h2>
+
+<p> <a href="../index.html">Back to Main Page</a></p>
+
+<h3>Contents</h3>
+<ul>
+
+<li> Candidate Manager
+   <ul>
+   <li> Candidate Classes Table (the Classes tab)
+   <li> Candidates Table (the Candidates tab)
+   <li> Time-step List
+   <li> Assignment Tree (the Assignments tab)
+   <li> Discrepant Commands And Observations Pane
+   </ul>
+<li> History Table
+   <ul>
+   <li> Justification Tool
+   </ul>
+<li> L2 Tools Command Line
+</ul>
+
+
+<hr size=2 width="70%" align="left">
+<h3> Candidate Manager </h3>
+<p>
+The Candidate Manager displays information about the candidates and the
+candidate equivalence classes returned by Livingstone, and allows a user
+to select a particular candidate and time-step for display.
+
+Candidate equivalence classes are unique in their mode components, but 
+not unique in their time permutations.
+
+The tool consists of four basic parts, the Classes Table, the Candidates
+Table, the Time-step List, and the Assignment Tree.  The Time-step List 
+and the Assignment Tree will not work unless there is a selected candidate.
+
+There are also two panes at the bottom of the tool: "Discrepant Commands 
+and Observations" which displays observations responsible for conflicts;
+and a one line pane displaying the search termination information.
+
+  
+<h4>Candidate Classes Table (the Classes tab)</h4>
+
+The table has five columns.  For each candidate class it displays:
+<ul>
+<li> Num: number of the candidate class in the ranked list
+   (lowest rank is best);
+<li> Ra : total rank for all the failures in that candidate class;
+<li> nk : individual rank for each failure in that candidate class;
+<li> Time: blank, since the equivalence class discards time permutations;
+<li> Failures: component attribute name and assignment for each failure
+   in that candidate.
+</ul>
+By clicking on one of the rows of the table, the Candidate Manager 
+will select that equivalence class.  This will cause the "Candidates" 
+tab to be presented with the time permutations of the selected class
+highlighted in yellow.  The user then selects one of the time
+permutations, and that candidate is installed by Livingstone.
+If the candidate class has only one instance of time permutation,
+the Candidate Manager will automatically select the one
+candidate instance for installation.  Also, if there is only
+one candidate class (which may be &lt;the-empty-candidate&gt;) it 
+will be automatically be installed.
+ 
+
+<h4>Candidates Table (the Candidates tab)</h4>
+
+The table has five columns.  For each candidate it displays:
+<ul>
+<li> Num: number of the candidate in the ranked list
+   (lowest rank is best);
+<li> Ra : total rank for all the failures in that candidate;
+<li> nk : individual rank for each failure in that candidate;
+<li> Time: the time step at which the failure occurred
+   (- means prior to time horizon [history truncation]);
+<li> Failures: component attribute name and assignment for each failure
+   in that candidate.
+</ul>
+By clicking on one of the rows of the table, the Candidate Manager will 
+select that candidate.  This will cause the Time-step List to update 
+with a list of all time-steps from the point of truncation to the 
+current time, and send the Livingstone model state for the selected
+candidate, at the currently selected time, to all active L2 tools.
+At the bottom of the frame is the Search Termination String which tells 
+the user how Livingstone's search method completed it's diagnosis.  If 
+no time-step selection has previously been made, the Candidate Manager 
+will assume the user is interested in the latest time-step and display 
+that information.  If the user selects a different time-step and then a 
+new set of candidates are returned by Livingstone, followed by a new 
+candidate selection, the time-step selection will persist. 
+
+
+<h4>Time-step List</h4>
+
+At the top of the Candidate Manager, the Time-step List consists of a box with 
+a pull-down list and a left and right browse button.  When there is no 
+selection the box will appear empty.  If there are no data to select from, 
+(most likely because no candidate has been selected) the pull-down list will 
+also appear empty.  If a candidate has been selected, the list will be updated 
+and the selection will go by default to the latest time-step.  By pressing on 
+the down arrow and displaying the list of alternate choices, the user can 
+select a different time-step.  After selection the data will be sent to all 
+active L2 tools.  Also the user can step to the previous or next 
+time-step with the left and right arrow buttons, respectively.  However, if a 
+selection is not possible the arrow will go grey and become unresponsive.  
+If the user selects a time-step other than the last, and then makes a new 
+candidate selection, the time-step selection will persist.
+
+
+<h4>Assignment Tree (the Assignments tab)</h4>
+
+This is simply a tree of the components attributes and their assignments.  
+After a candidate and time-step selection, the user can use this tree 
+structure to browse the model and see the assignments.  This part of the 
+Candidate Manager is mostly unused and may vanish in future versions.
+
+
+<h4>Discrepant Commands And Observations Pane</h4>
+
+The "discrepancy" command output has been integrated into the L2 Tools GUI. 
+Previously it was available only through the Livingstone command line interface.  
+When a "find-candidates" is requested, Livingstone returns all discrepant 
+commands/observations related to a candidate set.  The discrepant commands 
+and observations appear in this pane, which is scrollable.  The user can resize 
+the window by clicking (single mouse click) on the unidirectional arrows,
+or dragging the "separator" (located between this pane and the classes/
+candidates table).  The discrepancy set is refreshed along with the classes/
+candidates table.  The "discrepancy" command returns a list of commands and
+observations responsible for the current inconsistency", in the following
+manner:
+  <ul>
+  <li> if the model is consistent, there is no conflict, and the pane will be
+    blank.
+
+  <li> if the model is inconsistent, but no commands or observations are
+    associated with the conflict, the pane will be blank.
+
+
+  <li>otherwise the pane will display the assignments for command variables and
+    observable variables, one per line. as
+    &lt;variable-name&gt; = &lt;value-name&gt;:&lt;weight/rank/cost&gt;
+  </ul>
+
+<pre>
+Example Scenario:
+
+progress cbAndLed.cb.cmdIn=on       
+assign cbAndLed.led.ledState=off
+fc
+
+The first line is intended to turn the CB on. The second line observes
+that the LED is off. The third line finds candidates that can explain the
+inconsistency in the system. In addition it queries for the observations 
+responsible for the conflict. Here is the output:
+
+test.cbAndLed.led.ledState = off:0
+
+The number 0 indicates the cost/rank/weight of the assignment. Only
+autonomous (failure) transitions have nonzero cost/rank/weight. Command
+and observable assignments will always have a 0 cost/rank/weight.
+</pre>
+
+Notes:
+  <ul>
+  <li> The "discrepancy" command performs a single propagation,
+  which may result in one conflict (or no conflict at all).
+
+  <li> It examines the commands and observations related to that single
+  conflict (if it exists).
+
+  <li>It does not attempt to examine systematically the space of all conflicts.
+  </ul>
+
+
+
+<hr size=2 width="70%" align="left">
+<h3>History Table</h3>
+The History Table displays the variables (attributes) of the currently loaded 
+Livingstone model as a spread sheet, with the left-most column containing the
+variable names, and the second to nth columns containing the values at
+each time step.  It is updated by L2 Tools at model load time, and
+afterwards when it processes Livingstone commands 'fc' and 'progress'.<br><br>
+The input slot labeled "Disjunctive Filter" can be used to reduce the number
+of variables displayed, by filtering the variable names with the entered
+substring.<br><br>
+The "Copy" button can be used to make a copy of the History Table widget.<br><br>
+Each value "cell" responds to Mouse-right clicks with a menu:
+<ul>
+<li> Print Connected Clauses - print to the L2 Tools command line
+all clauses which mention this value's variable name, and consequent
+clauses.
+
+<li> Show Justification - puts up a window which details why Livingstone 
+assigned that value, and what was its chain of reasoning.
+
+<li> Set Value background color - allows the setting of a background color
+for all cells which contain this value.
+</ul>
+
+
+<h4>Justification Tool</h4>
+
+The Justification Tool provides a graphical explanation of a particular
+attribute (inferred by the Livingstone Engine).  In other words, why
+did Livingstone assign a particular value to a model attribute?  The tool is 
+invoked via the History Table.  For any displayed History Table attribute, the 
+user can right-click
+on a table cell (column: time step, rows:attribute values) to
+display a popup menu.  One of the pop-up menu options (Show Justification)
+is an explanation of this model attribute.
+<p><p>
+The Justification tool contains three main windows and a menu bar.
+The window pane labeled "attribute list" displays all model attributes involved
+in Livingstone's chain of reasoning.  Each model attribute is marked with
+a specific icon.  The icon marker designates whether the attribute assignment is the
+proposition to be explained, an assumption, or an immediate supporting clause proposition.
+The icons are itemized at the top of the list.  Their tooltip provides their individual
+meanings.  In some inference trees, various assumptions and propositions occur multiple
+times.  The attribute list displays only unique attribute assignments. Therefore, 
+the user may select an attribute from the "attribute list" and the tree will highlight all
+occurrences of this attribute assignment. By default the tree will highlight the path from
+the proposition to explain (root) to the selected proposition. If there is more than one 
+occurrence of the same selected proposition, the tool highlights the one with a minimum 
+number of inference steps.
+<p><p>
+The Inference Tree pane contains a summary of the attribute explanation.
+The user can expand the tree and select propositions of interest.
+For the selected proposition, the tree highlights the path from the selected proposition
+to the proposition to be explained (root). In addition, any identical occurrences of the selected
+proposition are also marked.
+<p><p>
+The Supporting Clause pane displays immediate supporting propositions (clause) that
+Livingstone used to explain the selected attribute.
+<p><p>
+In the main menu, the VIEW option allows the user to toggle between the
+JTree outline view and a graph/lattice view.  The Graph view draws a summarization
+of the expanded inference tree.  Since labeling the nodes with the actual attribute 
+assignments makes the tree unwieldy. An alternate technique has been implemented.
+Instead each node is given a numerical value.  Each numerical value maps to an attribute
+description in the "attribute list" pane.  In addition, tooltips are provided for
+each of the graph nodes. When an attribute is selected in the graph, its path is also 
+highlighted.  
+<p><p>
+Under the main menu, there is a DETAIL submenu.  It allows the user to reconfigure the
+view of the tree. By default Livingstone's entire chain of reasoning is displayed 
+(proposition level).
+In addition there are two alternate views.  The Assumption Level view displays the justified 
+proposition with all of Livingstone's assumptions.  The Attribute Level view extracts a summarized
+view of the entire chain of reasoning. It attempts to filter out attributes that are repeated
+in the inference tree.  Additional filtration methods could be added to this submenu in future
+releases.
+<p><p>
+Errors are categorized under three classes.  One, Livingstone errors (example, 
+invalid attribute values) 
+are reported under L2NativeException.  Two, Livingstone engine state errors are
+reported under DataModelStateExceptions.  Three, runtime exceptions are reported in the third
+category.
+
+
+<hr size=2 width="70%" align="left">
+<h3>L2 Tools Command Line</h3>
+<pre>
+Typing `help' at the command line will list the available L2 Tools
+commands, and if a Livingstone engine is running, the Livingstone commands.
+
+The following commands, entered at the command line, will be
+handled by L2 Tools:
+
+  newEngine CBFS &lt;maxCandidateClasses&gt;
+      &lt;maxCandidates&gt; &lt;maxSearch&gt;
+      &lt;maxCutoffWeight&gt; &lt;maxHistory&gt;
+      &lt;maxTrajectories&gt;
+      &lt;progressCmdType&gt; &lt;fcCmdType&gt;  - specify CBFS engine params
+  newEngine COVER &lt;maxRank&gt; 100 100
+      100 &lt;maxHistory&gt;
+      &lt;maxTrajectories&gt;
+      &lt;progressCmdType&gt; &lt;fcCmdType&gt;  - specify COVER engine params 
+  loadModel &lt;model-pathname&gt;         - load model files (.xmpl, .ini, .hrn),
+                                         allocate engine
+  destroyEngine                      - deallocate current engine
+
+  historyTable                   - start a History Table tool
+
+  refresh                        - current L2 state
+  modelBrowser                   - start browser for jmpl code of loaded model
+
+  stanleyViewer                  - start Stanley in Viewer mode
+  stanleyViewer modelState       - initialize current model state in Stanley Viewer
+
+Livingstone commands like assign, progress, and fc are intercepted by
+L2 Tools, before being passed on to Livingstone via the Java
+Native Interface (JNI).  This will be noted thusly:
+======> assign test.led1.ledState=on
+L2Tools.command(assign test.led1.ledState=on)
+
+Other commands are passed directly on to Livingstone.  If they are not
+valid Livingstone commands, the user will be prompted to type
+`help' to see a list of valid commands.
+</pre>
+
+
+
+<p> <a href="../index.html">Back to Main Page</a></p>
+
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+<I>
+Last updated April 20, 2006.  Direct feedback to 
+<A HREF="mailto:william.m.taylor@nasa.gov">william.m.taylor@nasa.gov</A>
+</I>
+</body>
+
+</html>

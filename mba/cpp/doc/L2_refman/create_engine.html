@@ -1,0 +1,145 @@
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+<title>L2 initialization</title>
+
+This document decribes the procedure for creating the livingstone engine
+and initializing it, using the string API.  The procedure is
+straight-forward although it has a number of steps.
+
+<h2>Data structures</h2>
+
+You will use need the following classes:
+<ul>
+<li><code>L2_string_map</code>: a mapping from strings to the internal
+        objects and vice-versa.
+<li><code>L2_string_map_listener</code>: keeps the mapping up to date.
+<li><code>L2_file</code>: an in-memory representation of the model file.
+<li><code>Tracker</code>: the engine itself.
+<li><code>Tracker_debug</code>: a string-based debugger for the engine.
+<li><code>from_l2</code> or <code>from_xmpl</code>: reads the model from a
+        file in l2 or xmpl format into the <code>L2_file</code> in-memory
+        representation.
+<li><code>to_t_system</code>: reads the <code>L2_file</code>
+        representation and translates to the representation used by the
+        <code>T_system</code> (which is contained by the
+        <code>Tracker</code>)
+</ul>
+
+<h2>Initialization</h2>
+
+The <code>L2_string_map</code> and <code>L2_file</code> can be created at
+any time; they don't need anything to be created.<p>
+
+The <code>Tracker</code> can be created as soon as you have the arguments
+to its constructor, and as soon as you know what kind of tracker you
+want (CBFS or Cover).<p>
+
+The <code>Tracker_debug</code> needs to know about both the
+<code>Tracker</code> and the <code>L2_string_map</code>, and therefore must
+be constructed after those two.  For now, the debugger must be created
+before loading the model; this will change.<p>
+
+For instance:
+<pre>
+struct My_L2_engine {
+        L2_string_map map;
+        L2_file file;
+        Tracker *tracker;
+        Tracker_debug *debugger;
+        L2_string_map_listener *listener;
+};
+int main(int argc, char **argv) {
+        // parse the arguments
+        My_L2_engine l2;        // creates map and file
+        l2.tracker = new CBFS_tracker(1,2,3,4);
+        l2.debugger = new CBFS_tracker_debug(*l2.tracker, l2.map, cout);
+
+        // more later
+}
+</pre>
+
+<h2>Reading a model</h2>
+
+First, decide whether you're reading an XMPL-format model (for instance,
+the set of files cb.xmpl, cb.hrn, and cb.ini) or an L2-format model (a
+single file cb.l2).  In the former case, use the <code>from_xmpl</code>
+class; in the latter, use <code>from_l2</code>.<p>
+
+Also create a <code>to_t_system</code>.  Both it and the
+<code>from_*</code> object can be on the stack; we don't need them having
+loaded the file.<p>
+
+Finally, we have all the information to create the listener which will
+keep the string to internals mapping up to date, so create it as well.<p>
+
+Only now can we actually read the file; use <code>from_l2::read</code> to
+read it into memory, and <code>to_t_system::write</code> to put it into the
+engine.  You _must_ have set the listener by now, otherwise it won't know
+about the data created by these operations.<p>
+
+Setting the initial state is something I'd like to see change; but for now,
+the model file includes it.  Register it with the engine by calling
+<code>to_t_system::createInitialState</code>.<p>
+
+
+<pre>
+        // continued from above
+
+        {
+            // in their own scope so we get rid of them as soon as we can
+            from_xmpl from(l2.file);
+            to_t_system to(l2.file);
+
+            // must be here, not later!
+            l2.listener = new L2_string_map_listener(l2.map, l2.file, to,
+                *l2.tracker);
+
+            // actually read
+            from.read("cb");
+            // now tell the engine about it
+            to.write(l2.engine->get_t_system());
+            to.createInitialState(l2.engine->get_t_system());
+        }
+</pre>
+
+The <code>read</code> function returns a boolean, true if read succeeded,
+false otherwise, so you can do some error checking.  The <code>write</code>
+function also returns a boolean, but it never fails (though it might throw
+an exception if something is very wrong).
+
+
+
+<h2>Deallocating</h2>
+
+Deallocate roughly in the reverse order that you allocated.  The exception
+is that the <code>from_xmpl</code> or <code>from_l2</code> and the
+<code>to_t_system</code> can be deallocated immediately after reading the
+file.
+
+<ol>
+<li><code>L2_string_map_listener</code>
+<li><code>Tracker_debug</code>
+<li><code>Tracker</code>
+<li><code>L2_file</code> and <code>L2_string_map</code>
+</ol>
+
+For instance, add the following to the struct definition from above:
+
+<pre>
+        My_L2_engine() {
+            // make it safe to deallocate if we have an error half-way
+            debugger = 0;
+            tracker  = 0;
+            listener = 0;
+        }
+        ~My_L2_engine() {
+            delete listener;
+            delete debugger;
+            delete tracker;
+            // the other two are implicitely deallocated
+        }
+</pre>

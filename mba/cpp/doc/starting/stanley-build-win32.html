@@ -1,0 +1,420 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+
+<meta name="Microsoft Theme 2.00" content="expeditn 001">
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./history_files/filelist.xml">
+<link rel=Edit-Time-Data href="./history_files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>Building L2Tools on Windows</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>James Kurien</o:Author>
+  <o:LastAuthor>James Kurien</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>29</o:TotalTime>
+  <o:Created>2000-06-20T01:01:00Z</o:Created>
+  <o:LastSaved>2000-06-20T01:01:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>154</o:Words>
+  <o:Characters>879</o:Characters>
+  <o:Company>NASA Ames Research Center</o:Company>
+  <o:Lines>7</o:Lines>
+  <o:Paragraphs>1</o:Paragraphs>
+  <o:CharactersWithSpaces>1079</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:Compatibility>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:"Book Antiqua";
+	panose-1:2 4 6 2 5 3 5 3 3 4;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:647 0 0 0 159 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Book Antiqua";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	color:black;}
+h1
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:24.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	mso-font-kerning:16.0pt;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h2
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:18.0pt;
+	font-family:"Book Antiqua";
+	mso-bidi-font-family:Arial;
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;
+	mso-bidi-font-style:italic;}
+h3
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:14.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h4
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	font-size:12.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h5
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:5;
+	font-size:10.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-style:italic;}
+h6
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	font-size:8.0pt;
+	font-family:"Book Antiqua";
+	color:#660033;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:#993300;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:#666600;
+	text-decoration:underline;
+	text-underline:single;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:571085181;
+	mso-list-type:hybrid;
+	mso-list-template-ids:935350034 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l0:level1
+	{mso-level-tab-stop:1.25in;
+	mso-level-number-position:left;
+	margin-left:1.25in;
+	text-indent:-.25in;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1030"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=white background="../images/background.jpg" lang=EN-US
+link="#993300" vlink="#666600" style='tab-interval:.5in'>
+<!--[if gte mso 9]><xml>
+ <v:background id="_x0000_s1028" o:bwmode="white" o:targetscreensize="800,600">
+  <v:fill src="" o:title="exptextb" type="frame"/>
+ </v:background></xml><![endif]-->
+
+<div class=Section1>
+
+<p class=MsoNormal><a name="_top"></a><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1>Building Stanley & Oliver on Windows</h1>
+
+<p> <a href="../index.html">Back to Main Page</a></p>
+
+<p>
+Tested on Windows 98 ed 2, Windows 2000, & Windows NT ed 4, &
+Windows XP!
+</p>
+
+<h3>Contents</h3>
+<ul>
+<li> Software Dependencies
+<li> Checking Out Stanley VJMPL, Livingstone, L2 Tools , & Oliver Source Files
+<li> Untarring Support, Livingstone, L2 Tools, & Oliver Tar Source Files
+<li> Building & Installing Stanley VJMPL (and Livingstone, L2 Tools, & Oliver Too)
+</ul>
+
+<pre>
+
+<h3>
+Software Dependencies
+</h3>
+<hr size=2 width="70%" align="left">
+o Visual C++ 6.0 SP5
+
+o Cygwin 1.3.3
+  http://www.cygnus.com
+
+  install at &lt;drive&gt;:\cygwin
+             &lt;drive&gt;:\packages
+  When the cvs portion of cygwin is being loaded, specify 'dos'
+  for the default file mode, so that Visual C++ will recognize
+  .dsw and .dsp files.
+
+o JDK 1.4 - Java Development Kit (actually Oliver & L2 Tools use this)
+  http://java.sun.com/j2se/1.4/
+
+
+<h3>
+Checking Out Stanley VJMPL, Livingstone, L2 Tools, & Oliver Source Files 
+</h3>
+<hr size=2 width="70%" align="left">
+You must be inside Ames to checkout files from CVS.  Otherwise
+source "tar balls" are available from <a href="mailto:william.m.taylor@nasa.gov">Will Taylor.</a>
+
+WinCVS
+------
+http://sg  => "Downloads & Software Info" => "Windows Downloads"
+o Cvs/SSH - A stable SSH version known to work with WinCVS.
+o WinCVS 1.3.6b - Known version of WinCVS to work with SSH.
+
+WinCVS Preferences:
+CVSROOT - &lt;user-name&gt;@wow.arc.nasa.gov:/home/cvs/ISG-Repository
+Authentication - SSH server
+
+Alternatively, you can run 'cvs' under cygwin.
+
+To checkout C++-Livingstone:
+cvs checkout xml-windows                          # a CVS "module" 
+cvs checkout -r L2_2_7_8_2 L2                     # a CVS "module" 
+
+To checkout Stanley and tcl/Tk & CORBA support:
+cvs checkout stanley-support-windows                   # a CVS "module"
+cvs checkout -r L2_2_7_8_2 stanley-vjmpl          # a CVS "module"
+
+To checkout L2Tools compiled Java code and data:
+% cvs checkout -r L2_2_7_8_2 l2tools-jars      # (usually checked out as a part of L2)
+% cvs checkout -r L2_2_7_8_2 l2tools-data      # (usually checked out as a part of L2)
+
+To checkout Oliver (Stanley II)
+cvs checkout -r L2_2_7_8_2 oliver
+
+
+<h3>
+Untarring Support, Livingstone, L2 Tools, & Oliver Tar Source Files
+</h3>
+<hr size=2 width="70%" align="left">
+Remote (to Ames) users will be e-mailed four gzipped tar files:
+support-src-win.tar.gz, l2-src_2.7.8.1.tar.gz, 
+l2tools-src_2.7.8.1.tar.gz, and groundworks-src_2.7.8.1.tar.gz,
+which comprise the source file hierarchy.  They should be 
+unpacked in the same directory to produce:
+% cd &lt;your-root-dir&gt;
+% ls
+l2-regress mba l2-tools support
+
+NOTE: These tar files are built using GNU gtar and GNU gzip.
+      Unpack them with WinZip, or gunzip/gtar so that CR/LF
+      issues are handled properly.
+
+Follow the directions below 
+(l2-tools/stanley-jmpl/README-WINDOWS.txt)
+or from our division web server:
+http://ic.arc.nasa.gov/projects/L2/doc/starting/stanley-build-win32.html
+The support files will not change with new L2/L2 Tools releases.
+
+However, with each new release, you will be e-mailed new tar files:
+l2-src_&lt;n.m.o&gt;.tar.gz, l2tools-src_&lt;n.m.o&gt;.tar.gz, and
+groundworks-src_&lt;n.m.o&gt;.tar.gz.
+Discard all the top directories, except for support:
+% /bin/rm -rf  mba l2-regress l2-tools 
+Unpack the new tar files and re-build.
+
+NOTE: If you have received this software under the NASA Open Source Agreement,
+      l2tools-src_&lt;n.m&gt;.tar.gz will be replaced by
+      l2tools-src-no-mico_&lt;n.m&gt;.tar.gz.
+      See <a href="install-mico-combat.html">instructions</a> for installing MICO on your system.
+
+
+<h3>
+Building & Installing Stanley VJMPL (And Livingstone, L2 Tools, & Oliver Too)
+</h3>
+<hr size=2 width="70%" align="left">
+Setting Environment Variables
+=============================
+HOME can be set in autoexec.bat, as done immediately below.  However,
+if the autoexec.bat setting of HOME is required to be something
+different, it can be done in cygwin.
+
+autoexec.bat
+---------------------
+SET HOME=C:\cygwin\home\wtaylor
+
+REM May already be set on some Windows releases
+SET WINTEMP=C:\TEMP
+SET TEMP=C:\TEMP
+SET TMP=C:\TEMP
+
+REM CVS vars only used internal to Ames
+SET CVSROOT=:ext:taylor@serengeti.arc.nasa.gov:/home/cvs/ISG-Repository
+SET CVS_RSH=ssh.exe
+
+Setting HOME in Cygwin
+======================
+Edit the /etc/profile file. You can edit this file under cygwin 
+or windows. In the cygwin environment, vi /etc/profile. In windows, 
+open /cygwin/etc/profile with WinWord (Notepad doesn't handle the 
+formatting properly). Comment out the if check for $HOME containing 
+no characters and change the path to your desired cygwin/home.
+For example, below the user has installed cygwin on e:\cygwin.
+
+/etc/profile
+------------
+PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
+USER="`id -un`"
+
+# Set up USER's home directory
+# Force the cygwin HOME directory
+#if [ -z "$HOME" ]; then
+  HOME="/cygdrive/e/cygwin/home/$USER"
+#fi
+...
+...
+
+To build C++-Livingstone:
+=========================
+
+o Microsoft Visual C++ 6.0
+
+To enable mode recovery, ensure that ENABLE_RECOVERY is defined in the 
+project files for readers, debuggers and transition.
+
+  L2 Toolss/Stanley/Oliver Compatible L2 Shared Library
+  -----------------------------------------------
+  File->Open Workspace: mba/mba.dsw 
+  Project->Set Active Project: livdll 
+  Build->Rebuild All
+  Project->Set Active Project: l2test
+  Build->Build l2test.exe
+
+
+To build Stanley and its support programs
+=========================================
+
+"Start->Programs->MS-DOS Prompt"
+
+# set VC++ env variables, e.g.
+D:\progra~1\micros~1\vc98\bin\vcvars32.bat
+# set L2 root env variable, e.g.
+set L2_ROOT=D:\cygwin\home\wtaylor\L2Root
+
+cd %L2_ROOT%\l2-tools\stanley-jmpl
+Makefile-all.bat
+
+</pre>
+
+<p> <a href="../index.html">Back to Main Page</a></p>
+
+
+<p class=MsoNormal><span style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+  </body>
+<I>
+Last updated April 20, 2006.  Direct feedback to 
+<A HREF="mailto:william.m.taylor@nasa.gov">william.m.taylor@nasa.gov</A>
+</I>
+</html>

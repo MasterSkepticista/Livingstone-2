@@ -1,0 +1,6 @@
+scenario rg11RegulatingHigh mainPropulsionSystem
+assign test.mpre103p.pressureReading.rg01.upperBound=belowThreshold
+assign test.mpre103p.pressureReading.rg01.lowerBound=aboveThreshold
+assign test.mpre103p.pressureReading.rg11.upperBound=aboveThreshold
+assign test.mpre103p.pressureReading.rg11.lowerBound=aboveThreshold
+fc

@@ -1,0 +1,12 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.14 2001/11/16 23:52:59 lbrown Exp $
+
+# mba_utils_unit.o array_unit.o array_allocator_unit.o
+
+OBJECTS = \
+	hash_table.o \
+	array_allocator.o \
+	stringops.o 

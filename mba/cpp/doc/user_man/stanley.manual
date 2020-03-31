@@ -1,0 +1,5 @@
+@node stanley/skunkworks
+@section Model development in Stanley/Skunkworks
+
+Stanley is a model development interface that provides a graphical way of
+programming and testing Livingstone models.

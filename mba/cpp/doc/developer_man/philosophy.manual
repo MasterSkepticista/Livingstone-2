@@ -1,0 +1,339 @@
+@node Philosophy
+@section Design Philosophy and Coding Standards
+
+I took the overarching principle in the design of L2 from Stroustrup
+(@cite{Stroustrup 1994: The Design and Evolution of C++}):  ``you only pay
+for what you use.''  The metric for cost is in terms of any kind of
+performance: CPU time, memory, compiled code size, and even compile time.
+
+This is mostly controlled by the configuration system
+(@pxref{Configuration}); when running @command{configure}, the user
+specifies what features L2 should include in this compiled instance.  Any
+files, or parts of files, not needed for the selected set of features,
+should not be compiled; any data structures not used should not even be
+available.  Perhaps departing from Stroustrup's ideals, L2 uses a
+combination of Makefile trickery and preprocessor defines to achieve this
+goal.
+
+To easily handle this, the design of L2 must be quite modular
+(@pxref{Software components}).  The readers need not have the engine around
+to be useful (indeed, @command{xmpl2l2} doesn't require the engine).
+Although the API assumes the readers are available, this isn't fundamental:
+nowhere else in the engine is that assumption made.  The debuggers are more
+intrusive and require the readers and engine, but they impose little cost
+on either if not enabled (it's in the TODO list to make the cost be zero).
+
+X-37 pushed me to take this philosophy to a bit of an extreme.  In
+several class in the reader, for instance, I have destructors defined as
+virtual if at configure-time the user allows debugging information in the
+model files, and non-virtual otherwise, since I know that the class will
+only have a subclass if we have debugging information.  This saves some on
+code size, and in avoiding the need for a virtual function table for the
+class, but not very much at all; it hardly saves anything at all on CPU
+time.  But I wrote that code at a time when it seemed doubtful we could fit
+everything within our stringent performance requirements.  This is a
+warning that the tradeoff should be calculated more carefully in the
+future.
+
+
+
+@menu
+* Flight code::
+* Naming conventions::
+* Coding conventions::
+@end menu
+
+@c ***************************************************************************
+@node Flight code
+@subsection About flight code
+
+Code that is meant to be flown on an autonomous system is termed `flight
+code' (since, this being NASA, we think of putting L2 on spacecraft) and
+has extra requirements placed on it as compared with the rest of the
+codebase -- something akin to the difference between kosher and pareve
+foods.   In general, all features of the engine should be made flyable.  At
+least one path through the readers should also be flyable.  Any other code
+(debuggers, skunkworks, etc) needn't fly.
+
+Flight code must not:
+@itemize
+@item use dynamic allocation except for L2_alloc/L2_free (or Pooled,
+        L2_alloc_array, and other wrappers around it).  The worry is that
+        L2 could allocate all the memory in the system, and cause other
+        software on the flight box to crash.
+@item use recursive function invocation.  Infinite recursion would
+        overflow the stack, a condition many operating systems don't handle
+        well.
+@item use strings.  The system is autonomous: no one will read the strings.
+@item use stdio or iostreams.  Many flight boxes will not have a file
+        system.
+@item access any array without checking that we're in bounds.  In fact,
+        this is a generally good idea, but absolutely critical for flight
+        code.
+@item use the C++ exception mechanism.  Many C++ compilers miscompile
+        exceptions; and exceptions semantics are very complicated.
+@item be slow, big, or take lots of run-time memory.  If it will
+        make the flight code less expensive, shift work to non-flight code
+        -- even if the total cost increases as a result.
+@end itemize
+
+In addition, other projects (like X-37) may have extra requirements.  These
+should be added to the main L2 branch only if either (a) they actually ward
+away potential bugs or (b) many projects have the requirement.  They should
+not be merged into the main branch if they reduce code legibility,
+significantly affect performance, or reduce the ability to easily change
+the implementation (here I'm thinking mainly of iterators).
+
+
+Given limited development time, L2 developers should spend the bulk of
+their time making the flight code perfect, and only a small amount cleaning
+up the debuggers in particular, and other non-flight code in general.  That
+said, the debuggers are used for model development, so that if users
+complain of sluggish behaviour which is traced to the debuggers, that
+should be fixed.  But only enough that model developers stop complaining.
+
+
+A note about the @command{l2flight} front-end.  Clearly, this is not flight
+code; however, it should be treated as if it were with the exception that
+file (and terminal) access is ok.  The goal of this executable is to test
+the API as changes are made to it or as it is ported to new platforms; and
+to size L2 in terms of code size, memory usage, and CPU time.  It is also a
+good target for profiling, since it does not include the debuggers which
+historically have shifted the execution costs quite dramatically.
+
+
+@c ***************************************************************************
+@node Naming conventions
+@subsection Naming conventions
+
+The current standard for naming conventions is mix-and-match, mostly taken
+from the table below.  Often they are consistent within a file, but not
+always.  This reflects the fact that several developers have put their paws
+in the pot without a coherent naming convention having been imposed
+beforehand.  My personal preference is the one marked with a pound sign
+(#), two if I feel strongly about it.
+
+@multitable @columnfractions @.25 @.25 @.25 @.25
+@item class name        @tab Class_name @tab ClassName# @tab pfx_class_name
+@item function name     @tab fn_name    @tab fnName   # @tab
+@item instance variables@tab i_var      @tab iVar       @tab iVar_## (note 1)
+@item args (reference)  @tab T<space>&  @tab T&<space># @tab
+@item args (pointer)    @tab T<space>*# @tab T*<space>  @tab
+@item args (const)      @tab const T *# @tab T const *  @tab (note 2)
+@item accessors         @tab get_X()#   @tab x()        @tab (note 3)
+@item predicate         @tab is_p()##   @tab p()        @tab (note 4)
+@item iterator type     @tab x_iterator#@tab iterator   @tab (note 5)
+@item iterator function @tab begin_X()##@tab X_begin()  @tab begin()  (note 5)
+@end multitable
+
+Note 1.  I find this makes it much clearer whether something it an argument
+or local variable, or whether it's an instance variable.  It also clears up
+the name @code{iVar} for the accessor function that returns @code{iVar_},
+but see note 3.
+
+Note 2.  With multiple const and pointer specifications, I prefer the
+second form as being somewhat more parallel: @code{T const* const*} rather
+than @code{const T * const *}.
+
+Note 3.  I don't care so much about this one; and certainly, I prefer
+@code{size()} to @code{get_size()} since it's much shorter, and just as
+clear.  Many instances of the second form are my fault, I must admit.
+
+Note 4.  Typically, a predicate could be a verb: for instance,
+@code{empty()} is a query ``is the list empty'' but could easily be
+interpreted as a command ``make the list empty.''
+
+Note 5.  Iterator types and functions should have some version of the name
+of what they're iterating over, except in the definition of an abstract
+data type like @code{Slist}.  Otherwise, it's confusing (what is being
+iterated over), and non-extensible (can't easily add another list).
+
+
+@c ***************************************************************************
+@node Coding conventions
+@subsection Coding conventions
+
+The L2 coding conventions are intented to allow a few things:  safety,
+maintainability, ``pay only for what you use,'' and ease of porting.
+As with naming conventions, the current code-base does not follow all of
+these rules, but it's moving in that direction.
+
+@menu
+* Coding - safety::
+* Coding - maintainability::
+* Coding - minimalism::
+* Coding - porting::
+@end menu
+
+@c ****************************************
+@node Coding - safety
+@subsubsection Safety first!
+
+The usual rules apply here.  Most of what I have to add is to @i{always}
+check array bounds -- never skip on the check!  Note that I do consider
+checking against the end iterator of an array to be an array bounds check,
+as long as you only use forward iterators (it's far too easy to screw up
+using forward-and-back iterators).
+
+The configure option @samp{--with-purify} helps a lot to discover what's
+going on.  The code should have no errors at all, except if you fully
+understand what the error is, why it's happening, and why it's a spurious
+error.
+
+Similarly, enable @samp{--with-Wall} (the default) and
+@samp{--with-Werror}.  This turns on all compiler warnings, and calls them
+errors.  Compiler warnings often reveal potential problems; don't allow any
+of them.  Currently, @samp{--with-Wall} turns off warnings about
+non-virtual destructors, and does not turn on the @option{-W} switch; this
+should be fixed.
+
+Use the C++ @code{static_cast} and @code{const_cast} instead of the C cast
+syntax, and use these sparingly (especially @code{const_cast} which I'm
+guilty of overusing).  These are more restrictive than the C-style cast,
+which should ward off some silly errors.
+
+Finally, it is critically important to use the tab character meaning 8
+spaces (or just don't use the tab character), and to indent to the tune of
+4 characters.  I wrote this in jest (and since I couldn't find a better
+place for it), but I actually have been stung by some bugs because I
+misinterpreted which scope I was in due to poorly done indenting.
+
+@c ****************************************
+@node Coding - maintainability
+@subsubsection Maintainability
+
+It should be as easy as possible to make changes to the implementation to
+fix performance issues as they crop up.  This section has a few random
+thoughts on how to achieve that.
+
+@anchor{maintainability - data structures}
+Use the @b{generic data structures} in @file{mba_utils}: classes @code{Slist},
+@code{Array}, and @code{Hash_table}.  @code{BinaryHeap} should probably be
+moved to there as well (it's currently just in CBFS).  This saves
+development time (no need to reinvent the wheel in every class).
+
+@anchor{maintainability - iterators}
+Also, use @b{iterators} as much as possible.  These free the code from knowing
+what kind of data structure over which they iterate -- instead, we just use
+operators ++, !=, and * to do all the work.  It becomes very easy to
+substitute a hash table for a linked list, or an array, etc.
+
+@anchor{maintainability - typedefs}
+Use @b{typedefs} if you want to return an iterator to something so that the
+client needn't know what kind of thing it's iterating over.  For instance,
+class @code{Variable} allows access to its propositions using
+@code{Variable::prop_iterator}.  Client code can then declare iterators as
+such, and not need to worry about how class @code{Variable} stores its
+propositions (in an @code{Slist}, @code{Array}, or other).  In particular,
+the client code need only be recompiled -- not modified -- if the
+@code{Variable} class changes the storage class, as long as it updates the
+typedef correctly, or even changes from a typedef to a class of the same
+name.
+
+@anchor{maintainability - loops}
+@b{Loops over a data structure} should take the following form:
+@example
+@include loop.texi
+@end example
+
+Open a new scope so that @code{it} falls out of scope after the loop.  It
+doesn't work to put @code{it} in the @code{for} initialization section,
+since in older C++ compilers (VC6.0 and gcc-2.7.2) the scope extends to the
+entire function.
+
+Always use @code{it} for the loop iterator; uniformity makes it easier to
+figure out what is going on.  If you have nested loops, make the inner loop
+a function in its own right.  If you absolutely must have nested loops (and
+I can't really see why), rename @i{both} loop iterators to something very
+obvious.
+
+
+
+@c ****************************************
+@node Coding - minimalism
+@subsubsection Pay only for what you use!
+
+Whenever practical, make it possible to disable everything related to any
+particular feature.
+
+The best way to do this is to put all that in a file or directory of its
+own, and have configure simply not include the file in the library (using
+the @code{NOLIB_FEATURE_DIRS} and @code{FEATURE_DIRS} ; see the
+@file{configure.in} file).  This method tends to produce the cleanest code:
+the fewest files are affected by the feature.
+
+A distant second is to provide a preprocessor macro (using @code{AC_DEFINE}
+in @file{configure.in}) and protect the code in @code{ifdef}s.
+
+Most features use a hybrid of the two approaches.
+
+Currently, there is no good way to add a feature that should be enabled by
+default if certain other components are enabled, but disabled if the user
+doesn't want it to be included.  There's a partial solution for the
+readers, but it's not perfect.  The code used to create the graph in the
+section on configuration (@pxref{Configuration}) might be a starting point.
+
+@c ****************************************
+@node Coding - porting
+@subsubsection Easy porting to new platforms
+
+L2 is essentially structured like a GNU program, in large part because of
+the need to port to a large number of platforms.  To that end, we are aware
+and follow some of the @uref{http://www.gnu.org/prep/standards_toc.html, ,
+GNU coding standards}.  Obviously we ignore some of the advice about
+language choice (we use C++) and porting to non-Unix platforms (Unix
+doesn't run spacecraft).
+
+L2 should run out of the box on the following platforms:
+@itemize
+@item GNU/Linux with gcc-2.95.x
+@item Solaris with gcc-2.95.x and native binutils
+@end itemize
+
+Hopefully, it should also work on other Unix and Unix-like platforms (irix
+or cygwin, for instance).
+
+In addition, it should be easy (less than an hour) to make any given
+release work on the following:
+@itemize
+@item VxWorks with gcc-2.7.2.2
+@item Win32 with VC++ 6.0
+@end itemize
+
+In particular, it should compile on those platforms.  The time should be
+entirely spent on generating the @file{gnu_conf.h} file and setting up
+projects in their development environments.  The requirement to compile on
+those means we need to work around bugs in those compilers, and we're
+limited to the subset of C++ they recognize.
+
+
+To achieve this goal, follow these rules of thumb:
+@itemize
+@item In general, try not to use any system headers at all.
+      If you must, limit yourself to @file{<stdlib.h>}, @file{<stddef.h>},
+      @file{<assert.h>} and a few other similarly extremly standard files.
+
+@item Similarly, don't use non-standard executables.  The standard ones
+      are listed in a short list in the GNU coding standards.
+      Notably, perl is not a standard program.  If you must use such an
+      executable, you have two options depending on what that executable is
+      doing:
+      @itemize
+        @item if it's creating a file needed for the build, include the
+              file in CVS.  Whenever you change the source file, update
+              the generated file and check it in as well.  This is the
+              approach we take with the manuals, and with configure.
+              Add the file to @command{l2_update} in the
+              @code{FILES_TO_CHECK} variable.
+        @item if it's needed for a feature, allow the user not to use that
+              feature.  This is the approach we take with to_graphviz and
+              the l2-regress regression test suite (which is perl).
+      @end itemize
+
+@item Don't write ifdefs on the system type, but instead, make a configure
+      test for the condition.  This will make it easier to port to new
+      platforms that have similar characteristics to a previously-ported-to
+      platform.  An exception is made for tests for compiler extensions;
+      for instance, the @code{__attribute__} mechanism in gcc after 2.5,
+      or various pragmas for VC6.0.
+@end itemize

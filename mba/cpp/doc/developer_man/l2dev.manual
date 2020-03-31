@@ -1,0 +1,101 @@
+\input texinfo
+
+@c %**start of header
+@setfilename l2dev.info
+
+@c Version is set independently of version.c in case the manual falls out
+@c of date.
+@set VERSION 2.5
+@set L2VERSION Livingstone v@value{VERSION}
+
+@c Set my name.  Try hard to get a i-circumflex up there!  Haven't figured
+@c out how to do this for html (that is, how to @set in an @html).
+@iftex
+@set bhudson Beno@^{@dotless{i}}t Hudson
+@end iftex
+@ifnottex
+@set bhudson Benoit Hudson
+@end ifnottex
+
+
+@c Set the base directory for html.  Make the HTML manual link to a
+@c relative path; make the other manuals print an absolute path.
+@ifhtml
+@set HTML_base ..
+@end ifhtml
+@ifnothtml
+@set HTML_base ic-www.arc.nasa.gov/ic/projects/mba/projects/L2
+@end ifnothtml
+
+@set DATE July 27, 2001
+@set TITLE Doing development work on L2 v@value{VERSION}
+@set AUTHOR @value{bhudson}
+
+@settitle @value{TITLE}
+@setchapternewpage odd
+
+@c %**end of header
+
+@c **********************************************************
+@c Title page
+@titlepage
+@title @value{TITLE}
+@author @value{AUTHOR}
+@end titlepage
+
+
+
+@c **********************************************************
+@c Table of Contents
+@ifnottex
+@node Top, , (dir), (dir)
+@top Livingstone
+
+This file documents @value{L2VERSION} ; this is the @value{DATE} edition of
+the manual.
+
+If you're looking for a user manual (or for acknowledgments), see
+@uref{@value{HTML_base}/user_man/l2.html, , the L2 user manual}.
+@value{bhudson} wrote this manual largely as a document to help out later
+developers like Lee Brownston who was taking over from him.  It contains
+many of my personal opinions.  Keep in mind that this manual is free.  Free
+advice is worth every penny.
+
+@menu
+* Philosophy::
+* File layout::
+* Software components::
+* Configuration::
+@end menu
+
+@end ifnottex
+
+@contents
+
+
+@c **********************************************************************
+@c Design philosophy and coding standards
+@include philosophy.texi
+
+@c **********************************************************************
+@c File layout
+@include file_layout.texi
+
+
+@c **********************************************************************
+@c Software components
+@include software_components.texi
+
+@c **********************************************************************
+@c Configuration
+@include configuration.texi
+
+
+@c **********************************************************************
+@c Indices should be generated here.
+@c
+@c @node Function Index
+@c @unnumbered Function and Variable Index
+@c @printindex fn
+
+@bye

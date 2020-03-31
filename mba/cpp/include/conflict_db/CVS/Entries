@@ -1,0 +1,15 @@
+/assignable.h/1.61/Wed Jan 28 22:02:18 2004//
+/assignment.h/1.69/Mon Jan 26 20:23:18 2004//
+/assumption.h/1.24/Thu Aug  8 00:05:16 2002//
+/candidate.h/1.55/Tue Feb 10 22:16:36 2004//
+/command.h/1.6/Fri Dec 28 15:54:02 2001//
+/conflict.h/1.36/Mon Jan 26 20:16:20 2004//
+/conflict_db.h/1.92/Thu Jan 16 21:26:50 2003//
+/conflict_db_listener.h/1.6/Tue Dec  4 01:36:56 2001//
+/dependent.h/1.20/Tue Jan  8 22:50:55 2002//
+/observable.h/1.8/Wed Oct  9 00:15:35 2002//
+/past_command.h/1.5/Thu Aug  8 00:05:16 2002//
+/state_variable.h/1.5/Thu Aug  8 00:05:16 2002//
+/transition.h/1.9/Mon Aug 26 16:19:43 2002//
+/variable.h/1.69/Thu Oct 24 16:40:23 2002//
+D

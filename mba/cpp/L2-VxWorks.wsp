@@ -1,0 +1,18 @@
+Document file - DO NOT EDIT
+
+<BEGIN> CORE_INFO_TYPE
+Workspace
+<END>
+
+<BEGIN> CORE_INFO_VERSION
+2.0
+<END>
+
+<BEGIN> projectList
+/home/copernicus/id2/shayden/xerces/XercesLib.wpj \
+	/home/copernicus/id2/shayden/xerces/SAXCount/SAXCount.wpj \
+	$(PRJ_DIR)/Livingstone.wpj \
+	/home/copernicus/id2/shayden/GRC-monitors/Monitors.wpj \
+	$(PRJ_DIR)/Kernel/Kernel.wpj
+<END>
+

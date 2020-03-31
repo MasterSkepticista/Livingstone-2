@@ -1,0 +1,5 @@
+scenario solenoidStuckOpen solenoidValve
+progress test.valveCmdIn=open
+assign test.pneumaticLineIn=aboveThreshold
+assign test.pneumaticLineOut=belowThreshold
+fc

@@ -1,0 +1,25 @@
+<xmpl>
+    <componentinstance type="led" name="test">
+        <ci:attributetype name="led.ModeType" members="nominal"/>
+        <ci:attributetype name="onOffState" members="on off"/>
+        <ci:component type="led" name="test">
+            <ci:statevector vars="mode"/>
+            <ci:attribute type="onOffState" name="ledState"/>
+            <ci:attribute type="onOffState" name="currentIn"/>
+            <ci:attribute type="led.ModeType" name="mode"/>
+            <ci:clause>
+                <ci:term>!mode=nominal</ci:term>
+                <ci:term>ledState=currentIn</ci:term>
+            </ci:clause>
+            <ci:transition to="nominal" from="nominal">
+                <ci:clause/>
+            </ci:transition>
+        </ci:component>
+    </componentinstance>
+    <mplHarness name="test" version="1.00">
+        <obs name="test.ledState"/>
+    </mplHarness>
+    <mplInit name="test" version="1.00">
+        <assign eq="test.mode=nominal"/>
+    </mplInit>
+</xmpl>

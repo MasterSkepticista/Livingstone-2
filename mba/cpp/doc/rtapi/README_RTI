@@ -1,0 +1,60 @@
+This file describes how to use a released version of the RTI and L2 libraries
+along with the provided sample application to test realtime scenarios with user
+models. This release was provided with L2 1.4.
+
+
+Model preprocessing steps:
+
+Run api_gen with your model name as a command line argument, being sure that the
+corresponding .hrn, .ini, and .xmpl files are accessible. This should generate 
+"enumapi.h" that specifies the L2 enum interface for your model.
+
+Using .../released_1.n.n/mba/cpp/src/test/time_delays.h as a template, provide timeouts (in seconds) for each command and observation. You may also change the
+definitions of get_command_timeout and get_observation_timeout, but they MUST 
+be defined in order for the RTI to function properly.
+
+
+Building the test application:
+
+Copy .../released_1.n.n/mba/cpp/share/l2test-rt.mk to a user local directory. 
+If this directory contains "enumapi.h" and "time_delays.h" you are ready to build. If not, set the environment variable RTI_USER_INCLUDE to the path to the 
+directory where these files can be found.
+
+Type "make -f l2test-rt.mk". This should build the executable l2test-rt. 
+
+Generating test scenarios:
+
+Write a realtime scenario script as described in the RTAPI documentation. A 
+short sample script named "scenario.scr" should be found in 
+.../released_1.n.n/mba/cpp/src/liv_utils/api_scr. Copy the api_scr executable 
+into your local directory containing your script and the model files used by api_gen. 
+
+Now run api_scr with the model name and the script file name as arguments. 
+This should produce an output file named "scenario.rt". You may rename this file
+if you like.
+
+Running l2test-rt:
+
+Invoking l2test-rt with only the model name as argument, will result in its 
+looking for "scenario.rt" as the input scenario. Otherwise, you may give an 
+input file name as the second command line argument.
+
+Assuming everything works, you will see runtime output from L2 and three output
+files will be produced: "rtapi.drib", "rtL2.scr", and "rtapi.log". The contents of these files are outlined in the documentation.
+
+Customization:
+
+Timeout handler functions are set using L2_rtapi::set_timeout_handlers. So one 
+can define the handlers "void *your_observation_timeout(void *param)" and 
+"void *your_command_timeout(void *param)" in a header file in the user workspace.
+Defaults for these are defined in the released src/realtime_api/posix/timeout_handlers.cpp. 
+In order for the sample app to use your definitions you must: (1) include the 
+header file with your definitions at the top of rtapi.cpp, and (2) invoke 
+"myapi.set_timeout_handlers(your_command_timeout, your_observation_timeout)" 
+after each L2_rtapi object (named myapi) instantiation. In the current release, 
+this means after lines 180 and 231 in rtapi.cpp.
+
+Reporting functions are changed by modifying the definitions in 
+rti_user/userfcns.cpp and rti_user/userfcns_debug.cpp and then remaking 
+l2test-rt.mk.  
+

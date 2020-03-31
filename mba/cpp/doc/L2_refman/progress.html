@@ -1,0 +1,237 @@
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+<head>
+<title>Full Progress, Minimal Progress and Optimization</title
+</head>
+
+<body>
+<h1>Full-progress, min-progress and optimization</h1>
+
+The progress commands (min-progress and full-progress) introduce
+a new time step to the model and insert the constraints necessary
+to model the evolution of the modeled hardware from the previous
+time step to the new present time step.
+<p>
+Full-progress copies the entire model of the hardware system
+at each time step.  
+<p>
+Min-progress copies only the minimal information needed to
+model the old evolution of the hardware system:  the command
+that was received at each time point, and the mode of the
+component that was commanded at each time point.  This can
+reduce the number of variables needed to represent the
+evolution of the system by a factor in the 100s.
+<p>
+We describe full-progress first, as that is simpler.
+
+<h3>Full progress algorithm </h3>
+
+  This is documented in T_system->full_progress()
+
+<pre>
+full_progress(cmd=cmd_value)
+
+  1. Copy all current variables into the new time step, representing the past
+
+      - copy all dependent variables into new time step
+
+      - copy all assignable variables into new time step
+        - maintain a pair of current assignable,previous assignable used in 3.
+
+      -  transition all transitioned variables TV into new time step 
+         - create a new variable in the past time step.  Record it in TV.previous
+         - instantiate all transition constraints
+              - for each assignment   current_var=value_index   in the prototype
+              - find the corresponding variable in the new time step (currently by name)
+               - assign the corresponding variable to the value index
+
+  2.  instantiate all state constraint prototypes
+
+      - for each assignment   current_var=value_index   in the prototype
+        - find the corresponding variable in the new time step (currently by name)
+        - assign the corresponding variable to the value index
+
+ 3.   assign the assignable variables
+      for each current assignable variable
+        - find the corresponding past assignable in the new time step (currently by pair)
+        - assign the past assignable to the same value as the current assignable,
+          except for cmd, which is assigned to cmd_value
+</pre>
+
+<h4>Notes </h4>
+ <ul>
+  <li> We assign the assignable variables after we have instantiated
+     the constraints in order to keep the assigned/unassigned counts right.
+</ul>
+
+
+<h3>Minimal progress algorithm</h3>
+Conceptually, min-progress works by determining what component modes
+could change when a command is given, and only introducing those modes
+into the model of the new time step.  For example in the circuit
+breaker model, if at time step 10 we give the command "min-progress
+cb1.cmdIn=turnOn", only the variables needed to model whether cb1
+turned on or failed are introduced.
+
+In order to introduce the correct variables as quickly
+as possible, min-progress needs to know what commands
+effect which component modes.  This can happen in two
+ways:
+
+<ul>
+
+ <li> If every component transition includes a variable
+   that is a command, min-progress will work on the
+   model as written.   
+
+<p>
+For example, in the circuit breaker model, each circuit breaker has an
+input that tells it to open or close.  That input is a command that is
+directly set by the test scenario.
+
+<p>
+One can load the circuit breaker model and run either full-progress or
+min-progress.
+<p>
+
+<li> If some component transitions include variables that are not
+   commands, but are related to a command the model is preprocessed so
+   that all transition constraints only refer to the value of
+   transitioned variables.
+<p>
+   For example, in the X37 model, there are relay models.
+   The relay has a power throw whose mode changes from
+   open to close.  The input to the power throw is
+   equal to an input of the relay.  The relay input is
+   the command that is set by the scenario.
+<p>
+   In this case, min-progress cannot directly map
+   from the command (at the relay) to the mode (in the
+   power throw) that will change.  It could do this
+   reasoning, but we want min-progress be as fast as possible.
+   We therefore do the reasoning once with a model-optimizer.
+<p>
+   If one wants to run the X37 model with min-progress, one
+   has to first run it through an optimizer or modify the
+   model by hand (see below).
+</ul>
+
+<pre>
+minimal_progress(cmd=cmd_value)  {
+
+   For each transitioned variable
+      - look up whether cmd_value enables any transition constraint prototypes
+   
+      - If any transition prototypes are enabled, instantiate them
+
+         - If any transitioned variable the prototype mentions doesn't yet exist
+           in the new time step, create it and store it in the current variable's
+           previous field. 
+
+         - Instantiate the transition constraint prototype in the past
+
+	       - for each assignment   transitioned_var=value_index   in the prototype
+	            - read off the past variable in transitioned_var.previous
+	            - assign the past variable to the value index
+}
+</pre>
+
+<h4>Notes</h4>
+ <ul>
+<li>
+Determining whether a transitioned variable TV has been copied into
+the past yet on the current time step should be done by
+checking a bit in TV to see if TV.previous was set on this
+progress or is left over from a previous one.
+
+<li>
+Checking whether a cmd assignment enables any transitions of a
+transitioned variable is a linear search, but the length is only the
+domain of the command variable (roughly 5)
+
+ <li>
+Currently the code collects the enabled transition prototypes and instantiates
+them.  It would be more efficient to just instantiate the ones that are
+enabled where we now test them for inclusion in the collection that will
+be instantiated.
+</ul>
+
+<h3>The model optimizer</h3>
+
+ The model optimizer adjusts a Livingstone model so that
+ the mapping from what command is given to what modes variables
+ are needed is clear.  It does not change the logic of the model,
+ it simply rewrites it in a way that is logically equivalent.
+
+ <h4>Simple optimization</h4>
+ Consider the X37 model.   The input to the relay is the command
+ set by test scenarios.  The input to the relay's power throw is
+ equal to the input of the relay.  If the power throw input is
+ "on", the power throw goes on.  So, our relay includes a
+ statement of the form
+ <pre>
+   relay1.cmdIn=relay1.powerThrow.cmdIn;
+ </pre>
+ and the power throw has a transition that captures the
+ idea that the powerThrow goes on when commanded on
+ <pre>
+  powerThrow:
+   transition(off,on,relay1.powerThrow.cmdIn=on)
+ </pre>
+ Because relay1.cmdIn and relay1.powerThrow.cmdIn are equal,
+ relay1.cmdIn=on and relay1.powerThrow.cmdIn=on are equivalent
+ statements.   Thus we can substitute one for the other:
+ <pre>
+  powerThrow:
+   transition(off,on,relay1.cmdIn=on)
+ </pre>
+ Since relay1.cmdIn is the command assigned by the scenario,
+ min-progress now knows what command effects powerThrow.mode.
+ The optimizer simply goes through the model and makes these
+ types of substitutions. 
+ <p>
+ For this simple type of optimization, one can also simply
+ make relay1.powerThrow.cmdIn a top level command instead
+ of relay1.powerThrow.   This satisfies the requirement
+ that every mode be directly controlled by a top level command.
+
+ <h4>More complex optimizations</h4>
+ Suppose our model was a bit more complicated, and the relay
+ only sent the command through to the power throw if the relay
+ was OK.
+ <pre>
+   case (mode) 
+     OK:
+      relay1.cmdIn=relay1.powerThrow.cmdIn;
+
+  powerThrow:
+   transition(off,on,relay1.powerThrow.cmdIn=on)
+ </pre>
+
+ This can be simplified into a single transition as follows:
+ <pre>
+  powerThrow:
+   transition(off,on, relay1.mode=ok && relay1.powerThrow.cmdIn=on)
+ </pre>
+ Again this is logically equivalent, but makes is possible for
+ min-progress to represent component transitions using only
+ mode variables and command variables.
+
+<h3>In summary</h3>
+
+ An optimized model contains the same information as a
+ non-optimized model, and can be run with full-progress
+ or min-progress.  
+<p>
+ An unoptimized model can be run with min-progress if
+ every mode transition that is not a failure 
+ is controlled directly by a top-level command that is
+ set by the scenario.   This can often be achieved by
+ simply changing which variables are commands for the
+ purposes of testing.
+</body>
+</html>

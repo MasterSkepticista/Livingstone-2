@@ -1,0 +1,70 @@
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+<head>
+<title>Inclusion of Truncated Failures</title>
+</head>
+
+<body>
+<h1>Inclusion of Truncated Failures</h1>
+
+
+This change only applies when using min-progress and truncation.
+<p>
+Overview<br>
+---------<br>
+When using min-progress, a component mode can enter a failure 
+just after the history horizon.   Thus, if a component failed 
+some time in the history that was truncated, we can represent that failure as occuring
+at the history horizon.
+<p>
+Benefit<br>
+---------<br>
+This will eliminate most situations where the system cannot 
+find a diagnosis because the time when the component failed 
+was truncated before the diagnosis was made.  It will also eliminate situations where
+the system comes up with a highly unlikely diagnosis on a second component because the
+failure of the first component was truncated off before it was diagnosed.
+<p>
+
+Detail<br>
+---------<br>
+<pre>
+When using min progress, we do not represent every component
+mode at every time step.  We only represent a mode when it
+is commanded.  When it is commanded, we put in constraints
+that represent the different failure possibilities.
+
+When we truncate off the history at time t, we create a 
+startState variable.  If component C's mode had value m at
+time t, in the past we would insert a constraint of the form:
+
+ StartState=s0  --->  t#C.mode=m
+
+This constraint does not include the possibility of failure.  
+Thus if we do not command C again, there will be no way to
+create a diagnosis where C has failed.
+
+We address this by modifying truncation.   When we truncate the
+history of C, if no opportunities for C to fail are represented
+in the model, we introduce the following constraints:
+
+
+ StartState=s0 & (t-1)#C.modeTransition=nominal ---> #C.mode=m
+ (t-1)#C.modeTransition=failure1  --->  t#C.mode=failure1
+ (t-1)#C.modeTransition=failure2  --->  t#C.mode=failure2
+
+Thus, any potential faliures of C in the part of its history
+that was truncated are represented by a failure at the first
+time step after the horizon.
+
+This gives the system back the ability to involve C in failures
+even if it has not been commanded recently.
+
+</pre>
+
+</body>
+</html>

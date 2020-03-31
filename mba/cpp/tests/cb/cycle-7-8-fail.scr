@@ -1,0 +1,44 @@
+/// ********** Multiple trajectory test
+//  Create fresh model
+//
+//  This test is trickier, and shows some of the features
+//  of Livingstone2.
+//
+//  This is the same as cycle-7-8.scr except that there's no
+//  failure.  We use this to compare how the system performs
+//  in diagnosing a failure after a long nominal run.
+
+progress cb15.cmdIn=on
+progress cb14.cmdIn=on
+progress cb12.cmdIn=on
+progress cb11.cmdIn=on
+progress cb5.cmdIn=on
+assign led5.ledState=on
+fc
+// Now turn on CB8. 
+progress cb8.cmdIn=on
+assign led8.ledState=on
+fc
+// Turn on CB7
+progress cb7.cmdIn=on
+assign led7.ledState=on
+fc
+// Reset CB8
+progress cb8.cmdIn=reset
+progress cb8.cmdIn=on
+assign led8.ledState=on
+fc
+// Return everything to the start state
+progress cb15.cmdIn=off
+assign led8.ledState=off
+assign led5.ledState=off
+assign led7.ledState=off
+fc
+progress cb14.cmdIn=off
+progress cb12.cmdIn=off
+progress cb11.cmdIn=off
+progress cb5.cmdIn=off
+progress cb7.cmdIn=off
+progress cb8.cmdIn=off
+// Back to start state
+

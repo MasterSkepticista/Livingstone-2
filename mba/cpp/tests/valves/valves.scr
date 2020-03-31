@@ -1,0 +1,484 @@
+/// Simple test
+propagate
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+fc
+assign valve1.reportedPosition=closed
+conflict
+fc
+assign valve2.reportedPosition=closed
+fc
+
+
+// Simple Test 
+progress vdecu.driver1CmdIn=on
+assign driver1.checksum=corrupted
+fc
+
+
+// Simple Test 2
+progress vdecu.driver1CmdIn=on
+fc
+progress vdecu.driver1CmdIn=off
+fc
+progress vdecu.driver1CmdIn=on
+assign driver1.checksum=corrupted
+prune
+
+
+/// Test five
+propagate
+progress vdecu.driver2CmdIn=on
+propagate
+fc
+progress vdecu.driver2CmdIn=open
+assign valve3.reportedPosition=open
+propagate
+fc
+
+
+/// Test five.five
+propagate
+progress vdecu.driver1CmdIn=on
+fc
+progress vdecu.driver1CmdIn=open
+assign valve1.reportedPosition=closed
+propagate
+fc
+assign valve2.reportedPosition=closed
+propagate
+fc
+
+
+/// Test five.five.one
+propagate
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+assign valve1.reportedPosition=closed
+propagate
+assign valve2.reportedPosition=closed
+propagate
+fc
+
+
+/// Test five.six
+propagate
+progress vdecu.driver1CmdIn=on
+fc
+assign driver1.checksum=corrupted
+propagate
+fc
+
+/// Test five.six
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+assign driver1.checksum=corrupted
+propagate
+fc
+
+
+/// Test five.six
+propagate
+progress vdecu.driver1CmdIn=on
+prune
+assign driver1.checksum=corrupted
+propagate
+fc
+
+
+////////////////////////////////////////////////////
+///
+/// The following tests were to find a bogusness in the
+///  progress code.  That bug has since been fixed.
+/// 
+////////////////////////////////////////////////////
+
+
+/// Test six
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+progress vdecu.driver2CmdIn=on
+propagate
+progress vdecu.driver2CmdIn=open
+
+
+/// Test seven
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+
+
+
+/// Test seven
+progress vdecu.driver1CmdIn=on
+propagate
+assign valve3.reportedPosition=closed
+propagate
+
+
+
+/// Test eight
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+
+
+
+///////////////////////////////////////////////////////////
+//
+//       Everything below here was for testing a bug that
+//       has been fixed.
+//
+///////////////////////////////////////////////////////////
+
+
+
+///// Tests for the parentless prop problem
+
+
+
+/// This test causes the problem
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve2.reportedPosition=closed
+fc
+assign valve1.reportedPosition=closed
+fc
+
+
+
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+assign valve2.reportedPosition=closed
+fc
+assign valve1.reportedPosition=closed
+fc
+
+
+
+
+
+
+
+
+
+/// This is some text for testing
+assign 1#driver1.modeTransition=recoverable
+
+/// Here is a simpler test that causes the problem
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve2.reportedPosition=closed
+assign valve1.reportedPosition=closed
+assign 1#driver1.modeTransition=recoverable
+propagate
+
+
+// Simpler still
+
+/// This does _NOT_ cause the problem
+propagate
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+assign valve2.reportedPosition=closed
+assign valve1.reportedPosition=closed
+assign 1#driver1.modeTransition=recoverable
+propagate
+
+
+/// This does _NOT_ cause the problem
+propagate
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve2.reportedPosition=closed
+assign valve1.reportedPosition=closed
+assign 1#driver1.modeTransition=recoverable
+propagate
+
+
+/// This causes the problem
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+assign valve2.reportedPosition=closed
+assign 1#driver1.modeTransition=recoverable
+propagate
+
+
+/// This does _NOT_ cause the problem
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve1.reportedPosition=closed
+assign 1#driver1.modeTransition=recoverable
+propagate
+
+/// This causes the problem
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+assign valve2.reportedPosition=closed
+assign 1#driver1.modeTransition=recoverable
+propagate
+
+
+
+/// This causes the problem
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+assign 1#driver1.modeTransition=recoverable
+propagate
+
+
+
+/// This gives more output
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+
+cprops 1#driver1.modeTransition=nominal
+cclauses 1#driver1.modeTransition=nominal
+progress vdecu.driver1CmdIn=open
+
+propagate
+cprops 1#driver1.modeTransition=nominal
+cclauses 1#driver1.modeTransition=nominal
+
+assign valve1.reportedPosition=closed
+cprops 1#driver1.modeTransition=nominal
+cclauses 1#driver1.modeTransition=nominal
+
+prune
+cprops 1#driver1.modeTransition=nominal
+cclauses 1#driver1.modeTransition=nominal
+
+cover
+cprops 1#driver1.modeTransition=nominal
+cclauses 1#driver1.modeTransition=nominal
+
+
+assign valve2.reportedPosition=closed
+
+prune
+cprops 1#driver1.modeTransition=nominal
+cclauses 1#driver1.modeTransition=nominal
+
+
+
+cover
+cprops 1#driver1.modeTransition=nominal
+cclauses 1#driver1.modeTransition=nominal
+
+
+
+
+
+
+/// This test, with one less propagate, does not
+propagate
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+assign valve1.reportedPosition=closed
+propagate
+fc
+assumptions
+assign valve2.reportedPosition=closed
+propagate
+fc
+assumptions
+
+
+/// This, with a FC causes the problem as well.
+propagate
+progress vdecu.driver1CmdIn=on
+fc
+progress vdecu.driver1CmdIn=open
+fc
+assign valve1.reportedPosition=closed
+fc
+assign valve2.reportedPosition=closed
+fc
+
+
+
+
+
+
+
+/// Problem with more output
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve1.reportedPosition=closed
+prune
+cover
+cover
+explain valve2.actuator.mode=open
+assign valve2.reportedPosition=closed
+explain 1#driver1.modeTransition=nominal
+assumptions
+prune
+explain 1#driver1.modeTransition=nominal
+
+cover
+explain 1#driver1.modeTransition=nominal
+assumptions
+
+
+
+
+/// Problem with more output
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve1.reportedPosition=closed
+prune
+cover
+explain valve2.actuator.mode=open
+assign valve2.reportedPosition=closed
+prune
+cover
+
+
+
+//// *************************************************************************************
+///   Obsolete tests
+//// *************************************************************************************
+
+
+/// Test one
+
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve2.reportedPosition=closed
+conflict
+cover
+
+
+/// Test two
+
+progress vdecu.driver1CmdIn=on
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve1.reportedPosition=closed
+assign valve2.reportedPosition=closed
+conflict
+cover
+
+
+
+/// Test three
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+assign valve1.reportedPosition=closed
+conflict
+cover
+assign valve2.reportedPosition=closed
+conflict
+cover
+
+
+
+
+// Test 4.4
+progress vdecu.driver1CmdIn=on
+propagate
+
+assign 1#driver1.modeTransition=recoverable
+
+
+
+/// Test 4.5
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+cclauses 1#driver1.modeTransition=recoverable
+assign 1#driver1.modeTransition=recoverable
+cclauses 1#driver1.modeTransition=recoverable
+explain 1#driver1.modeTransition=recoverable
+propagate
+cclauses 1#driver1.modeTransition=recoverable
+explain 1#driver1.modeTransition=recoverable
+
+
+/// Test 4.5
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+assign 1#driver1.modeTransition=recoverable
+propagate
+cclauses 1#driver1.modeTransition=recoverable
+explain 1#driver1.modeTransition=recoverable
+
+
+
+// Test 4.55
+
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+propagate
+cclauses 1#driver1.modeTransition=recoverable
+propagate
+
+remove 1#driver1.modeTransition=nominal
+propagate
+add 1#driver1.modeTransition=recoverable
+
+
+
+/// Test 4.6
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+cclauses 1#driver1.modeTransition=recoverable
+propagate
+assign 1#driver1.modeTransition=recoverable
+cclauses 1#driver1.modeTransition=recoverable
+propagate
+cclauses 1#driver1.modeTransition=recoverable
+
+
+/// Test 4.7
+propagate
+progress vdecu.driver1CmdIn=on
+propagate
+progress vdecu.driver1CmdIn=open
+cclauses 1#driver1.modeTransition=recoverable
+propagate
+assign valve1.reportedPosition=closed
+propagate
+assign valve2.reportedPosition=closed
+propagate
+assign 1#driver1.modeTransition=recoverable
+propagate
+cclauses 1#driver1.modeTransition=recoverable
+
+

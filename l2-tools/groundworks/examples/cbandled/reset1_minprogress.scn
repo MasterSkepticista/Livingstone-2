@@ -1,0 +1,12 @@
+/// Here is the min-progress version
+
+min-progress test.cb15.cmdIn=on
+min-progress test.cb14.cmdIn=on
+min-progress test.cb12.cmdIn=on
+min-progress test.cb8.cmdIn=on
+assign test.led8.ledState=off
+fc
+min-progress test.cb8.cmdIn=reset
+min-progress test.cb8.cmdIn=on
+min-assign test.led8.ledState=on
+fc

@@ -1,0 +1,1126 @@
+<?xml version="1.0"?><xmpl>
+<componentinstance name="cbAndLed">
+  <ci:attributetype name="cb.ModeType" members="on off tripped blown unknownCbFault"/>
+  <ci:attributetype name="cbCmd" members="on off reset noCommand"/>
+  <ci:attributetype name="onOffState" members="on off"/>
+  <ci:attributetype name="led.ModeType" members="nominal"/>
+  <ci:attributetype name="currentSource.ModeType" members="nominal"/>
+  <ci:component type="cb" name="cbAndLed.cb10">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb9">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="led" name="cbAndLed.led8">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="ledState"/>
+    <ci:attribute type="led.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>ledState=currentIn</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="led" name="cbAndLed.led7">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="ledState"/>
+    <ci:attribute type="led.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>ledState=currentIn</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="led" name="cbAndLed.led6">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="ledState"/>
+    <ci:attribute type="led.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>ledState=currentIn</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="led" name="cbAndLed.led2">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="ledState"/>
+    <ci:attribute type="led.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>ledState=currentIn</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb2">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="led" name="cbAndLed.led3">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="ledState"/>
+    <ci:attribute type="led.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>ledState=currentIn</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb3">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="led" name="cbAndLed.led1">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="ledState"/>
+    <ci:attribute type="led.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>ledState=currentIn</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb1">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb6">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb7">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb8">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb12">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb14">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="currentSource" name="cbAndLed.source">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="currentSource.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>currentOut=on</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb13">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb15">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb11">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="led" name="cbAndLed.led5">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="ledState"/>
+    <ci:attribute type="led.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>ledState=currentIn</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb5">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="led" name="cbAndLed.led4">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="ledState"/>
+    <ci:attribute type="led.ModeType" name="mode"/>
+    <ci:clause>
+      <ci:term>!mode=nominal</ci:term>
+      <ci:term>ledState=currentIn</ci:term>
+    </ci:clause>
+    <ci:transition to="nominal" from="nominal">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cb" name="cbAndLed.cb4">
+    <ci:statevector vars="mode"/>
+    <ci:attribute type="onOffState" name="currentIn"/>
+    <ci:attribute type="onOffState" name="currentOut"/>
+    <ci:attribute type="cbCmd" name="cmdIn"/>
+    <ci:attribute type="cb.ModeType" name="mode"/>
+    <ci:transition to="on" from="off" name="turnOn">
+      <ci:clause>
+        <ci:term>!cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="on" name="turnOff">
+      <ci:clause>
+        <ci:term>!cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="tripped" name="performReset">
+      <ci:clause>
+        <ci:term>!cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" probability="unlikely" from="*" name="tripped"/>
+    <ci:transition to="blown" probability="rare" from="*" name="blown"/>
+    <ci:transition to="unknownCbFault" probability="rare" from="*" name="unknownCbFault"/>
+    <ci:clause>
+      <ci:term>!mode=on</ci:term>
+      <ci:term>currentOut=currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=off</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=tripped</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>!mode=blown</ci:term>
+      <ci:term>currentOut=off</ci:term>
+    </ci:clause>
+    <ci:transition to="on" from="on">
+      <ci:clause>
+        <ci:term>cmdIn=off</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="off" from="off">
+      <ci:clause>
+        <ci:term>cmdIn=on</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="tripped" from="tripped">
+      <ci:clause>
+        <ci:term>cmdIn=reset</ci:term>
+      </ci:clause>
+    </ci:transition>
+    <ci:transition to="blown" from="blown">
+      <ci:clause/>
+    </ci:transition>
+    <ci:transition to="unknownCbFault" from="unknownCbFault">
+      <ci:clause/>
+    </ci:transition>
+  </ci:component>
+  <ci:component type="cbAndLeds" name="cbAndLed">
+    <ci:clause>
+      <ci:term>cb4.currentOut=led4.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb5.currentOut=led5.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb11.currentOut=cb5.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb15.currentOut=cb13.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>source.currentOut=cb15.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb14.currentOut=cb12.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb14.currentOut=cb11.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb15.currentOut=cb14.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb12.currentOut=cb8.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb12.currentOut=cb7.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb11.currentOut=cb6.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb1.currentOut=led1.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb3.currentOut=led3.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb2.currentOut=led2.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb6.currentOut=led6.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb7.currentOut=led7.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb8.currentOut=led8.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb9.currentOut=cb2.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb9.currentOut=cb1.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb13.currentOut=cb9.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb10.currentOut=cb3.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb10.currentOut=cb4.currentIn</ci:term>
+    </ci:clause>
+    <ci:clause>
+      <ci:term>cb13.currentOut=cb10.currentIn</ci:term>
+    </ci:clause>
+  </ci:component>
+</componentinstance>
+</xmpl>

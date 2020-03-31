@@ -1,0 +1,889 @@
+<html lang="en">
+
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+
+<head>
+<title>The Livingstone Real-Time Diagnosis Engine</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name=description content="The Livingstone Real-Time Diagnosis Engine">
+<meta name=generator content="makeinfo 4.0">
+<link href="http://texinfo.org/" rel=generator-home>
+</head><body>
+
+<p><hr>
+Node:<a name="Top">Top</a>,
+Next:<a rel=next href="#Introduction">Introduction</a>,
+Previous:<a rel=previous href="#(dir)">(dir)</a>,
+Up:<a rel=up href="#(dir)">(dir)</a>
+<br>
+
+<h1>Livingstone</h1>
+
+<p>Edition of June 28, 2001.
+
+<p>Livingstone:
+<ul>
+<li><a href="#Introduction">Introduction</a>:                 What is Livingstone
+<li><a href="#Overview">Overview</a>:                     General ideas behind Livingstone
+<li><a href="#Executables">Executables</a>:                  How to run Livingstone under Unix / Windows
+<li><a href="#API">API</a>:                          How to use Livingstone into your program
+
+<p>Appendices:
+</p><li><a href="#Function%20Index">Function Index</a>:               Index of API functions and variables
+<li><a href="#Acknowledgements">Acknowledgements</a>:             Dr. Livingstone I presume
+</ul>
+
+
+<h1>Table of Contents</h1>
+<ul>
+<li><a href="#Top">Livingstone</a>
+<li><a href="#Introduction">Introduction</a>
+<li><a href="#Overview">Overview</a>
+<li><a href="#Executables">Executables</a>
+<ul>
+<li><a href="#stanley%2fskunkworks">Model development in Stanley/Skunkworks</a>
+<li><a href="#l2test">Command-line testing: <code>l2test</code></a>
+<ul>
+<li><a href="#l2test%20invocation">Invoking l2test from the Unix/Windows shell</a>
+<li><a href="#l2test%20commands">Commands to type at the l2test prompt</a>
+</ul>
+<li><a href="#xmpl2l2">The xmpl2l2 model translation utility</a>
+<li><a href="#l2flight">The l2flight front-end</a>
+<li><a href="#names2ids">Translating human-readable scripts into l2flight's format</a>
+<li><a href="#apigen">The apigen utilities.</a>
+</ul>
+<li><a href="#API">The Livingstone API</a>
+<li><a href="#Function%20Index">Function and Variable Index</a>
+<li><a href="#Acknowledgements">Acknowledgements</a>
+</ul>
+
+<p><hr>
+Node:<a name="Introduction">Introduction</a>,
+Next:<a rel=next href="#Overview">Overview</a>,
+Previous:<a rel=previous href="#Top">Top</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h1>Introduction</h1>
+
+<p>Livingstone is useful for something, and has even been used in the past.
+
+<p><hr>
+Node:<a name="Overview">Overview</a>,
+Next:<a rel=next href="#Executables">Executables</a>,
+Previous:<a rel=previous href="#Introduction">Introduction</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h1>Overview</h1>
+
+<p>There are a few key ideas underpinning Livingstone.
+
+<p><hr>
+Node:<a name="Executables">Executables</a>,
+Next:<a rel=next href="#API">API</a>,
+Previous:<a rel=previous href="#Overview">Overview</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h1>Executables</h1>
+
+<p>When testing, there are several executables which might be useful.  In
+flight, Livingstone is likely to be a library linked into the flight
+software, rather than using one of the Unix executables we provide here.
+
+<p>See the file mba/cpp/BUILD for instructions on how to build each
+executable; this part of the documentation mainly says how to use each
+program.
+
+<ul>
+<li><a href="#stanley%2fskunkworks">stanley/skunkworks</a>:   A Java and Tcl/Tk interface to Livingstone
+<li><a href="#l2test">l2test</a>:               The main command-line testing program
+<li><a href="#xmpl2l2">xmpl2l2</a>:              Translating between file formats
+<li><a href="#l2flight">l2flight</a>:             A command-line program with just flight code
+<li><a href="#names2ids">names2ids</a>:            Translating names to IDs for l2flight
+<li><a href="#apigen">apigen</a>:               Two utilities to help linking up with the API
+</ul>
+
+<p><hr>
+Node:<a name="stanley%2fskunkworks">stanley/skunkworks</a>,
+Next:<a rel=next href="#l2test">l2test</a>,
+Up:<a rel=up href="#Executables">Executables</a>
+<br>
+
+<h2>Model development in Stanley/Skunkworks</h2>
+
+<p>Stanley is a model development interface that provides a graphical way of
+programming and testing Livingstone models.
+
+<p><hr>
+Node:<a name="l2test">l2test</a>,
+Next:<a rel=next href="#xmpl2l2">xmpl2l2</a>,
+Previous:<a rel=previous href="#stanley%2fskunkworks">stanley/skunkworks</a>,
+Up:<a rel=up href="#Executables">Executables</a>
+<br>
+
+<h2>Command-line testing: <code>l2test</code></h2>
+
+<p>The <code>l2test</code> program runs livingstone models in a non-graphical
+interface.  The input is the same as the scenarios that Stanley
+<a href="#stanley%2fskunkworks">stanley/skunkworks</a> produces.
+
+<ul>
+<li><a href="#l2test%20invocation">l2test invocation</a>:    The Unix command-line switches
+<li><a href="#l2test%20commands">l2test commands</a>:      What to type at the l2test prompt
+</ul>
+
+<p><hr>
+Node:<a name="l2test%20invocation">l2test invocation</a>,
+Next:<a rel=next href="#l2test%20commands">l2test commands</a>,
+Up:<a rel=up href="#l2test">l2test</a>
+<br>
+
+<h3>Invoking l2test from the Unix/Windows shell</h3>
+
+<p>Invoke <code>l2test</code> as follows:
+<pre>        l2test [switches] model
+</pre>
+
+<p>The switches can be before or after the model name.  The model name is
+either the full filename for models in the l2 and l2bin formats; or the
+filename less the extension for models in XMPL format.  For example, if you
+were in directory <code>mba/cpp/bin</code> you might run:
+<pre>        ./l2test -y1 ../tests/cb/cb --cover
+</pre>
+
+<p>The <code>-y1</code> option means to set the history length to 1;
+<code>../tests/cb/cb</code> corresponds to the XMPL-format model in the files
+<code>../tests/cb/cb.xmpl</code>, <code>.hrn</code>, and <code>.ini</code>; while
+<code>--cover</code> means to use conflict coverage search in diagnosis.
+
+<p>All options have a GNU-style long name, prefixed by two dashes; not all
+options have a Unix-style short name (one letter prefixed by a single
+dash).  Options that take an argument can be written as the short name,
+with an optional space, then the argument value ; or the long name, an
+equal sign, no spaces, then the argument value.  For example: <code>-y1</code>,
+<code>-y 1</code>, and <code>--history=1</code> are all legal and mean the same thing,
+whereas <code>-y=1</code> and <code>--history = 1</code> are illegal.
+
+<dl>
+<dt><code>-h</code>
+<dt><code>--help</code>
+<dd>No arguments.  Prints a brief description of all the options, and
+exits immediately.
+
+<br><dt><code>--version</code>
+<dd>Print the version number and exit.
+
+<br><dt><code>-v</code>
+<dt><code>--verbose</code>
+<dd>Sets the verbosity of various stages of reading files.  Provide it
+as a string following the option.  The characters in the string
+mean:
+<dl>
+<dt>&lt;r&gt;
+<dd>Be very verbose when reading the model from file. 
+<br><dt>&lt;o&gt;
+<dd>Be verbose when optimizing or doing other translations
+to the model. 
+<br><dt>&lt;w&gt;
+<dd>Be very verbose when `writing' the model into the engine. 
+<br><dt>&lt;A&gt;
+<dd>All of the above. 
+<br><dt>&lt;-&gt;
+<dd>For the characters after the minus sign, turn the verbosity
+<em>off</em> no matter what they had previously been set to. 
+<br><dt>&lt;&gt;
+<dd>For the characters after the plus sign, turn the verbosity
+<em>on</em> no matter what they had previously been set to. 
+This is the default. 
+</dl>
+
+<br><dt><code>-O</code>
+<dt><code>--optimize</code>
+<dd>Optimize the model after loading it.  Off by default, implicitely
+turned on by <kbd>--progress=min</kbd>.
+
+<br><dt><code>-p</code>
+<dt><code>--progress</code>
+<dd>Whether to use minimal-progress or full-progress when we issue a
+command.  The argument is <kbd>min</kbd> in the former case, <kbd>full</kbd>
+in the latter case.  If using min-progress, we automatically
+optimize.
+
+<br><dt><code>-y</code>
+<dt><code>--history</code>
+<dd>Specify the history length.  Zero means to never implicitely
+truncate.
+
+<br><dt><code>--max-truncate</code>
+<dd>Specify the number of candidates to keep through a truncation. 
+If there are more candidates when we truncate, the extra candidates
+are eliminated from consideration.
+
+<br><dt><code>--cbfs</code>
+<dd>Use CBFS search rather than any other.  This is the default.
+
+<br><dt><code>--cbfs-candidates</code>
+<dd>Specify the maximum number of candidates CBFS will return. 
+The default is 5.
+
+<br><dt><code>--cbfs-search</code>
+<dd>Specify how many candidates to consider when searching.  The
+default is 1000.  This option bounds the total number of candidates
+in memory at any one time to twice n.
+
+<br><dt><code>--cover</code>
+<dd>Use conflict coverage (aka `Cover') search rather than any other.
+
+<br><dt><code>--cover-max-rank</code>
+<dd>Maximum-rank candidate to consider.  If we cannot find a candidate
+with likelier rank than this, no candidates are returned.
+
+</dl>
+
+<p><hr>
+Node:<a name="l2test%20commands">l2test commands</a>,
+Previous:<a rel=previous href="#l2test%20invocation">l2test invocation</a>,
+Up:<a rel=up href="#l2test">l2test</a>
+<br>
+
+<h3>Commands to type at the l2test prompt</h3>
+
+<p>There are a slew of commands to type at the <code>l2test</code> prompt.  The
+main ones to know are: <kbd>progress</kbd>, <kbd>assign</kbd>, and <kbd>fc</kbd>.  These
+are the commands which make up a typical Stanley script.  Also of interest
+in debugging: <kbd>install</kbd>, <kbd>values</kbd>, <kbd>times</kbd>, and <kbd>explain</kbd>.
+
+<dl>
+
+<br><dt><code>progress</code>
+<dt><code>full-progress</code>
+<dt><code>min-progress</code>
+<dd>Argument: optional <kbd><var>cmd</var>=<var>value</var></kbd>
+
+<p>The first form will run a full-progress or min-progress depending
+on the <code>progress-style</code> chosen.  Of note: min-progress may
+give inaccurate results without warning if the model is not
+optimized.
+
+<p>With no argument, idles the system.
+
+<p>With one argument, notifies livingstone of a command.
+
+<p>In either case, time is incremented by one, and truncation happens
+if we run out of room in the history tables.
+
+<br><dt><code>progress-style</code>
+<dd>Argument: optional <kbd>min</kbd> or <kbd>full</kbd>.
+
+<p>Without the argument, prints out the current value.
+
+<p>With one argument, specifies whether <code>progress</code> runs min-
+or full-progress.
+
+<br><dt><code>fc</code>
+<dt><code>find-candidates</code>
+<dd>No arguments.
+
+<p>Runs a diagnosis to find candidates in some way specified by
+the <code>fc-style</code> chosen.  The default for CBFS is
+<code>extend</code>, for Cover is <code>prune-and-search</code>.
+
+<br><dt><code>ff</code>
+<dt><code>find-fresh</code>
+<dd>No arguments.
+
+<p>Throws away all previous candidates and searches for new ones. 
+This is slower, but always finds the most-likely candidates.
+
+<br><dt><code>ps</code>
+<dt><code>prune-search</code>
+<dd>No arguments.
+
+<p>Prune the current set of candidates; if none are consistent,
+search for new ones as per <code>find-fresh</code>.
+
+<br><dt><code>find</code>
+<dd>No arguments.
+
+<p>Only available with cover.  This is a synonym to
+<code>find-fresh</code>.
+
+<br><dt><code>extend</code>
+<dd>No arguments.
+
+<p>Only available with CBFS, and it's the default for CBFS. 
+Takes all candidates, and uses them as the prefix for new
+candidates.  Consistent candidates are returned unchanged;
+inconsistent ones may have new failures added.
+
+<br><dt><code>fc-style</code>
+<dd>Argument: optional name.
+
+<p>With no arguments, prints out the current value of fc-style.
+
+<p>With one argument, specifies which of the above diagnosis methods
+is used on an <kbd>fc</kbd>.  Allowable values are the name of each
+method, or <kbd>default</kbd> to revert to using the search
+method-dependent value (extend for CBFS, prune-and-search for
+cover).
+
+<br><dt><code>install</code>
+<dd>Argument: index of candidate.
+
+<p>Installs a candidate in order to allow looking up its effects. 
+The index is taken from the printout from the diagnosis method,
+or from <code>candidates</code>.
+
+<p>Installing a candidate has no effect on the future evolution of the
+system.
+
+<br><dt><code>candidates</code>
+<dd>No arguments.
+
+<p>Lists all the candidates we believe.
+
+<br><dt><code>truncate</code>
+<dd>Argument: timestep of horizon.
+
+<p>Truncates off all variables before the horizon and summarizes
+the candidates into the different values of the <kbd>state</kbd>
+variable.
+
+<p>The horizon must be an integer; `now' is not an allowable value. 
+If the horizon predates the oldest timestep, the call is ignored.
+
+<br><dt><code>values</code>
+<dd>Argument: optional timestep.
+
+<p>Prints out all variables with their values, for the given timestep. 
+The timestep may be the string `now' in which case we print the
+current values.
+
+<p>With no argument, prints out all variables.
+
+<p>The printout is sorted alphabetically.  The timestep of a variable
+is considered part of the name, slightly unfortunately (10#var is
+thus sorted before 9#var).
+
+<br><dt><code>times</code>
+<dd>Argument: optional variable name.
+
+<p>With no argument, prints out the earliest and current times in the
+history.
+
+<p>With one argument, prints out the value of the variable at each
+timestep where it exists.
+
+<br><dt><code>oldest-time</code>
+<dd>No argument.
+
+<p>Prints out the oldest time kept in the history.
+
+<br><dt><code>cmds</code>
+<dd>No argument.
+
+<p>Prints out the commanded variables at the current timestep, sorted
+alphabetically.  Also prints the value, which is always unknown.
+
+<br><dt><code>observables</code>
+<dd>No argument.
+
+<p>Prints out the observed (aka monitored) variables at the current
+timestep, sorted alphabetically, along with their values.
+
+<br><dt><code>transitioned</code>
+<dd>No argument.
+
+<p>Prints out the transitioned variables (aka modes) at the current
+timestep, sorted alphabetically, along with their values.
+
+<br><dt><code>transitions</code>
+<dd>Argument: mode variable.
+
+<p>Prints out information about how a mode variable's value is set and
+how it transitions in response to commands (or lack thereof).
+
+<p>If one of the clauses doesn't make sense, remember that they are an
+attempt to translate from CNF to something easier to read;
+sometimes, the automatic translation doesn't work well.  Try
+negating one of the non-mode clauses on the right and moving it to
+the left side if that makes more sense.
+
+<br><dt><code>discrepancy</code>
+<dd>No arguments.
+
+<p>If the system is consistent, says so.  If not, prints out only the
+observations and commands that conflict with the current mode
+assignment.
+
+<p>This must be done before the diagnosis; otherwise, there is no
+conflict anywhere.
+
+<br><dt><code>state-var-style</code>
+<dd>Argument: optional `short' or `long'
+
+<p>With no arguments, prints out the current value (default is long).
+
+<p>With one argument, changes it.  `long' format prints out each
+<code>state=si</code> assignment in a candidate as the trajectory it
+encodes.  This is much more useful for debugging.  `short' format
+prints them out as-is, which is largely useless.
+
+<br><dt><code>assign-mode</code>
+<dd>Argument: <code><var>mode</var>=<var>value</var></code>
+
+<p>Sets the current value of the <var>mode</var> variable.  Any link to
+previous timesteps is cut off at that point.  This is largely only
+useful in debugging, and for testing a feature that will be useful
+in future development of Livingstone.
+
+<br><dt><code>assign</code>
+<dd>Argument: <code><var>observed</var>=<var>value</var></code>
+
+<p>Sets the current value of the <var>observed</var> variable.  This
+corresponds to a monitor sending an event to Livingstone.  At
+start-up, all observables are unassigned.
+
+<br><dt><code>unassign</code>
+<dd>Argument: <code><var>observed</var></code>
+
+<p>Unset the value of the <var>observed</var> variable.  An unassigned
+variable causes no conflicts.  At start-up, all observables are
+unassigned.
+
+<br><dt><code>conflict</code>
+<dd>No arguments.
+
+<p>Look for and return a conflict in the current state.  Obscure.
+
+<br><dt><code>conflicts</code>
+<dd>No arguments.
+
+<p>Return all conflicts that we know of in the current state. 
+Obscure.
+
+<br><dt><code>constraints</code>
+<dd>Argument: optional substring.
+
+<p>Return all constraints that contain the substring; with no
+argument, this means all constraints.
+
+<p>They are printed in something approaching human-readable format,
+otherwise, this command is identical to the <code>clauses</code>
+command.
+
+<br><dt><code>domains</code>
+<dd>Argument: optional substring.
+
+<p>Print the domains that contain the substring (or all domains if
+empty substring).
+
+<br><dt><code>variables</code>
+<dd>No argument.
+
+<p>Prints all the variables being held in memory, in the order in
+which they appear in the internal representation (which happens
+to be a list).  Mainly for debugging the engine proper, rather
+than models.
+
+<br><dt><code>assumptions</code>
+<dd>No argument.
+
+<p>Prints out only the assumption variables (the modeTransition
+variables, and the initial `state' variable).
+
+<br><dt><code>assignables</code>
+<dd>No argument.
+
+<p>Prints out all the assignable variables.  This includes
+observables; commands; the same at previous timesteps (with
+full-progress); and assumptions.
+
+<br><dt><code>remove</code>
+<dd>Argument: clause.
+
+<p>Removes a clause from the theory.  The clause is still in memory,
+but propagation ignores it.
+
+<br><dt><code>add</code>
+<dd>Argument: clause.
+
+<p>Adds a clause to the theory.  The clause must either already
+be in the theory (in which case this has no effect), or have
+been previously removed, either by <code>remove</code> or implicitely.
+
+<br><dt><code>propagate</code>
+<dd>No argument.
+
+<p>Propagate the values in the TMS to compute the logical inferences
+of the current set of clauses.
+
+<br><dt><code>partial_propagate</code>
+<dd>No argument.
+
+<p>Does a partial propagation; only propagates 50 literals.
+
+<br><dt><code>props</code>
+<dd>Argument: optional substring.
+
+<p>Prints out propositions containing the substring, along with
+whether the proposition is believed to be true, false, or is
+unknown.  Without a substring, prints all propositions.
+
+<br><dt><code>true</code>
+<dd>Argument: optional substring.
+
+<p>Prints out propositions containing the substring, as long as they
+are true.  Without a substring, prints all true propositions.
+
+<br><dt><code>clauses</code>
+<dd>Argument: optional substring.
+
+<p>Prints out clauses containing the substring.  Removed clauses
+are not printed.  Without a substring, print all clauses (except
+removed ones).
+
+<br><dt><code>time</code>
+<dd>No argument.
+
+<p>Toggles whether to collect some crude timing information about
+how long some commands take.  The time printed is the amount of
+time this process spent on the CPU, which should be only minimally
+affected by the load on the CPU by other tasks.
+
+<br><dt><code>explain</code>
+<dt><code>support</code>
+<dd>Argument: proposition to explain.
+
+<p>Explains why a certain proposition was determined to be true or
+false.  There is no explanation for why a proposition has unknown
+truth.  The difference between the two is that <code>explain</code>
+prints the entire decision tree back to the observations, initial
+modes, and transitions; whereas <code>support</code> only prints the
+first level of the tree.
+
+<br><dt><code>checkpoint</code>
+<dt><code>ckpt</code>
+<dd>Argument: optional name of the checkpoint.
+
+<p>Stores a checkpoint, which allows later restoring the state of
+Livingstone to this point.
+
+<br><dt><code>restore</code>
+<dd>Argument: optional name or index of the checkpoint.
+
+<p>Restores the state of livingstone to what it was when the
+checkpoint was stored.
+
+<p>With no argument, restores the last-stored checkpoint.  With a
+numeric argument, restores the ith checkpoint.  With an arbitrary
+string, restores the checkpoint with that name.
+
+<br><dt><code>list-checkpoints</code>
+<dt><code>list-ckpt</code>
+<dd>No argument.
+
+<p>List all checkpoints, in alphabetical order first and numerical
+order second.
+
+<br><dt><code>stats</code>
+<dt><code>tracker-stats</code>
+<dt><code>cdb-stats</code>
+<dt><code>ltms-stats</code>
+<dd>No argument.
+
+<p>Print out some potentially interesting statistics about the engine. 
+The <code>stats</code> command prints out all the levels; the other
+commands print out the statistics about only a given level.
+
+<br><dt><code>restart</code>
+<dd>No argument.
+
+<p>Throws away all current state of Livingstone, and restarts
+as if you'd exited and then run Livingstone using the same
+options as before.  In particular, the files are re-read;
+this means that if the model or parameter files were changed
+in the interim, the change will be reflected after the restart.
+
+</dl>
+
+<p><hr>
+Node:<a name="xmpl2l2">xmpl2l2</a>,
+Next:<a rel=next href="#l2flight">l2flight</a>,
+Previous:<a rel=previous href="#l2test">l2test</a>,
+Up:<a rel=up href="#Executables">Executables</a>
+<br>
+
+<h2>The xmpl2l2 model translation utility</h2>
+
+<p>The <code>xmpl2l2</code> program translates models from one file format to
+another, possibly optimizing on the way.  The original intent was to
+produce l2-format files from xmpl-format ones, hence the name.
+
+<p>Several options are allowed:
+
+<dl>
+<dt><code>-h</code>
+<dt><code>--help</code>
+<dd>No arguments.  Prints a brief description of all the options, and
+exits immediately.
+
+<br><dt><code>--version</code>
+<dd>Print the version number and exit.
+
+<br><dt><code>-v</code>
+<dt><code>--verbose</code>
+<dd>Sets the verbosity of various stages of reading files.  Provide it
+as a string following the option.  The characters in the string
+mean:
+<dl>
+<dt>&lt;r&gt;
+<dd>Be very verbose when reading the model from file. 
+<br><dt>&lt;o&gt;
+<dd>Be verbose when optimizing or doing other translations
+to the model. 
+<br><dt>&lt;w&gt;
+<dd>Be very verbose when `writing' the model into the engine. 
+<br><dt>&lt;A&gt;
+<dd>All of the above. 
+<br><dt>&lt;-&gt;
+<dd>For the characters after the minus sign, turn the verbosity
+<em>off</em> no matter what they had previously been set to. 
+<br><dt>&lt;&gt;
+<dd>For the characters after the plus sign, turn the verbosity
+<em>on</em> no matter what they had previously been set to. 
+This is the default. 
+</dl>
+
+<br><dt><code>-O</code>
+<dt><code>--optimize</code>
+<dd>Optimize the model.
+
+<br><dt><code>-s</code>
+<dt><code>--strip</code>
+<dd>Strip the model of debugging information.
+
+<br><dt><code>-b</code>
+<dt><code>--binary</code>
+<dd>Output to l2bin format (which is a binary format).
+
+<br><dt><code>-a</code>
+<dt><code>--ascii</code>
+<dd>Output to l2 format (which is ASCII-encoded).  If neither
+<code>-a</code> nor <code>-b</code> is given, <code>-a</code> is assumed.
+
+<br><dt><code>-o</code>
+<dt><code>--output-file</code>
+<dd>Argument: the output filename.
+
+<p>With <code>-o</code>, only one of <code>-a</code> and <code>-b</code> is legal,
+not both.  Without <code>-o</code>, the output filename is the name,
+less one extension, of the input filename, with the added extension
+<code>.l2</code> for ascii l2 format files, or <code>.l2bin</code> for binary
+ones.
+
+<p>For instance: <code>xmpl2l2 -b cb.l2</code> outputs the file
+<code>cb.l2bin</code>.
+
+</dl>
+
+<p><hr>
+Node:<a name="l2flight">l2flight</a>,
+Next:<a rel=next href="#names2ids">names2ids</a>,
+Previous:<a rel=previous href="#xmpl2l2">xmpl2l2</a>,
+Up:<a rel=up href="#Executables">Executables</a>
+<br>
+
+<h2>The l2flight front-end</h2>
+
+<p>The <code>l2flight</code> front-end is a thin front-end that tries to emulate
+how flight software might be running livingstone.  In part, this is to
+allow for good code size estimates; it's also meant as a source code
+example.  The source is available in
+<code>mba/cpp/src/readers/l2flight/l2flight.cpp</code>.
+
+<p>There are no options to <code>l2flight</code>; it takes exactly one argument,
+the model name.  To specify history, search method, and so on, create a
+<code>model.params</code> file.
+
+<p>The command syntax is also very limited in extent.  It consists of a single
+letter for the command; then a list of integers the number and meaning of
+which depends on the command character.  The list of commands is based on
+the library API.
+
+<dl>
+
+<br><dt>&lt;o&gt;
+<dd>Two arguments: varID , value index
+
+<p>Specify an observation.  If the value index is negative,
+the variable is given an unknown value.  The variable
+identified by varID must be observable; and the value index
+must be in its allowable range.
+
+<br><dt>&lt;c&gt;
+<dd>Two arguments: varID , value index
+
+<p>Issue a command.  The variable identified by varID must be
+observable; and the value index must be in its allowable
+range.  Unlike with an observation, the value cannot be
+negative.
+
+<br><dt>&lt;I&gt;
+<dd>(capital letter &lt;i&gt;)
+
+<p>No arguments.
+
+<p>Idle the system.  This increments the timestep by one.
+
+<br><dt>&lt;d&gt;
+<dd>No arguments.
+
+<p>Issues a diagnosis and returns the number of candidates.
+
+<br><dt>&lt;i&gt;
+<dd>One argument: candidate index.
+
+<p>Installs the ith candidate diagnosis.  Values of variables
+depend on which candidate is installed; but installing a
+candidate does not change the future evolution of the
+system.
+
+<br><dt>&lt;v&gt;
+<dd>One argument: varID.
+
+<p>Prints the value of all variables with the given ID. 
+There may well be many such variables - if we copy
+the variable at every timestep (as in full-progress),
+or for modes, the modeTransition variable shares the ID.
+
+<br><dt>&lt;f&gt;
+<dd>No arguments.
+
+<p>Requires a candidate to have been installed already. 
+Says how many failures that candidate has.
+
+<br><dt>&lt;F&gt;
+<dd>One argument: which failure.
+
+<p>Requires a candidate to have been installed already. 
+Prints the ith failure (an off-nominal mode transition)
+of the candidate.
+
+<br><dt>&lt;r&gt;
+<dd>No arguments.
+
+<p>Resets the system.  We loop back, reload the file,
+create a new engine, etc.
+
+<br><dt>&lt;q&gt;
+<dt>&lt;C-d&gt;
+<dd>No arguments.
+
+<p>Exits the program.
+
+</dl>
+
+<p><hr>
+Node:<a name="names2ids">names2ids</a>,
+Next:<a rel=next href="#apigen">apigen</a>,
+Previous:<a rel=previous href="#l2flight">l2flight</a>,
+Up:<a rel=up href="#Executables">Executables</a>
+<br>
+
+<h2>Translating human-readable scripts into l2flight's format</h2>
+
+<p>The <code>l2flight</code> program takes input using integer IDs;
+<code>names2ids</code> shares the same syntax, except that we use the string
+values specified in the XMPL model rather than the integer values.  This
+makes it much easier to write appropriate scripts.
+
+<p>The program takes one argument: the model filename.  It takes input from
+stdin, although it gives no prompt.  It sends output to stdout. 
+The usual usage is as:
+<pre>        names2ids model.l2 &lt; script.names &gt; script.ids
+</pre>
+Or even:
+<pre>        scr2names script.scr | names2ids model.l2 &gt; script.ids
+</pre>
+
+<p>The command syntax is identical to that of <code>l2flight</code>, with the
+exception that where it calls for a <code>varID</code>, <code>names2ids</code> calls
+for a variable name; and where <code>l2flight</code> calls for a <code>value</code>,
+<code>names2ids</code> calls for the name of the value.  Use <code>unknown</code> to
+unassign an observable.
+
+<p><hr>
+Node:<a name="apigen">apigen</a>,
+Previous:<a rel=previous href="#names2ids">names2ids</a>,
+Up:<a rel=up href="#Executables">Executables</a>
+<br>
+
+<h2>The apigen utilities.</h2>
+
+<p>These translate model -&gt; C enumerations; more info on the web page.
+
+<p><hr>
+Node:<a name="API">API</a>,
+Next:<a rel=next href="#Function%20Index">Function Index</a>,
+Previous:<a rel=previous href="#Executables">Executables</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h1>The Livingstone API</h1>
+
+<p>The API is documented in <code>mba/cpp/include/api/livingstone.h</code>
+
+<p><hr>
+Node:<a name="Function%20Index">Function Index</a>,
+Next:<a rel=next href="#Acknowledgements">Acknowledgements</a>,
+Previous:<a rel=previous href="#API">API</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h1>Function and Variable Index</h1>
+
+<ul compact>
+</ul>
+
+<p><hr>
+Node:<a name="Acknowledgements">Acknowledgements</a>,
+Previous:<a rel=previous href="#Function%20Index">Function Index</a>,
+Up:<a rel=up href="#Top">Top</a>
+<br>
+
+<h1>Acknowledgements</h1>
+
+<p>Livingstone was developed by a number of people over several years, and
+hails back to work on some previous diagnostic engines as well.
+
+<p>Currently, the lead developer and main point of contact for Livingstone is
+Benoit Hudson (<code>bhudson@arc.nasa.gov</code>); James Kurien
+(<code>jkurien@arc.nasa.gov</code>) also works on the engine.  Will Taylor
+(<code>taylor@ptolemy.arc.nasa.gov</code>) manages the release process and
+develops Stanley.  Questions should be directed to
+<code>liv-software@ace.arc.nasa.gov</code>.
+
+<p>The following people have all constributed code to Livingstone or
+Stanley/Skunkworks:
+Andrew Bachmann,
+Pat Cappelaere,
+Scott Christa,
+Sandra Hayden,
+Benoit Hudson,
+James Kurien,
+Bill Millar,
+Pandu Nayak,
+Shirley Pepke,
+Will Taylor,
+Brian Williams,
+Steven Wragg.
+
+</body></html>
+

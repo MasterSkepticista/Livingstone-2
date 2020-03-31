@@ -1,0 +1,36 @@
+@node Configuration
+@section Configuration
+
+For lack of time, I won't go into great details here.  Part of the reason
+is that much of configure should be rewritten in my opinion, in order to
+take a higher-level description of the interdependencies of the various
+options.  A seed of an idea lies in the files used to generate this manual,
+in particular the image below.
+
+In said image, green ovals are user-provided settings; white ovals are
+internal settings.  These are all boolean values (at least, as far as the
+dependency graph is concerned).  The configure script adds some files
+and/or macros to the build depending on the value of the settings.
+
+Red arrows denote that if the source node of the edge is active, the
+destination node to must not be active (the source disallows the
+destination).  Yellow edges denote the opposite: the destination node must
+be active if the source node is (the source requires the destination).
+Green edges denote that, unless some other reason forbids it, the
+destination node should be active (the source wants the destination, but
+does not require it).
+
+For example, assume we enable @command{l2test} using
+@option{--enable-l2test}, and disable the optimizer using
+@option{--disable-optimizer}.  @command{l2test} requires the
+@code{livingstone_reader} (yellow edge), so it is in turn enabled.  The
+@code{livingstone_reader} would like the optimizer (green edge); however,
+the option to disable the optimizer disallows it (red edge) so it is not
+enabled.
+
+The configure file currently tries to implement this by hand, but that is
+tedious and error-prone; it would be nice to have that fragment of
+configury be automatically generated from a file format that could also
+automatically generate this image, which is informative.
+
+@image{config}

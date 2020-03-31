@@ -1,0 +1,342 @@
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+
+<!--
+Revision information: $Id: truncate.html,v 1.12 2001/12/06 21:59:04 lbrown Exp $
+-->
+
+<head>
+<title>L2: truncation algorithm</title>
+</head>
+
+<body>
+<h1 align="center">The L2 Truncation Algorithm</h1>
+
+This document describes the workings of the truncation algorithm.<br>
+
+<h2>Requirements</h2>
+
+The truncation algorithm needs to:
+<ol>
+<li> Reduce the number of variables, to limit memory and CPU usage.
+<li> Correctly summarize previous timesteps.
+<li> (would-be-nice item) For debugging, continue to encode what happened
+     in the past.  Namely, a candidate should keep track of old failures.
+</ol>
+
+The input is a time horizon, before which all trajectories are truncated.
+The output is the new Tracker, with fewer variables than before.
+
+<h2>Data structures</h2>
+
+The algorithm mainly runs over the list of variables that the conflict
+database keeps.<p>
+
+The assumption is that the list is always prepended to as new variables are
+created.  Therefore, the variables are ordered by time: time <i>t</i>
+first, then on down to the horizon, and NOW last.  In the code, check for
+the words "Assumes sorted by time:" which we've copied everywhere.<p>
+
+This assumption affects decisions like:
+<ul>
+<li> Creating new variables to encode the summary
+<li> Optimizing by not creating new variables if they wouldn't really
+        change the diagnosis (the AAAI paper optimization).
+<li> Anything else that might affect the order of variables in the list.
+</ul>
+
+We could fix this by keeping a PQ of variables, sorted by time.<p>
+
+Another data structure is the list of candidates.  The Tracker stores it;
+there's nothing much to be said about it.<p>
+
+Each candidate stores a list of Assignments.  They are important in that
+they store pointers to the variables.<p>
+
+To encode the summary, we use a new variable 'state', and for each
+candidate we're truncating, a value for the variable.  Candidate i is
+summarized by the proposition 'state=s_i'.  The summary is constructed by
+creating a set of clause of the form (state=s_i) implies var=value for each
+var on the horizon. <p>
+
+It's important to note that we only summarize the value of the mode
+variables, since no other variables are directly constrained by a variable
+in a previous timestep.
+
+
+
+<h2>Algorithms</h2>
+
+Upon a call to <code>Tracker::truncate(unsigned)</code>, we run:
+
+<pre>
+truncate(h)                     -- in class Tracker
+    deassert observations
+    create start-state variable 'state'
+    foreach candidate i,
+        install(i)
+        summarize(i, h)
+        truncate-candidate(i, h)
+    remove-old-variables(h)
+    add-new-info
+    reassert observations
+    install(0)
+</pre>
+We need to deassert observations because otherwise, if there's a conflict
+between predicted and observed, summarize-variables may no be able to correctly
+resolve the modes.  The implementation takes care only to deassert if there
+actually is a conflict; that doesn't affect the analysis here.
+
+<pre>
+summarize(i, h)                 -- in class T_system
+    summarize-variables(i,h)
+    summarize-conflicts(i,h)
+</pre>
+
+We create the clause, but just store it until <code>add-new-clauses</code>.
+This is mainly for speed: so the TMS doesn't try to propagate through those
+clauses.  There's also a correctness issue which is an implementation
+detail.  Note that <i>h#mode</i> refers to the variable at timestep
+<i>h</i> or, if there is none at that timestep (as in min-progress), the
+first after <i>h</i>.  The <i>transition</i> variable is included to allow
+diagnosing a failure that happened before the horizon.
+<pre>
+summarize-variables(i, h)       -- in class T_system
+    foreach mode
+        (call Transitioned::set_initial_mode, which is:)
+        add the constraint:
+             state=s_i /\ transition=nominal  ==&gt; h#mode=value[h#mode]
+        unless (h-1)#mode is unconstrained
+</pre>
+
+
+Similarly, we create the conflict but don't add it, which shouldn't matter
+except that as of this writing (2000-12-18) we iterate over all conflicts.
+This function replaces old conflicts which are current in this candidate
+with new conflicts that conflict <code>state=s_i</code> with the
+assignments that remain.  One thing to note is that, by definition, the
+candidate does not conflict with itself; therefore, if we end up with no
+assignments in the conflict but the assignment for the candidate, we've lost
+all the information to detect the conflict, so we should simply ignore it.
+<pre>
+summarize-conflicts(i, h)       -- in class T_system
+    foreach conflict with an assignment at time &lt; h that is current
+        set A = {0}
+        foreach assignment a
+            if it's state=s_i
+                ignore it
+            if a is at time &lt; h
+                ignore it
+            otherwise
+                A = A u {a}
+        if A is empty, skip   (conflict is completely truncated)
+        A = A u { state=s_i }
+        create new conflict using A
+</pre>
+
+
+<code>truncate-candidate</code> replaces assignments in the candidate that
+are older than time <i>h</i> by the assignment <code>state=s_i</code>.
+This is similar to <code>summarize-conflicts</code>, except that we just
+change the candidates rather than create new ones.
+<pre>
+truncate-candidate(i, h)        -- in class Candidate
+    weight = 0
+    foreach assignment
+        if it's state=s_i
+            ignore it
+        if assignment is at time &lt; h
+            weight += w[assignment]
+            remove it
+    add the assignment state=s_i
+    set its weight to weight
+</pre>
+
+
+Note: the first loop, over the conflicts, should probably be handled by the
+Conflict_db in destroy-variable.
+<pre>
+remove-old-variables(h)         -- in class T_system
+    foreach conflict at time &lt; h
+        remove from list
+        deallocate
+    destroy variables at time &lt; h
+    foreach mode variable nearest the horizon
+        if the closest is the NOW variable,
+            remove the state=s_i clauses from it
+    tms.finish-destroying()
+</pre>
+
+Implementation detail: we pass in a function <code>f(var)</code> which returns
+true if var is at time &lt; h, which is how we know what to remove from the
+assignable and assumption lists; we also pass in iterators that mark the start
+and end of the <i>t0</i> variables at time &lt; h, which is how we know to
+iterate over only those in the third loop.
+<pre>
+destroy-variables               -- in class Conflict_db
+    foreach assignable,
+        if at time &lt; h, remove from the list
+    foreach assumption,
+        if at time &lt; h, remove from the list
+    foreach variable at time &lt; h
+        remove from the list
+        var.leaveTMS()
+        deallocate the variable ;
+            if assignable, that deallocates the assignments
+</pre>
+
+<pre>
+finish-destroying               -- in class LTMS
+    remove marked clauses from fringe, volatile_fringe, unsatisfied
+    list-to-unassign &lt;- {}
+    foreach marked clause
+        if it supports an unmarked prop
+            add prop to list-to-unassign
+    ptheory.finish-destroying
+    foreach prop on list-to-unassign
+        unassign prop
+</pre>
+
+<pre>
+finish-destroying               -- in class Ptheory
+    foreach clause
+        if marked
+            remove from clauses list
+            foreach prop in it
+                if not marked
+                    remove clause from prop's list
+            deallocate clause
+    foreach prop
+        if marked
+            remove from props list
+            deallocate prop
+</pre>
+
+<pre>
+var.leaveTMS                    -- in class Variable
+    foreach prop of var
+        mark-prop
+</pre>
+
+<pre>
+mark-prop                       -- in class Proposition
+    foreach clause of prop
+        mark clause for destruction
+    mark prop for destruction
+</pre>
+
+<pre>
+add-new-info                    -- in class T_system
+    add clauses created by summarize-variables
+    add conflicts created by summarize-conflicts
+</pre>
+
+
+
+<h2>Time complexity analysis</h2>
+
+Definitions: <i>n</i> number of variables per time step.  <i>k</i> is the
+number of values each variable has (which actually varies per variable but
+we'll assume for simplicity is the max over all of them).  I further assume
+there are <i>O(k)</i> non-mutex clauses per variable.  <i>t</i> is the number
+of timesteps; <i>t0</i> just those timesteps earlier than the horizon
+<i>h</i>.  <i>d</i> is the number of canDidates, <i>f</i> the number of
+conFlicts, <i>F</i> the size of each conflict.  <i>T(func)</i> is the time
+spent doing <i>func</i>.<p>
+
+Possibly-unwarranted assumptions: <i>f*F</i> is much smaller than <i>n</i>.
+Each variable has <i>O(k^2)</i> clauses, including the <i>k^2/2</i> mutex
+clauses.<p>
+
+Certainly-unwarranted assumption: install is constant-time.  It's likely
+closer to linear in the number of clauses.<p>
+
+<b>mark-prop</b>: <i>O(k)</i> since there are that many mutex clauses.<p>
+
+<b>var.leaveTMS</b>: <i>O(k^2)</i>: there are <i>k</i> propositions.<p>
+
+<b>Ptheory.finish-destroying</b>: <i>O(tnk^3)</i> since there are
+<i>O(tnk^2)</i> clauses, and each has up to <i>O(k)</i> propositions.  It would
+be nice to get a tighter bound.  Removing from the lists is constant-time since
+we are iterating over the entire list: we just remove those iterators that need
+to be destroyed.<p>
+
+<b>LTMS.finish-destroying</b>: <i>O(tnk^3)</i> from calling the ptheory
+version.  We add <i>O(t0*n*k^2)</i> from removing from the fringe (if -- highly
+unlikely -- all clauses were on the fringe; note, <i>t0</i> since we remove
+only things we delete), and <i>O(tnk)</i> from unassigning the propositions (if
+every one is unassigned, which is rather more likely; note, <i>t</i> since we
+unassign things we don't delete).<p>
+
+<b>destroy-variables</b>: <i>O(t*n+t0*n*k^2)</i>.  <i>O(k^2)</i> from
+<code>leaveTMS</code> which we call <i>t0*n</i> times (once per variable).
+In the implementation, we pass iterators such that we only iterate over the
+subset of the main list that predates the horizon.  However, we do iterate over
+every assignable and assumption.  Given about half of the variables are
+assignable, this means we iterate over <i>O(t*n)</i> variables to remove from
+those lists.<p>
+
+<b>remove-old-variables</b>: <i>O(f+t0nk^2+tnk^3))</i>.
+The foreach conflict loop takes <i>O(f)</i> time.
+The call to destroy-variables takes <i>O(t*n)</i> time to set up (to get the
+iterators; this could be made faster), then <i>T(destroy-variable) =
+O(t*n+t0*n*k^2)</i> time; cleaning up the modes takes <i>O(n*k)</i> time
+since there are <i>n</i> modes, and I assume fewer than <i>k</i> transition
+clauses (true?).  The bulk of the time is thus spent in finish-destroying.<p>
+
+<b>truncate-candidate</b>: <i>O(1)</i>.  Linear in the number of
+assignments for the candidate.  I've seen at most 4 since we only store
+failures and the start state in a candidate, so call it O(1).<p>
+
+<b>summarize-conflicts</b>: <i>O(fF)</i> as we do <i>O(F)</i> work for each
+conflict, and there are <i>f</i> conflicts.<p>
+
+<b>summarize-variables</b>: <i>O(tn)</i>.  Creating a clause takes constant
+time; we have <i>O(n)</i> horizon variables.  Finding the variable at the
+horizon requires hopping back at most <i>t</i> variables.<p>
+
+<b>summarize</b>: <i>O(fF+tn)</i> since we just call the two summarize
+calls.<p>
+
+<b>deassert-observations</b> and <b>reassert-observations</b> take O(n) time
+since there are O(n) observed variables, and it's constant time to assert or
+deassert the clauses.  It involves more propagating, though, in the install.
+<p>
+
+<b>truncate</b>: <i>O( d*(fF+tn) + (t*n*k^3))</i>.  This is based on
+<i>d*T(install)*T(summarize)*T(truncate-candidate) + 
+T(remove-old-variables) + T(install) + T([dr]eassert-observations)</i>, with
+the wrong assumption that <code>install</code> is constant-time.  It's not, and
+is actually rather expensive (something like linear in the theory size).  But
+the dominant term here, <i>O(t*n*k^3)</i>, does not depend on the speed of
+installs.
+<p>
+
+<h2>Further work</h2>
+
+The <code>T_system</code> could store iterators into the list of variables
+to keep track of where the start of the horizon and the start of the timed
+variables are.  This would speed up remove-old-variables by a
+constant factor.<p>
+
+If <code>install</code> turns out to be the bottleneck, we could spend some
+time before <code>remove-old-variables</code> to find commonalities between
+candidates, and assert those clauses regardless of which candidate is in.
+Installing a candidate would add only what's new to that candidate.<p>
+
+For min-progress, we only introduce a constant number of new variables per
+timestep.  It would be nice to only move a constant number of clauses --
+likely most of the time spent in min-progress is spent truncating.<p>
+
+The analysis needs some work:
+<ul>
+<li> Prove Ptheory.finish-destroying takes more like <i>O(tnk^2)</i>
+<li> Figure out what f and F really are.  If necessary, get smarter about
+     summarize-conflicts.
+</ul>
+</body>
+</html>

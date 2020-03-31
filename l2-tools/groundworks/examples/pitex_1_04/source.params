@@ -1,0 +1,9 @@
+L2SearchMethod = cbfs
+L2MaxCBFSCandidates = 10
+L2MaxCBFSSearchSpace = 1000
+L2MaxCBFSCutoffWeight = 6
+L2MaxCoverCandidateRank = 8
+L2MaxHistorySteps = 3
+L2ProgressCmdType = full
+L2NumTrajectoriesTracked = 10
+L2FindCandidatesCmdType = prune-search

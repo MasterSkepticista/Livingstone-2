@@ -1,0 +1,145 @@
+Check that the debug output for truncation works despite resorting.  If
+not, add a listener.
+
+Allow truncation to merge candidates when they have identical initial modes
+and identical failures.  The trick: make sure the debugger understands
+this.  This would greatly reduce the cost of carrying on after a failure in
+many cases.
+
+At least allow truncation to notice when all candidates share an initial
+mode for something, and add a single clause instead of one per candidate.
+This would be easier, has no interaction with the debugger, and still would
+save quite a bit.
+
+Add the ability to disable all listeners.  See how much that saves.
+
+Switch more Slists to Array.
+
+Create a class, Read_params_file, to handle reading the file.
+L2_parameters will lose the eponymous function, Livingstone will use RPF
+unless we configure with --disable-params-file
+
+Have --with-default-X flags to set all the default arguments for the
+L2_parameters ; they AC_DEFINE appropriate cpp flags, set_to_default uses
+them.
+
+Change the L2_translator hierarchy a bit:
+    *   add L2_translation to the top ; it has the mapping functions
+    *   mapping functions are in terms of IDs, not the objects (saves us
+           from having to create the objects) ... ? is this worthwhile ?
+    *   L2_translator inherits from it, adding the translate() function
+    *   create translation_from_file that will read an ASCII file format
+           to map from IDs in an optimized file to IDs and names in the
+           non-optimized file (possibly it's easier to write it as v-v)
+    *   create translation_merger with an add_translation function that
+           takes an L2_translation with other->source() == this->dest(),
+           changes this->dest() to other->dest() and updates the mapping.
+           ctor takes an L2_file and the initial mapping is a no-op:
+                f(x) = x  at the beginning
+                f(x) = g(h(j(x))) after adding translations j, then h, then g
+    *   Livingstone_debug stores a translation_merger ; on load, it looks
+           for the ASCII file that stores the translation, uses t_f_f to
+           load it, and adds to the t_m object.  On apply_translation,
+           it adds the translation to the t_m object after calling the
+           superclass apply_translation.
+    *   Of note: no worry about efficiency unless it slows down development
+        time -- none of this is flight code.  Use hashtables as we do now
+        because of ease-of-use.
+
+Checkpoints should handle min-progress and other changes in variable graph
+topography.  Should be easy: if topography is different, truncate to no
+history, and progress appropriately ; then go on.
+
+As a first step, checkpoints should at least detect the problem.
+
+
+Commands at the current timestep are currently stored as Variable.
+However, it's impossible to assign to them; and they aren't linked in to
+the rest of the model in any way.  This means that we're storing ~3 props
+and ~9 clauses per command to no benefit, plus a bit more wastage because
+they're assignable and thus get put into some extra lists.  That's about 5%
+of the props and clauses on X-37.  We could memory use and a bit of CPU
+time (at the cost of code and complication) by treating commands specially,
+and not having a NOW copy.
+
+
+A new optimization: constant-folding.  Find all clauses of the form
+var=value (that is, unconditionally var is always = value -- happens fairly
+often with components that have only a nominal mode).  Note that if a
+variable has only one value, then var=value is implicitely true.
+        (1) remove var from the model
+        (2) in clauses where var=value is a positive literal,
+                the clause is satisfied ; remove it
+        (3) in clauses where var=value is a negative literal,
+                the literal is false ; remove the literal
+        (4) in clauses where var=other-value is a positive literal,
+                the literal is false ; remove the literal
+        (5) in clauses where var=other-value is a negative literal,
+                the clause is satisfied ; remove it
+        (6) in 3 or 4, if the clause ends up with only one literal,
+                and it's a var/value proposition (not var/var), add it
+                to the list of clauses we're processing
+Note we may not want to do (1) if the variable is a mode, observation, or
+command.
+
+
+l2_update should check if the file wasn't present, and not complain about
+that case.
+
+
+Cover currently computes a relatively expensive (but still constant-time)
+equality function for assignments.  This has the advantage to sort them in
+a readable order (by variable, value, and time in that order), but the
+disadvantage of being a bit of a waste of time (but very little).  Also, it
+computes a very cheap hash function, which has the marked disadvantage of
+not being architecture-independent.  Another option is to process just the
+output.  This could be made arch-independent and human-readable yet let the
+underlying code use the cheapest possible implementation.
+
+
+T_system has a huge number of present_* and other lists of variables.
+present_variables should probably be the only one; and all operations on
+the others should probably be transfered to operations on
+present_variables.
+
+
+Add a new enable for the memory reader.  If all the file-based ones are
+disabled (or perhaps there should be a disable for that), don't allow
+set_filename, set_filetype, and read_file.
+
+02 SEP 2001 Fix design flaw in checkpointing
+
+O4 SEP 2001 Pat Cappelaere wants operation to look ahead to see if a Command
+would change the mode. See e-mail
+
+21 SEP 2001 Jim Kurien wants to be able to erase conflicts. See PR 1472
+
+01 OCT 2001 Modify Conflict_db_debug::print_conflict() to balk if there are no
+Candidates. Possibly disable Tracker_debug::doProgress(char*, char*) if there
+are no Candidates.
+
+11 OCT 2001 Charles Pecheur wants an API for installing an assumption
+
+17 OCT 2001 A segmentation fault on restoring with
+/home/lbrown/dev/wt/wttest.sh. This is because the the model's *.params file
+specified min-progress, and checkpointing doesn't work with min-progress.
+
+18 OCT 2001 Forbid checkpointing with min-progress
+
+18 OCT 2001 Forbid changing progress-style, tracker style, etc., after changing
+them makes no sense. For example, changing tracker style is a no-op after
+the tracker is created. Changing progress style yields incorrect results after
+the first progress.
+
+18 OCT 2001 Scott Christa has a case in which find-candidates crashes
+Livingstone.
+
+18 OCT 2001 Scott Christa has a case in which Livingstone's memory grows
+without bound
+
+18 OCT 2001 If /home/lbrown/dev/wt/wttest.sh is run with history=5 or greater,
+there is a failed assertion. This occurs with v2.5 as well.
+
+19 OCT 2001 Will Taylor forwarded a compilation problem from Lockheed. Function
+fileSize(FILE*) in src/readers/from_bin.cpp assumed that fpos_t was scalar. I
+re-wrote the function and gave it to Scott Christa and Will Taylor for testing.

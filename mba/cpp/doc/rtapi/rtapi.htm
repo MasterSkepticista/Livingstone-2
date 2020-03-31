@@ -1,0 +1,645 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<!--
+See the file "mba/disclaimers-and-notices-L2.txt" for
+information on usage and redistribution of this file,
+and for a DISCLAIMER OF ALL WARRANTIES.
+-->
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Bryan Galdrikian">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (Win98; I) [Netscape]">
+   <title>L2 RTAPI Application Programming Guide</title>
+</head>
+<body>
+
+<dl>
+<center>
+<h3>
+<a NAME="TOC"></a>The L2 Realtime API Application Programming Guide</h3></center>
+
+<center>&nbsp; <b>Table of Contents</b>
+<p><a href="#Preface">Preface</a>
+<p><a href="#Section1">Section 1 - What can the RTAPI do for you?</a>
+<p><a href="#Section2">Section 2 - Building and using the sample application.</a>
+<p><a href="#Section3">Section 3 - Application Programming with the RTAPI.</a>
+<p><a href="#Section4">Section 4 - Extending the API Functionality.</a>
+<p><a href="refman.htm">RTAPI Reference Manual</a>
+<br><a href="refman.htm"></a>&nbsp;
+<br><a href="refman.htm"></a>&nbsp;<a href="refman.htm"></a>
+<p>
+<hr WIDTH="100%"></center>
+
+<h3>
+<a NAME="Preface"></a>The L2 Realtime API Application Programming Guide
+: Preface</h3>
+This document covers the expected use and implementation of the Livingstone
+2 Realtime Application Programming Interface (L2 RTAPI). It is intended
+for application developers interested in utilizing L2 in realtime environments
+for which the application requires autonomous diagnosis or recovery with
+a continuously responsive interface and handling of relative time delays.
+Knowledge of the L2 engine functionality, C++, and object-oriented programming
+is assumed.
+<p>This interface grew out of the Livingstone RTI written for the Remote
+Agent.
+<h4>
+Related documentation.</h4>
+The L2 engine:
+<br>&nbsp;<a href="http://ic-www.arc.nasa.gov/ic/projects/mba/projects/L2/doc/index.html">http://ic-www.arc.nasa.gov/ic/projects/mba/projects/L2/doc/index.html</a>
+<p>The Livingstone RTI:
+<br><a href="http://ace.arc.nasa.gov/postdoc/t/folder/main.ehtml?url_id=9703">http://ace.arc.nasa.gov/postdoc/t/folder/main.ehtml?url_id=9703</a>
+<h4>
+Questions and comments.</h4>
+All feedback is welcome. Please forward to Shirley Pepke: spepke@ptolemy.arc.nasa.gov.
+<br>&nbsp;
+<p><i>Last updated September 17, 2000.</i>
+<br>&nbsp;
+<div class=Section1>
+<div class="MsoNormal" style="text-align:center">
+<center><a href="#TOC">Back to top</a></center>
+</div>
+
+<h3>
+
+<hr WIDTH="100%"><a NAME="Section1"></a>The L2 Realtime API Application
+Programming Guide : What can the RTAPI do for you?</h3>
+
+<h4>
+Overview.</h4>
+
+<div class="MsoNormal">The L2 Real Time API (L2 RTAPI) is a multithreaded
+API that provides an interface for an application to send messages in real
+time to the L2 diagnosis and recovery library. It is the responsibility
+of the RTAPI to provide a thin interface which maintains responsiveness
+to further commands while a queue of prior inputs to L2 is being processed.
+The RTAPI provides a framework for introducing real time (versus L2's discrete
+event-based timing) systematically for the time-based injection of commands,
+observations, faults, etc. Both of these capabilites are necessary when
+L2 is running in conjunction with real hardware systems, because observations
+may continue to stream in while commands may take of the order of seconds
+to actually be completed (both on the hardware and within the L2 processing
+algorithms).</div>
+The RTAPI provides a framework for important application modules such as
+telemetry output (inferred transitions, typically) and diagnostic triggering.
+Default autonomous diagnostic (and eventually recovery) policies are implemented
+while allowing for complete customization as necessary for the application.
+Through the use of inherited interfaces, new implementation objects may
+be defined with no functional changes required in other parts of code.
+Similar techniques allow for extensive debugging and verification during
+application testing, with compile-time switches for lean runtime builds.
+<p>The RTAPI provides good encapsulation of the application-L2 interface
+layer in that the application code is shielded from the details of the
+L2 public methods as well as platform threading specifics, while an internal
+queue keeps interprocess communication low.
+<p>The RTAPI&nbsp; is currently supported on both Unix (posix) and Win32
+with plans to port to VxWorks.
+<h4>
+How an application uses the L2 RTAPI.</h4>
+
+<center><img SRC="fig1.gif" height=376 width=800></center>
+
+<div class="MsoNormal">See Section 3 for further details.</div>
+
+<h4>
+Realtime functionality encapsulation.</h4>
+
+<div class="MsoNormal">Interfaces specified: L2_rtapi, Reporter, L2_queue,
+timeout handlers, model time mapping enumeration</div>
+
+<div class="MsoNormal">See the reference manual and Appendix A.</div>
+
+<h4>
+Cross platform multithreaded L2 interface.</h4>
+
+<div class="MsoNormal">The realtime api provides an interface for posting
+messages to the L2 engine that will run in a separate thread of execution.
+This maintains reactivity of the system as a whole while long computations
+complete. As implied, the api knows about time and thus commands may be
+scheduled for execution after some amount of clock time has passed. The
+api also provides for the specification of runtime autonomous diagnostic
+policies. Defaults are provided. See Sections 3 and 4.</div>
+
+<h4>
+Timeout handling for commands and observations.</h4>
+See sections 3 and 4.
+<h4>
+Runtime diagnosis triggering.</h4>
+See Sections 3 and 4.
+<h4>
+Realtime debugging output.</h4>
+
+<ul type=disc>
+<li class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo3;tab-stops:list .5in">
+Equivalent L2 scripts are generated for debugging.</li>
+
+<li class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo3;tab-stops:list .5in">
+Dribble files.</li>
+</ul>
+
+<div class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto">See
+Sections 2 and 3.</div>
+
+<h4>
+Extensibility.</h4>
+
+<ul type=disc>
+<li class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in">
+Custom telemetry output.</li>
+
+<li class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in">
+Custom timeout handlers for observations and commands.</li>
+
+<li class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in">
+Debugging</li>
+</ul>
+
+<div class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto"><![if !supportEmptyParas]><![endif]><o:p></o:p></div>
+
+<div class="MsoNormal" style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto">See
+Section 4 for details.</div>
+
+<div class="MsoNormal" style="margin-left:.5in"><![if !supportEmptyParas]><![endif]><o:p></o:p>
+<center><a href="#TOC">Back to top</a></center>
+
+<p>
+<hr WIDTH="100%"></div>
+</div>
+&nbsp;
+<h3>
+<a NAME="Section2"></a>The L2 Realtime API Application Programming Guide
+: Building and using the sample application</h3>
+
+<h4>
+Getting the L2 source.</h4>
+You must retrieve the L2 source tree from the CVS repository and prepare
+for building L2 as usual. Instructions are at:
+<br><a href="http://ic.arc.nasa.gov/ic/projects/mba/projects/L2/doc/starting/building_l2.html">http://ic.arc.nasa.gov/ic/projects/mba/projects/L2/doc/starting/building_l2.html</a>
+<p>Rather than building the debug command line test, however, you will
+build a special RTAPI test application.
+<h4>
+Building the sample application under:</h4>
+
+<h4>
+Solaris.</h4>
+In the top directory type "make realtime". This should pull in all the
+necessary code and libs to generate the test program "test_rt". If you
+previously built the regular test debug app, be sure to execute "make clean"
+before building the realtime app.
+<br>&nbsp;
+<br>&nbsp;
+<h4>
+Linux.</h4>
+
+<h4>
+Win32.</h4>
+&nbsp;
+<h4>
+Using the sample application to test model scenarios.</h4>
+Run the sample by executing "test_rt cb" (you need to copy "cb.ini", "cb.hrn",
+and "cb.xmpl" into the current directory first). The application should
+run for about 10 seconds and then exit. Three files should be generated:
+"rtliv.log", "rtL2.scr", "rtliv.drib". The first file would normally contain
+telemetry info (mode transitions, state variables). For now, it echoes
+the command and observation input and outputs diagnosis results. The second
+file is a nonrealtime L2 equivalent command script which can be run through
+the listener debug version of L2 in order to generate comparison output.The
+last is a dribble file which is merely providing event logging at the RTAPI
+level.
+<p>But does the sample application actually do? First, it instantiates
+an L2 engine and read in the "cb" model files. In addition to the normal
+"cb.xmpl", "cb.ini", and "cb.hrn" the application relies upon two include
+files for realtime-specific model information: "enumapi.h" and "time_delays.h".
+The first is used to specify enumerations corresponding to the model observables
+and commands. It is generated automatically by the api_gen tool described
+in more detail below. The second file must be coded by handed and contains
+arrays which define timeout durations (in seconds!) for each command and
+observation in the enumerated api.
+<p>After that, the application read in a simulated input sequence&nbsp;
+from "scenario.rt". The inputs are executed as specified, including real
+time delays to simulate an actual system. Corresponding RTAPI functions
+are invoked in order. That's it. Any other I/O takes place within the RTAPI
+or L2.
+<br>&nbsp;
+<h4>
+Understanding the provided test scenario.</h4>
+The "scenario.rt" file is a testing scenario based upon the script in 'test1.scr'.
+Normally, the user would code the script, then use the "api_scr" tool to
+convert the string-based script into a sequence of integer values in the
+"scenario.rt" file. The "scenario.rt" file provided dictates an extremely
+simple test sequence. Each line corresponds to a simulated event. The integers
+map to corresponding function calls and arguments specified by the enumeration
+api for the model. The enumeration api is generated for a specific model
+by the api_gen tool discussed below.&nbsp; In the simple test case, the
+L2 model utilized is the circuit breaker or 'cb' model.
+<p>The first line of "test1.scr" (and, hence "scenario.rt") indicates initiation
+of an "on" command to the number thirteen circuit breaker. The command
+is issued with an associated timeout, as indicated by use of the keyword
+'cmdt' rather than 'cmd'. The length of this timeout is read in from the
+"time_delays.h" file. The second line indicates an observation that the
+number eight led is on. Finally, the third line is a 'wait' command (of
+duration one second), specific to the RTAPI test environment that causes
+the main task to sleep for a specified amount of time. This command is
+present only for the purpose of simulating real time delays between messages
+and doesn't result in any messages being placed upon the L2 queue.
+<p>During execution of the test program, the circuit breaker eight command
+is initiated with a call to "queue_command_and_start_time(unsigned int
+cmd, unsigned int cmd_index)" on an L2_rtapi object. This function places
+the circuit breaker eight command on the L2 queue and spawns a thread using
+the default command timeout handler function. This timeout handler thread
+is put to sleep for the specified timeout of ten seconds. Upon waking,
+the default timeout handler function runs, placing a request for a "find_candidates"
+on the L2_queue. While the thread is sleeping (before the handler runs),
+the observation is processed by the main thread. This results in a call
+to "queue_observation(unsigned int obs, unsigned int obs_index)" using
+through the L2_rtapi object. Thus the L2_queue ends up with the command,
+the observation, and the find candidates in first-to-last order. Obviously,
+this is entirely a function of the specified timing. If the observation
+had been preceding by a 'wait' which caused the test program to simulate
+an interval of fifteen seconds between the command being issued and the
+observation being recorded, the diagnosis would have been triggered before
+the observation and resulted in a conflict. These results may be verified
+in the L2 RTAPI output files.
+<h4>
+Using api_gen and api_scr.</h4>
+The api_gen tool reads in a set of L2 model files and outputs a header
+file defining an equivalent enumeration api. The api_gen tool is built
+via the Makefile in the 'src/liv_utils/api_gen' directory. The executable
+takes a model name as argument and outputs "enumapi.h". This file is used
+by both the api_scr tool and the RTAPI. The sample version is "enumapi.h"
+located in the 'test/include' directory and is generated based upon the
+'cb' circuit breaker model.
+<p>The api_scr tool takes a realtime simulation script written by a user
+and translates the commands into corresponding integer values for the RTAPI
+test program. The api_scr tool is built via the Makefile in the 'src/liv_utils/api_scr'
+directory. The executable takes one command line argument, the name of
+the input script. Output is "scenario.rt". Allowed scripting keywords are:
+"cmd" - issue a command with no timeout, "obs" - record an observation
+with no timeout, "cmdt" - issue a command and start a timeout, "obst" -
+record and observation and start a timeout, "fc" - initiate a diagnosis,
+"report" - report the current system state, and "wait" - simulate a real
+time delay. All observation and command functions require the name string
+and domain value. E.g. "obst&nbsp;&nbsp;&nbsp;&nbsp; cbAndLed.led8.ledState&nbsp;&nbsp;&nbsp;
+on". "fc" requires no arguments, while "wait" needs an integer number of
+seconds. The input script's final line must be "end". See the sample in
+"src/test/scenario.scr".
+<h4>
+Real time scenario testing sample summary.</h4>
+
+<dl>
+<li>
+copy model files to test executable directory</li>
+
+<li>
+use api_gen tool to generate "enumapi.h" file and copy to &lt;directory></li>
+
+<li>
+write "time_delays.h" file which specifies timeouts in seconds for each
+enumerated command and observation</li>
+
+<li>
+write script scenario of commands, observations, time delays, and report
+requests</li>
+
+<li>
+use api_scr tool to generate a corresponding "scenario.rt" and copy it
+to the executable directory</li>
+
+<li>
+execute "test_rt &lt;model>"</li>
+</dl>
+
+<p><br>Files needed: "&lt;model>.ini", "&lt;model>.xmpl", "&lt;model>.hrn",
+"enumapi.h", "time_delays.h", "scenario.rt", and, optionally, "scenario.scr".
+<h4>
+Modifying the sample app to use different Livingstone objects and reporting.</h4>
+The default behavior of the test program is to instantiate nonflight objects
+which generate useful debugging output. To test with flight objects only,
+modify lines 177 and 192 of "rtapi.cpp" to instantiate a ReportTransitions
+object (instead of ReportTransitionsDebug) and also modify lines 180 and
+197 of "rtapi.cpp" to instantiate an L2_rtapi type (rather than L2_rtapi_debug).
+This eliminates the dribble file and L2 listener script output. Of course,
+these types may be mixed and matched as desired.
+<center>
+<p><a href="#TOC">Back to top</a></center>
+
+<div class=Section1>
+<h3>
+
+<hr WIDTH="100%"></h3>
+
+<h3>
+<a NAME="Section3"></a>The L2 Realtime API Application Programming Guide
+: Application programming with the RTAPI</h3>
+
+<h4>
+Application architecture and platform support.</h4>
+There are many issues governing the application's realtime needs, including
+platform capabilities. Currently, the RTAPI is implemented under Win32
+and Posix/Unix assuming L2 is run in a separate process from that of the
+software generating observations and commands. Thus monitors and avionics
+might reside in one process, posting messages to an IPC queue. The IPC
+messages are retrieved by the L2 process and passed on to the L2 engine
+via the RTAPI running in the same process as L2. This is depicted graphically
+below.
+<br><img SRC="fig2.gif" height=351 width=751>
+<center>Figure 2. A possible application architecture with L2 RTAPI.</center>
+
+<p>For the operating systems that implement processes to run in separate
+memory address spaces (Win32 and Unix), IPC is relatively slow. Thus, this
+design is efficient when a single monitor or command message may result
+in multiple messages sent to the L2 engine (that is the case for RTAPI)
+since a process internal queue will be much faster. The L2 RTAPI design
+assumes that the RTAPI and the L2 engine can both directly address the
+same memory space, i.e. they share pointers. It should be noted that while
+most Unix operating systems provide mechanisms for placing structures in
+memory blocks which are directly accessible crosspieces (Win32 may, as
+well), Unix and Win32 are not flight OS's, in general. According to the
+VxWorks 5.4 Programmer's Guide: "all code executes in a common address
+space" so that, in fact, the current design more closely reflects the runtime
+environment to be encountered under VxWorks. VxWorks also provides OS level
+memory pooling and other functionality. A reasonable alternative application
+architecture and use of the RTAPI is pictured below. Note that now the
+L2_queue interface wraps an intertask queue provided by VxWorks.
+<br><img SRC="fig3.gif" height=301 width=701>
+<center>Figure 3. Alternative architecture, assuming single address space.</center>
+
+<p>Again, while this architecture may be implemented under Unix by wrapping
+an IPC queue with the L2_queue interface, specifying certain objects to
+be placed in global memory, and enabling interprocess event signaling,
+the utility of such effort at this point is questionable given that VxWorks
+is the typical realtime OS. Given the significant platform differences,
+the important thing is that the interfaces and logic remain the same through
+the testing and flight phases.
+<p>Another useful feature provided by VxWorks is the watchdog timer. Watchdog
+timers are interrupt timers which execute callback functions after a specified
+time delay has elapsed. They have much lower overhead than tasks. The timeouts
+on VxWorks, then, would utilize watchdog timers with the timeout handlers
+specified as callback functions. This contrasts the the Win32/Posix implementations
+in which timers execute in spawned threads.
+<p>While there may be other minor issues, it is expected that the port
+to VxWorks will be relatively straightforward. If the reader desires this
+port from the author, email spepke@ptolemy.arc.nasa.gov and your wish may
+become reality.
+
+<p class="MsoNormal">Below is a table summarizing the current (Win32 and
+Unix) and expected (VxWorks) RTAPI platform implementation differences.
+<br>&nbsp;
+<br>&nbsp;
+<center><table BORDER COLS=4 WIDTH="75%" HEIGHT="50%" >
+<tr>
+<td>
+<center>
+<h4>
+Feature Implementation</h4></center>
+</td>
+
+<td>
+<center>
+<h4>
+Win32</h4></center>
+</td>
+
+<td>
+<center>
+<h4>
+Unix</h4></center>
+</td>
+
+<td>
+<center>
+<h4>
+VxWorks</h4></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>L2 execution</center>
+</td>
+
+<td>
+<center>Win32 thread</center>
+</td>
+
+<td>
+<center>pthread</center>
+</td>
+
+<td>
+<center>task</center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>timeouts</center>
+</td>
+
+<td>
+<center>Win32 sleep</center>
+</td>
+
+<td>
+<center>unix sleep</center>
+</td>
+
+<td>
+<center>watchdog timers</center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>memory address space</center>
+</td>
+
+<td>
+<center>shared access</center>
+</td>
+
+<td>
+<center>shared access</center>
+</td>
+
+<td>
+<center>shared access</center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>L2_queue</center>
+</td>
+
+<td>
+<center>in-process</center>
+</td>
+
+<td>
+<center>in-process</center>
+</td>
+
+<td>
+<center>ITC global</center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>memory pooling</center>
+</td>
+
+<td>
+<center>custom</center>
+</td>
+
+<td>
+<center>custom</center>
+</td>
+
+<td>
+<center>OS supplied</center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>event signaling</center>
+</td>
+
+<td>
+<center>in-process</center>
+</td>
+
+<td>
+<center>in-process</center>
+</td>
+
+<td>
+<center>inter-task</center>
+</td>
+</tr>
+</table></center>
+
+<center>
+<p>Figure 4. Current (Unix and Win32) and expected (VxWorks) platform differences.</center>
+
+<h4>
+Preparing model files (apigen).</h4>
+Application software communicating with the L2 RTAPI must have knowledge
+of the enumeration api. All commands and observations are indexed according
+to this api, which mirrors the L2 engine's internal indexing. Make the
+application in the 'src/liv_utils/api_gen' directory. Provide the model
+name (prefix for the .ini, .hrn, and .xmpl files) as a command line argument,
+e.g. "api_gen cb". This outputs the header file "enumapi.h" for use by
+the RTAPI and the application. Note that this header file name is hard
+coded into the RTAPI. The RTAPI looks for this header file in the project
+include directories.
+<h4>
+Building and running with the RTAPI.</h4>
+
+<div class="MsoNormal">Since the L2 RTAPI is multithreaded, only applications
+built with the appropriate multithreading flags set can use it. Under Solaris,
+the necessary flag is "-mt". No flag is required under Linux, provided
+a threading library is linked against. In addition to linking in the realtime_api
+library, the application must link the pthread library under posix, i.e.
+-lpthread.
+<p>In preparation for using the api, the calling application must instantiate
+three objects: a Livingstone engine, a Reporter object, and an L2_rtapi
+object. References to the L2_engine and Reporter object are given as arguments
+to the L2_rtapi constructor. Although, it might seem awkward, this design
+allows the application programmer maximum flexibility in terms of engine
+parameters and output. For details on this, please see the next section
+on customization.
+<br>&nbsp;</div>
+pseudocode or code sample -- note necessary includes, library linkage
+<p>Once the L2_rtapi is instantiated, all L2 messages should be sent via
+the L2_rtapi public interface. Note that it is the responsibility of the
+calling application to clean up any memory allocation for the Livingstone
+and Reporter objects.
+<h4>
+Testing.</h4>
+In the absence of a full simulation, testing can be done using input scripts
+similar to that used for the sample application in the previous section.
+During any phase of development, RTAPI functionality can be verified by
+utilizing either the provided debugging objects or coding custom debug
+types. For details on this, please see the next section on customization.
+<center>
+<p><a href="#TOC">Back to top</a></center>
+</div>
+
+<h3>
+
+<hr WIDTH="100%"></h3>
+
+<h3>
+<a NAME="Section4"></a>The L2 Realtime API Application Programming Guide
+: Extending the API functionality</h3>
+&nbsp;
+<h4>
+Custom output.</h4>
+The ReporterInterface class defined in "reporter.h" is an abstract base
+class referenced by the RTAPI functions for providing output. In order
+to customize output to you application, simply derive your own output classes
+from ReporterInterface and override the pure virtual methods declared in
+the ReporterInterface definition. The ReportTransitions and ReportTransitionsDebug
+classes provide examples of this. If you examine the contents of "reporter.h",
+you will see that output is done via polymorphism of the "()" operator.
+Using this mechanism, separate output behavior can be specified upon the
+recording of observations, issuance of commands, diagnosis (or recovery)
+triggering, and state reporting. The ReporterInterface declaration is listed
+below.
+<p><i><font size=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font></i><font size=-2>struct
+ReporterInterface</font>
+<br><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</font>
+<br><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+virtual void open()=0;</font>
+<br><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+virtual void close()=0;</font>
+<p><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+virtual ReporterInterface &amp; operator()()=0;</font>
+<br><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+virtual ReporterInterface &amp; operator()(livingstone_message_calls fcn)=0;</font>
+<br><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+virtual ReporterInterface &amp; operator()(livingstone_message_calls fcn,
+unsigned int var_index, unsigned int val_index)=0;</font>
+<br><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+virtual ReporterInterface &amp; operator()(livingstone_message_calls fcn,
+unsigned int var_index, unsigned int val_index, unsigned int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+time_delay)=0;</font>
+<br><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</font>
+<br>&nbsp;
+<h4>
+Timeout handlers for observations and commands.</h4>
+The default timeout handlers are defined in "timeout_handlers.h". Here
+you can see the necessary prototypes, which differ for each platform. To
+specify custom timeout handlers, provide definitions with the correct prototypes
+in your own header file. Use the L2_rtapi function "set_handlers" to pass
+the function pointers to the RTAPI runtime use.
+<h4>
+Debug classes.</h4>
+ReportTransitionsDebug and L2_rtapi_debug are debug classes inherited from
+ReporterInterface and L2_rtapi, respectively. Please see the reference
+manual or the header files for function listings.
+<p>The Reporter Interface methods are invoked by the LivingstoneDispatcher
+object upon processing of a message. You can define any debug reporting
+object you like, provided it implements the ReporterInterface, and pass
+it to the L2_rtapi object for use.
+<p>L2_rtapi_debug is derived from L2_rtapi to provide dribble output. L2_rtapi
+does not define any abstract interfaces, however, which means L2_rtapi_debug
+is unrestricted. Thus you may view L2_rtapi_debug giving useful additional
+output while also providing an example of how you might provide additional
+debugging functionality. You could choose to redefine L2_rtapi_debug or
+simply derive from it in order to define added functionality.
+<center>
+<p><a href="#TOC">Back to top</a></center>
+
+<hr WIDTH="100%"></dl>
+
+</body>
+</html>

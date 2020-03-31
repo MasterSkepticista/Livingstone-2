@@ -1,0 +1,5 @@
+scenario sv31PopsOpen mainPropulsionSystem
+assign test.sv31.openMicroSwitch=open
+fc
+assign test.mrtd203t.temperatureReading.ambient.upperBound=belowThreshold test.mrtd203t.temperatureReading.ambient.lowerBound=belowThreshold test.mrtd203t.temperatureReading.tankMixture.upperBound=belowThreshold test.mrtd203t.temperatureReading.tankMixture.lowerBound=aboveThreshold
+fc

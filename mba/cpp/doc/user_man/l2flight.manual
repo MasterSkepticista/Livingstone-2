@@ -1,0 +1,92 @@
+@node l2flight
+@section The l2flight front-end
+
+The @command{l2flight} front-end is a thin front-end that tries to emulate
+how flight software might be running livingstone.  In part, this is to
+allow for good code size estimates; it's also meant as a source code
+example.  The source is available in
+@file{mba/cpp/src/readers/l2flight/l2flight.cpp}.
+
+There are no options to @command{l2flight}; it takes exactly one argument,
+the model name.  To specify history, search method, and so on, create a
+@file{model.params} file.
+
+
+The command syntax is also very limited in extent.  It consists of a single
+letter for the command; then a list of integers the number and meaning of
+which depends on the command character.  The list of commands is based on
+the library API.
+
+@table @key
+
+        @item o
+                Two arguments: varID , value index
+
+                Specify an observation.  If the value index is negative,
+                the variable is given an unknown value.  The variable
+                identified by varID must be observable; and the value index
+                must be in its allowable range.
+
+
+        @item c
+                Two arguments: varID , value index
+
+                Issue a command.  The variable identified by varID must be
+                observable; and the value index must be in its allowable
+                range.  Unlike with an observation, the value cannot be
+                negative.
+
+        @item I
+                (capital letter @key{i})
+
+                No arguments.
+
+                Idle the system.  This increments the timestep by one.
+
+        @item d
+                No arguments.
+
+                Issues a diagnosis and returns the number of candidates.
+
+        @item i
+                One argument: candidate index.
+
+                Installs the ith candidate diagnosis.  Values of variables
+                depend on which candidate is installed; but installing a
+                candidate does not change the future evolution of the
+                system.
+
+        @item v
+                One argument: varID.
+
+                Prints the value of all variables with the given ID.
+                There may well be many such variables -- if we copy
+                the variable at every timestep (as in full-progress),
+                or for modes, the modeTransition variable shares the ID.
+
+        @item f
+                No arguments.
+
+                Requires a candidate to have been installed already.
+                Says how many failures that candidate has.
+
+        @item F
+                One argument: which failure.
+
+                Requires a candidate to have been installed already.
+                Prints the ith failure (an off-nominal mode transition)
+                of the candidate.
+
+        @item r
+                No arguments.
+
+                Resets the system.  We loop back, reload the file,
+                create a new engine, etc.
+
+        @item q
+        @itemx C-d
+                No arguments.
+
+                Exits the program.
+
+@end table

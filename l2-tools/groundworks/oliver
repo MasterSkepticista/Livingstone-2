@@ -1,0 +1,93 @@
+#!/bin/tcsh -f
+# -f Fast start. do not read the  .cshrc  file
+
+# $Id: oliver,v 1.1.1.1 2006/04/18 20:17:24 taylor Exp $
+
+set validOption = 1
+set arg_gcInit_seen = no
+set arg_gcInit = "32"
+set arg_gcMax_seen = no
+set arg_gcMax = "192"
+set arg_win32 = 0
+set options = "OPTIONS : -gcinit <nn>, -gcmax <nn>, & -win32" 
+
+foreach arg ($*)
+  if ("$arg" == "-gcinit") then
+    set arg_gcInit_seen = yes
+  else if ("$arg_gcInit_seen" == "yes") then
+    set arg_gcInit_seen = no
+    set arg_gcInit = $arg
+  else if ("$arg" == "-gcmax") then
+    set arg_gcMax_seen = yes
+  else if ("$arg_gcMax_seen" == "yes") then
+    set arg_gcMax_seen = no
+    set arg_gcMax = $arg
+  else if ("$arg" == "-win32") then
+    set arg_win32 = 1
+  else if ("$arg" == "-help") then
+    echo $options 
+    set validOption = 0
+  else
+    echo -n "$arg is an invalid option! -- "
+    echo $options 
+    set validOption = 0
+  endif
+end
+if ($validOption == 0) then
+  exit
+endif
+
+echo ""
+echo "Java GC initial space = ${arg_gcInit}mb"
+echo "Java GC maximum space = ${arg_gcMax}mb"
+echo ""
+
+if (! -f oliver) then
+  # needed for relative directory usage
+  echo "current directory is not <root>/skunkworks/groundworks"
+  exit
+endif
+
+# ensure that $JAVA_HOME is set properly
+if (${?JAVA_HOME}) then
+  rm -f config.jv
+  # must be done in sh, since java is an sh script
+  sh -c "$JAVA_HOME/bin/java -version 2> config.jv"
+  set java_version = `cat config.jv`
+  # echo java_version $java_version
+  set version_2 = `echo $java_version | awk -F\" '{print $2}'`
+  # echo version_2 $version_2
+  set jdk_gt_eq_1_4 = true
+  # note the expr match -- --
+  set match_test = `expr match $version_2 '.*1\.8\.*'`
+  # echo match_test $match_test 
+  if ( $match_test == 0 ) then
+    echo "$JAVA_HOME not jdk1.4.*"
+    exit 1
+  endif
+else
+  echo "JAVA_HOME not set"
+  exit 1
+endif
+
+setenv THREADS_FLAG native
+
+if ("$arg_win32" == "1") then
+  # Livingstone shared library -- livdll.dll
+  set path = ( $path ../../mba/cpp/lib )
+else 
+  # Livingstone shared library -- liblivdll.so
+  # ensure that LD_LIBRARY_PATH exists
+  if (! $?LD_LIBRARY_PATH) then
+    setenv LD_LIBRARY_PATH /usr/lib
+  endif	
+  setenv LD_LIBRARY_PATH ../../mba/cpp/lib:${LD_LIBRARY_PATH}
+endif
+
+# run Oliver
+# -verbose:gc show user what GC is doing
+# -Xms -- initial GC space => 30mb (JVM default 2mb)
+# -Xmx -- max GC space => 192mb    (JVM default 64mb)
+# java.lang.OutOfMemoryError thrown if max GC space exceeded
+$JAVA_HOME/bin/java -verbose:gc -Xms${arg_gcInit}m -Xmx${arg_gcMax}m -jar jars/oliverfull.jar
+

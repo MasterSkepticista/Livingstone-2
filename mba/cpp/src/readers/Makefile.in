@@ -1,0 +1,22 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.15 2001/11/16 23:52:59 lbrown Exp $
+
+L2_TRANSLATIONS=@L2_TRANSLATIONS@
+OBJECTS=${L2_TRANSLATIONS:%=%.o}
+
+# clause_unit.o readers_unit.o from_memory_unit.o transition_unit.o
+
+OBJECTS+=L2_file.o options.o \
+	clause.o \
+	enumeration.o \
+	modes.o \
+	proposition.o \
+	transition.o \
+	variable.o
+
+# from_xmpl needs to know about Xerces; the rest don't
+XERCESCROOT = @XERCESCROOT@
+from_xmpl.o : CPPFLAGS+=-I$(XERCESCROOT)/include

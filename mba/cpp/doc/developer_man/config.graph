@@ -1,0 +1,144 @@
+# $Id: config.graph,v 1.1 2001/07/27 08:10:56 bhudson Exp $
+# This file is used by graph_reader.pl to generate a dot file.
+# The format is slightly better documented in that file, but it's
+# fairly simple anyway.
+# It corresponds to configure.in as it was, with some modification to be
+# what it should be, on July 25, 2001.
+
+internal-node {
+    # readers
+    from-l2 from-bin from-xmpl from-any from-memory
+
+    # translators
+    optimizer
+    L2_file_translator xlate_strip xlate_merge_eq_vars
+    xlate_remove_duplicates xlate_sort_props
+
+    # writers
+    to_l2 to_bin to_t_system
+
+    # other
+    engine debuggers livingstone_reader
+
+    # not currently in configure.in
+    xerces threads
+}
+
+set_by_user {
+    # various executables (and the JNI)
+    enable-apigen enable-l2test enable-l2flight
+    enable-names2ids enable-xmpl2l2 enable-jni
+    enable-rti
+
+    # code generation options
+    enable-shared
+    with-profile
+    with-purify
+    #with-purify-despite-threads
+    #disable-exceptions
+    #disable-print-error
+    #without-Wall
+    #with-Werror
+    #without-warnings
+
+    # memory allocation
+    #enable-count-allocated
+    #disable-dynamic-memory
+    #disable-cheap-memory-tests
+    #enable-prohibitive-memory-tests
+
+    # xerces
+    #with-xerces
+    #with-xerces-lib
+
+    # turn on/off features
+    disable-optimizer
+    disable-xmpl-format
+    disable-l2-format
+    disable-l2bin-format
+    #disable-verbose
+    disable-debug-sections
+    disable-cover
+    disable-cbfs
+    enable-recovery
+    disable-min-progress
+    disable-full-progress
+    #disable-checkpoint
+}
+
+enable_apigen           requires        livingstone_reader debuggers
+enable-l2test           requires        livingstone_reader engine debuggers
+enable-l2flight         requires        livingstone_reader engine
+enable-names2ids        requires        livingstone_reader debuggers
+enable-xmpl2l2          requires        livingstone_reader
+enable-xmpl2l2          wants           to_l2 to_bin
+enable-jni              requires        livingstone_reader engine debuggers
+
+
+# statements about higher parts of the engine
+debuggers               requires        engine
+engine                  requires        livingstone_reader
+
+# statements about readers
+livingstone_reader      requires        from_any to_t_system
+livingstone_reader      wants           optimizer
+from_any                wants           from_l2 from_bin from_xmpl
+from_bin                requires        from_memory
+
+# statements about translators (aka optimizers)
+disable-optimizer       disallows       optimizer
+optimizer               wants           xlate_strip
+optimizer               wants           xlate_merge_eq_vars
+optimizer               wants           xlate_remove_duplicates
+optimizer               wants           xlate_sort_props
+xlate_strip             requires        L2_file_translator
+xlate_merge_eq_vars     requires        L2_file_translator
+xlate_remove_duplicates requires        L2_file_translator
+xlate_sort_props        requires        L2_file_translator
+
+# statements about writers
+to_t_system             requires        engine
+
+# statements about file format restrictions
+disable-xmpl-format     disallows       from_xmpl
+disable-l2-format       disallows       from_l2 to_l2
+disable-l2bin-format    disallows       from_bin to_bin
+
+
+
+
+# other restrictions
+disable-debug-sections  disallows       from_xmpl
+
+# can't remove both
+disable-cover           disallows       disable-cbfs
+disable-cbfs            disallows       disable-cover
+disable-min-progress    disallows       disable-full-progress
+disable-full-progress   disallows       disable-min-progress
+
+
+# recovery only works in l2test; doesn't work in the other two front-ends
+# (flight and JNI); doesn't allow any other kind of progress (so that
+# disabling them is required).
+enable-recovery         requires        enable-l2test
+enable-recovery         disallows       enable-l2flight enable-jni
+enable-recovery         requires        disable-min-progress
+enable-recovery         requires        disable-full-progress
+
+
+# RTI requires shared objects for no particularly good reason.
+# JNI requires shared objects because it's loaded as such.
+enable-rti              requires        enable-shared
+enable-jni              requires        enable-shared
+
+# profile and purify don't work well with shared objects
+with-purify             disallows       enable-shared
+with-profile            disallows       enable-shared
+
+# purify doesn't work well with threads; xmpl requires xerces which
+# requires threads.  I'm trying to say:
+#       with-purify and threads requires  with-purify-despite-threads
+# but I'm not sure the current language can easily.
+from_xmpl               requires        xerces
+xerces                  requires        threads
+with-purify             disallows       threads

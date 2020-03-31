@@ -1,0 +1,6 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.7 2002/11/07 01:00:19 lbrown Exp $
+OBJECTS = transitioned.o T_system.o tracker.o CandidateEqClass.o

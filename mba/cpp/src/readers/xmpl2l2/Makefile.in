@@ -1,0 +1,12 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+TARGET=xmpl2l2
+BINTARGET=$(TARGET)
+
+OFILES=xmpl2l2.o
+DEPS=${loc_libdir}/${L2LIB_FILE} $(loc_libXERCES)
+
+$(TARGET): $(OFILES) $(DEPS)
+	$(LINKEXEC) -o $@ $(OFILES) -l${L2LIB} $(lXERCES)

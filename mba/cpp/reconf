@@ -1,0 +1,36 @@
+#! /bin/sh
+# $Id: reconf,v 1.2 2000/08/30 23:09:05 bhudson Exp $
+# Remake a makefile.
+# Usage:
+# ${top_srcdir}/reconf ${top_srcdir}
+CONFIG_FILES=
+CONFIG_HEADERS=
+
+curdir=`pwd`
+top_srcdir=$1
+cd ${top_srcdir}
+
+# The idea is that config.status only takes relative directories.
+# So what we do is force an absolute directory spec into a relative one:
+# curdir is pwd before switching;
+# pwd after switching is a prefix to it.
+# So we take out the part that matches; what's left will be just the
+# relative path from pwd to curdir.
+
+# Make the regexp for the sed script ; quote any '%' characters
+# in case there are some in the path.
+# Note that we require sed to see \\, which means we need to show
+# the shell \\ twice (yuck!).
+sedscript="`pwd | sed 's/%/\\\\%/g'`"
+filename="`echo \"${curdir}/Makefile\" | sed \"s%^$sedscript/%%\"`"
+if test "$filename" = "Makefile" ; then
+    # top-level makefile comes from Makefile.in and top.mk only
+   CONFIG_FILES="Makefile:top.mk:Makefile.in"
+else
+    # lower-level makefiles come from Makefile.in and top/bot.mk
+    # ${filename} includes the relative path
+    CONFIG_FILES="${filename}:top.mk:${filename}.in:bot.mk"
+fi
+export CONFIG_FILES
+export CONFIG_HEADERS
+./config.status

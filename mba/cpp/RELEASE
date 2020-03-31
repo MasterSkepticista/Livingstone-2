@@ -1,0 +1,116 @@
+$Id: RELEASE,v 1.5 2001/05/17 21:52:54 bhudson Exp $
+
+
+This file says how to package a release of Livingstone.
+
+---------------------------------------------------------------------------
+Tag the release.
+
+
+Checkout a fresh Livingstone from the CVS repository.  Do this in a
+directory that doesn't currently exist:
+        cd ~
+        mkdir l2-release-directory
+        cd l2-release-directory
+        LIVINGSTONE_ROOT=`pwd`
+        cvs co mba/cpp
+        cvs co mba/xml
+        cvs co l2-regress
+        cvs co support/xerces-unix-src
+The goal is to make sure we are packaging up the right thing.
+
+
+Update the version number:
+        vi ${LIVINGSTONE_ROOT}/mba/cpp/src/livingstone/version.c
+Read the directions in that file on what the format for a release is.
+
+Update the ChangeLog, adding a log that reads 'released version x.y.z'
+
+Check those in to the head revision.
+
+Tag it all (making branches, which are easier to fix if needed):
+        TAG=L2Skunk_x_y_z
+        cd ${LIVINGSTONE_ROOT}
+        cvs tag -b $TAG mba/cpp
+        cvs tag -b $TAG mba/xml
+        cvs tag -b $TAG l2-regress
+        cvs tag -b $TAG support/xerces-unix-src
+
+Update the version number again, back to a cvs pre-release version:
+        vi ${LIVINGSTONE_ROOT}/mba/cpp/src/livingstone/version.c
+Read the directions in that file.
+
+---------------------------------------------------------------------------
+Packaging up a release
+
+Checkout a fresh livingstone, to make sure the changes above worked.
+        cd ~
+        mkdir l2-x.y.z          # x.y.z is the version number
+        cd l2-x.y.z
+        LIVINGSTONE_ROOT=`pwd`
+        cvs co -r $TAG mba/cpp
+        cvs co -r $TAG mba/xml
+        cvs co -r $TAG l2-regress
+        cvs co -r $TAG support/xerces-unix-src
+
+        # remove the CVS information, not needed in a released version
+        rm -rf `find . -name CVS -print`
+
+        # make sure the timestamps are correct
+        cd mba/cpp
+        ./l2_update -t
+        cd ../../l2-regress
+        touch configure
+
+Then create a tarball:
+        cd ${LIVINGSTONE_ROOT}/..
+        gtar cf l2-x.y.z.tar l2-x.y.z
+        gzip -9 l2-x.y.z.tar
+
+---------------------------------------------------------------------------
+Testing the release
+
+Take the tarball, and uncompress it somewhere:
+        cd ~
+        mkdir l2-test-dir
+        cd l2-test-dir
+        gzip -cd ~/l2-x.y.z.tar.gz | tar xf -
+        cd l2-x.y.z
+        LIVINGSTONE_ROOT=`pwd`
+
+Configure and compile livingstone:
+        cd ${LIVINGSTONE_ROOT}/mba/cpp
+        ./l2_update -t  # make sure generated files have the right timestamp
+        ./configure --prefix=`pwd` --enable-l2run --enable-l2strip --enable-xmpl2l2 \
+           --enable-apigen --enable-rti
+        make install
+
+
+Make sure it compiles of course, but also that it's correctly linked:
+        ldd bin/l2test
+should list ${LIVINGSTONE_ROOT}/lib/liblivdll.so -- make sure it's the
+right directory, otherwise you're testing some other copy of livingstone.
+
+Configure and compile l2-regress:
+        cd ${LIVINGSTONE_ROOT}/l2-regress
+        touch configure
+        ./configure
+        make
+
+Run the regression tests:
+        ./runtests cb cb-stripped x37
+
+Make sure the version number is accurate:
+        cd ${LIVINGSTONE_ROOT}/mba/cpp/bin
+        ./l2run --version
+It should print out that the version is 'released x.y.z'
+
+There should be no failures the developers can't explain -- ask about each
+failure and get an explanation in each case.
+
+If it's worked, then testing is complete.  Except you probably want to
+repeat testing on all supported Unix platforms (Linux/x86, Solaris/SPARC).
+
+
+---------------------------------------------------------------------------
+If you get here, then everything's done; time to announce the release.

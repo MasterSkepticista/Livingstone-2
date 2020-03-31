@@ -1,0 +1,407 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "XercesLib"=..\support\xerces\Projects\Win32\VC6\xerces-all\XercesLib\XercesLib.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "api"=.\cpp\src\api\api.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "api_gen"=.\cpp\src\liv_utils\api_gen\api_gen.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name transition
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name api
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cover
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name debuggers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name livingstone
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name opsat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name readers
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "api_scr"=.\cpp\src\liv_utils\api_scr\api_scr.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "conflict_db"=.\cpp\src\conflict_db\conflict_db.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "cover"=.\cpp\src\cover\cover.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name tms
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "debuggers"=.\cpp\src\debuggers\debuggers.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "l2flight"=.\cpp\src\readers\l2flight\l2flight.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name api
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cover
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name debuggers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name livingstone
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name opsat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name readers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name transition
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "l2test"=.\CPP\SRC\READERS\l2test\l2test.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name cover
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name debuggers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name opsat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name transition
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name readers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name livingstone
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name api
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "liv_utils"=.\cpp\src\liv_utils\liv_utils.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name api_gen
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "livdll"=.\cpp\src\livdll\livdll.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name conflict_db
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cover
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mba_utils
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name opsat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tms
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name transition
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name debuggers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name readers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name livingstone
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name api
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "livingstone"=.\cpp\src\livingstone\livingstone.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mba_utils"=.\cpp\src\mba_utils\mba_utils.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "names2ids"=.\cpp\src\readers\names2ids\names2ids.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name api
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cover
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name debuggers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name livingstone
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name opsat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name readers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name transition
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "opsat"=.\cpp\src\opsat\opsat.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "readers"=.\cpp\src\readers\readers.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "realtime_api"=.\cpp\src\realtime_api\realtime_api.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tms"=.\cpp\src\tms\tms.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name mba_utils
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "transition"=.\cpp\src\transition\transition.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name XercesLib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name conflict_db
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "xmpl2l2"=.\CPP\SRC\READERS\xmpl2l2\xmpl2l2.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name cover
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name debuggers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name livingstone
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name opsat
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name readers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tms
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name transition
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

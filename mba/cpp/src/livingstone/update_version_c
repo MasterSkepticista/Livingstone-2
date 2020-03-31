@@ -1,0 +1,17 @@
+#! /bin/sh
+
+theline=`grep l2_version_string version.c`
+
+case "$theline" in
+    *cvs*)
+        # contains cvs, so update the line
+        chmod o+w version.c
+        DATE=`date '+%Y-%m-%d %H:%M'`
+        sed -e "s%\(l2_version_string = \".* (cvs\) .*)%\1 $DATE)%" \
+                version.c > new-version.c
+        mv -f new-version.c version.c
+        ;;
+    *)  # doesn't contain it, ignore
+        exit 0
+        ;;
+esac

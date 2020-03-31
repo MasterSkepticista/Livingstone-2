@@ -1,0 +1,10 @@
+scenario handGenFS12 mainPropulsionSystem
+// Data input by hand into Stanley on 5/2/2001 to create this scenario
+assign test.mpre202p.pressureReading.pr02Crack=belowThreshold test.mpre202p.pressureReading.pressurizationRate.upperBound=belowThreshold test.mpre202p.pressureReading.pressurizationRate.lowerBound=belowThreshold test.mpre202p.pressureReading.heatingRate.upperBound=belowThreshold test.mpre202p.pressureReading.heatingRate.lowerBound=aboveThreshold test.mpre202p.pressureReading.bleedRate.upperBound=aboveThreshold test.mpre202p.pressureReading.bleedRate.lowerBound=aboveThreshold test.mpre202p.pressureReading.ventingRate.upperBound=aboveThreshold test.mpre202p.pressureReading.ventingRate.lowerBound=aboveThreshold
+assign test.mpre212p.pressureReading.pr02Crack=belowThreshold test.mpre212p.pressureReading.pressurizationRate.upperBound=belowThreshold test.mpre212p.pressureReading.pressurizationRate.lowerBound=belowThreshold test.mpre212p.pressureReading.heatingRate.upperBound=belowThreshold test.mpre212p.pressureReading.heatingRate.lowerBound=aboveThreshold test.mpre212p.pressureReading.bleedRate.upperBound=aboveThreshold test.mpre212p.pressureReading.bleedRate.lowerBound=aboveThreshold test.mpre212p.pressureReading.ventingRate.upperBound=aboveThreshold test.mpre212p.pressureReading.ventingRate.lowerBound=aboveThreshold
+assign test.mpre107p.pressureReading.rg02.upperBound=belowThreshold test.mpre107p.pressureReading.rg02.lowerBound=belowThreshold test.mpre107p.pressureReading.rg21.upperBound=belowThreshold test.mpre107p.pressureReading.rg21.lowerBound=aboveThreshold
+assign test.mrtd203t.temperatureReading.ambient.upperBound=belowThreshold test.mrtd203t.temperatureReading.ambient.lowerBound=aboveThreshold test.mrtd203t.temperatureReading.tankMixture.upperBound=aboveThreshold test.mrtd203t.temperatureReading.tankMixture.lowerBound=aboveThreshold
+fc
+progress test.sv31.valveCmdIn=open
+assign test.sv31.openMicroSwitch=notOpen
+fc

@@ -1,0 +1,22 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# Allowable targets are:
+#	api_gen		-- utility executable
+TARGET=api_gen
+BINTARGET=api_gen
+CLEANFILES+=api_gen
+
+# dependencies
+DEPS_L=-l$(L2LIB) $(lXERCES)
+DEPS=$(loc_libXERCES) $(loc_libdir)/$(L2LIB_FILE)
+
+
+# build a command-line executable
+API_GEN_O=api_gen.o
+api_gen: $(API_GEN_O)
+	$(LINKEXEC) -o $@ $(API_GEN_O) $(DEPS_L) $(LIBS)
+
+# installing
+LIBINSTALL=$(DEPS:${loc_libdir}/lib%=${libdir}/lib%)

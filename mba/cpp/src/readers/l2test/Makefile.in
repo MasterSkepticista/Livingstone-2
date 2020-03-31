@@ -1,0 +1,12 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+TARGET=l2test
+BINTARGET=$(TARGET)
+
+OFILES=$(TARGET:%=%.o)
+DEPS=${loc_libdir}/$(L2LIB_FILE) $(loc_libXERCES_SO)
+
+$(TARGET): $(OFILES) $(DEPS)
+	$(LINKEXEC) -o $@ $(OFILES) -l$(L2LIB) $(lXERCES)

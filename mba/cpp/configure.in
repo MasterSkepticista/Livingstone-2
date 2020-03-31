@@ -1,0 +1,1047 @@
+dnl $Id: configure.in,v 1.88 2003/01/23 00:28:33 lbrown Exp $
+
+dnl See the file "mba/disclaimers-and-notices-L2.txt" for
+dnl information on usage and redistribution of this file,
+dnl and for a DISCLAIMER OF ALL WARRANTIES.
+
+dnl This file must exist.  If it doesn't, configure will fail (under the
+dnl assumption it's out of context).  It should be an unlikely file to randomly
+dnl find.
+AC_INIT(src/cover/cover.cpp)
+
+AC_CONFIG_HEADER(include/livingstone/gnu_conf.h)
+
+AC_CANONICAL_HOST
+
+dnl os_type is the host_os, without version number
+dnl Used i.e. to pick which JDK includes to use.
+AC_SUBST(os_type)
+AC_MSG_CHECKING(versionless os name)
+if test "${os_type-unset}" != "unset" ; then
+    AC_MSG_RESULT($os_type)
+else
+    unknown=no
+    case $host_os in
+        *solaris*)  os_type=solaris ;;
+        *linux*)    os_type=linux   ;;
+
+        dnl Three types of unix-under-windows I've heard about
+        *cygwin*|*mingw32*|*uwin*)
+                    os_type=win32 ;;
+
+        *irix*)     os_type=irix    ;;
+        *)          unknown=yes
+                    os_type=$host_os;;
+    esac
+    AC_MSG_RESULT($os_type)
+    if test $unknown = yes ; then
+        AC_MSG_WARN($os_type is an unknown OS.)
+        AC_MSG_ERROR(Set the environment variable os_type and reconfigure.)
+    fi
+fi
+
+
+dnl Get the version.
+dnl VERSION=`cat VERSION`
+dnl AC_SUBST(VERSION)
+dnl AC_DEFINE_UNQUOTED(VERSION, ["${VERSION}"])
+
+
+
+dnl Debugging code.  First, uncomment this; then, uncomment (or add)
+dnl config_dbg lines where you want to debug.  Lastly, run autoconf, then
+dnl run CONFIG_DEBUG=yes ./configure [options]
+
+#config_dbg() {
+#    if test "x$CONFIG_DEBUG" = "xyes" ; then
+#        if test $# -eq 1 ; then
+#            name=$1
+#        else
+#            if test $# -gt 1 ; then
+#                echo "too many args to config_dbg"; exit 1
+#            else
+#                name="config_dbg"
+#            fi
+#        fi
+#        y=y ;
+#        while test "x$y" != "x" ; do
+#            printf "$name> " ;
+#            read y ;
+#            eval "$y" ;
+#        done
+#    fi
+#}
+
+
+dnl Program checks
+AC_PROG_CC
+AC_PATH_PROG(CC_FULL_PATH, $CC, $CC)
+AC_PROG_CXX
+AC_PATH_PROG(CXX_FULL_PATH, $CXX, $CXX)
+AC_PROG_CPP
+AC_PROG_CXXCPP
+AC_PROG_MAKE_SET
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PATH_PROG(PERL, perl, perl)
+
+dnl Check that #include <new> works
+AC_LANG_CPLUSPLUS
+AC_CHECK_HEADERS(new)
+
+dnl Test if we have bool, true, and false.  If not, we define each
+dnl to their int equivalent.
+LIV_CXX_BOOL
+
+dnl Test if we can throw a bad_alloc exception; this avoids a warning
+dnl under at least 2.95.2.  The alternative is to return 0 when out
+dnl of memory, which violates the new standard but is the traditional
+dnl usage.
+dnl This is not used in the current allocators; they abort when they
+dnl run out of memory.  So no need to check.
+dnl LIV_CXX_THROW_BADALLOC
+
+dnl Test whether placement-new is already defined in <new> as happens in
+dnl gcc-3.0.  Otherwise, our allocators will define it themselves.
+LIV_CXX_HAS_PLACEMENT_NEW
+
+dnl **********************************************************************
+dnl see if we're running various special compilers.
+if test "x$GXX" != xyes ; then
+    case $host in
+        *solaris*)
+            AC_MSG_CHECKING([whether we are using Sun CC])
+            string=`${CC} -V 2>&1 | sed -e 's/.*WorkShop.*/yes/' | grep yes`
+            if test "x$string" = "xyes" ; then
+                SUNCXX=yes
+            else
+                SUNCXX=no
+            fi
+            AC_MSG_RESULT($SUNCXX)
+    esac
+fi
+
+dnl **********************************************************************
+dnl Check for compiler-dependent things we may need.
+
+AC_MSG_CHECKING(whether $CXX needs extra flags)
+EXTRA_CXXFLAGS=
+EXTRA_LIBS=
+EXTRA_LDFLAGS=
+
+dnl We needed lots of things under Sun CC 4.2, but 6.0 is more reasonable;
+dnl just add -mt.
+if test "x$SUNCXX" = "xyes" ; then
+    EXTRA_CXXFLAGS="${EXTRA_CXXFLAGS} -mt"
+fi
+
+dnl Under the GNU C++ compiler, we need to hard-code the runpath to the
+dnl C++ libraries.  It lies in `which $CXX`/../lib which we resolve to
+dnl remove any symlinks or relative paths (like '..')
+if test "x$GXX" = "xyes" ; then
+    HERE=`pwd`
+    #config_dbg "set HERE"
+    dnl dirname using sed; note that the double-[ include the m4 quote,
+    dnl so sed only sees the single-[ character class marker
+    THERE=`echo $CXX_FULL_PATH | sed 's%/[[^/]]*$%%'`
+    THERE="${THERE}/../lib"
+    cd "$THERE"
+    THERE=`pwd`
+    #config_dbg "set THERE"
+    cd "$HERE"
+    EXTRA_LDFLAGS="${EXTRA_LDFLAGS} \${CXXRFLAG}$THERE"
+    #config_dbg "set EXTRA_LDFLAGS"
+fi
+
+result=no
+LIV_STRIPWS(EXTRA_CXXFLAGS EXTRA_LDFLAGS EXTRA_LIBS)
+if test "x$EXTRA_CXXFLAGS" != "x" ; then
+    if test ${result} = no ; then result=yes; AC_MSG_RESULT(yes) ; fi
+    echo "    compile with ${EXTRA_CXXFLAGS}"
+    CXXFLAGS="${CXXFLAGS} ${EXTRA_CXXFLAGS}"
+fi
+if test "x$EXTRA_LDFLAGS" != "x" ; then
+    if test ${result} = no ; then result=yes; AC_MSG_RESULT(yes) ; fi
+    echo "    link with ${EXTRA_LDFLAGS}"
+    LDFLAGS="${LDFLAGS} ${EXTRA_LDFLAGS}"
+fi
+if test "x$EXTRA_LIBS" != "x" ; then
+    if test ${result} = no ; then result=yes; AC_MSG_RESULT(yes) ; fi
+    echo "    additional libraries ${EXTRA_LIBS}"
+    LIBS="${LIBS} ${EXTRA_LIBS}"
+fi
+if test ${result} = no ; then AC_MSG_RESULT(no); fi
+
+
+dnl **********************************************************************
+dnl See how (and whether!) to generate position-independent code.
+dnl If we configure --disable-shared, we don't need to do this.
+LIV_ARG_ENABLE(shared,
+[  --disable-shared       link statically; don't generate a shared object],
+yes)
+
+
+if test $enable_shared = yes ; then
+    dnl **********************************************************************
+    dnl See how to generate position-independent code.
+    AC_MSG_CHECKING(how to generate PIC code)
+    if test ${CXXPIC-unset} = unset ; then
+        test "x$GXX" = "xyes" && CXXPIC=-fPIC
+        test "x$SUNCXX" = "xyes" && CXXPIC=-KPIC
+        if test "x$CXXPIC" = "x" ; then
+          AC_MSG_ERROR(can't figure out how to generate PIC; define CXXPIC by hand)
+        fi
+    fi
+    if test "x$CXXPIC" = "x" ; then
+        AC_MSG_RESULT(no flag)
+    else
+        AC_MSG_RESULT([using "$CXXPIC"])
+        CXXFLAGS="${CXXFLAGS} ${CXXPIC}"
+    fi
+
+    dnl Always define PIC ; don't use AC_DEFINE for this though, as
+    dnl I'm not sure that would be appropriate.
+    CPPFLAGS="${CPPFLAGS} -DPIC"
+
+    dnl **********************************************************************
+    dnl See how to generate shared objects.
+    AC_MSG_CHECKING(how to create shared objects)
+    if test ${CXXSHARED-unset} = unset ; then
+        case $host in
+            *solaris*) CXXSHARED="-G" ;;
+            *linux*|*irix*)   CXXSHARED="-shared" ;;
+            *) AC_MSG_ERROR(don't know how to create shared objects on $host; define CXXSHARED by hand) ;;
+        esac
+    fi
+    AC_MSG_RESULT([using "$CXXSHARED"])
+    AC_SUBST(CXXSHARED)
+fi
+
+AC_SUBST(L2LIB)
+AC_SUBST(L2LIB_FILE)
+dnl **********************************************************************
+dnl Decide whether to use livdll (original, Stanley) or livdll2 (Oliver)
+LIV_ARG_ENABLE(livdll2,
+[  --enable-livdll2       use livdll2 (Oliver) instead of livdll (Stanley)],
+no)
+if test x$enable_livdll2 = xyes ; then
+	L2LIB="livdll2"
+else
+	L2LIB="livdll"
+fi
+
+dnl **********************************************************************
+dnl See what the name of the l2 library is
+if test $enable_shared = yes ; then
+    L2LIB_FILE="lib${L2LIB}.so"
+else
+    L2LIB_FILE="lib${L2LIB}.a"
+fi
+
+dnl **********************************************************************
+dnl See how to hard-code the run-path.
+dnl Needed under gcc even without PIC for libstdc++.
+if test $enable_shared = yes || test "x$GCC" = "xyes" ; then
+    AC_MSG_CHECKING(for -R flag or equivalent)
+    if test ${CXXRFLAG-unset} = unset ; then
+        case $host in
+            *solaris*)        CXXRFLAG="-R" ;;
+            *linux*|*irix*)   CXXRFLAG="-Wl,-rpath," ;;
+            *) AC_MSG_ERROR(don't know how to set runpath on $host; define CXXRFLAG by hand) ;;
+        esac
+    fi
+    AC_MSG_RESULT([using "$CXXRFLAG"])
+    AC_SUBST(CXXRFLAG)
+fi
+
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl Check for features
+dnl FEATURE_DIRS are directories that have a feature we add to the library
+dnl     (for example, JNI, CBFS).  It starts off non-empty because some
+dnl     things must be in the library.
+dnl NOLIB_FEATURE_DIRS are those that we don't add to the library
+dnl     (for example, api_gen, l2test).  It starts off with just
+dnl     the user manual.
+dnl require_$x where x is in $directions are the objects used to read model
+dnl     files (require_from_*), optimize or otherwise translate them
+dnl     (require_xlate_*), and write them to file or the tracker (require_to_*)
+dnl     Unless otherwise set to 'yes', they default to 'no'.
+dnl     Until SAFE_TO_READ_DIRECTIONS is set to yes, these are write-only.
+
+FEATURE_DIRS="src/mba_utils src/livingstone"
+NOLIB_FEATURE_DIRS="doc/user_man doc/developer_man"
+
+
+dnl These are all the directions.  Default to no unless already set.
+dnl The first 3 categories are special and go into L2_TRANSLATIONS
+conf_readers="from_l2 from_bin from_xmpl from_any from_memory"
+conf_xlators="L2_file_translator xlate_strip xlate_merge_eq_vars"
+conf_xlators="$conf_xlators xlate_remove_duplicates xlate_sort_props"
+conf_writers="to_l2 to_bin to_t_system"
+conf_engine="engine debuggers"
+xlate_dirs="$conf_readers $conf_xlators $conf_writers livingstone_reader"
+directions="$xlate_dirs $conf_engine"
+
+for x in $directions ; do
+    eval directions_x='$'require_$x
+    if test "x$directions_x" != "xyes" ; then
+        eval require_$x=no
+    fi
+done
+
+SAFE_TO_READ_DIRECTIONS=no
+
+
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl The executables.
+dnl These put certain requirements on which directions we will support.
+
+LIV_ARG_ENABLE(apigen,
+[  --enable-apigen	  generate makefiles for utilities],
+no)
+if test $enable_apigen = yes ; then
+    require_from_any=yes
+    require_to_t_system=yes
+    require_engine=yes
+    require_debuggers=yes
+    NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/liv_utils/api_scr"
+    NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/liv_utils/api_gen"
+fi
+
+
+dnl Give the options.
+LIV_ARG_ENABLE(l2test,
+[  --disable-l2test        don't build the l2test executable (reads xmpl)],
+yes)
+if test $enable_l2test = yes ; then
+    require_livingstone_reader=yes
+    require_engine=yes
+    require_debuggers=yes
+    NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/readers/l2test"
+fi
+
+LIV_ARG_ENABLE(l2flight,
+[  --enable-l2flight       build a flight-like executable],
+no)
+if test $enable_l2flight = yes ; then
+    require_livingstone_reader=yes
+    require_engine=yes
+    NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/readers/l2flight"
+fi
+
+dnl Flight code gets the model from memory, not the file system
+dnl There is no application yet (like l2flight)
+dnl For some as-yet-undetermined reason, it requires debuggers
+
+LIV_ARG_ENABLE(model-files,
+[  --disable-model-files  disallow reading models from the file system],
+yes)
+if test x$enable_model_files != xyes ; then
+    dnl Disabling model files; must read model from memory
+    require_debuggers=yes
+    require_engine=yes
+    require_from_memory=yes
+    require_livingstone_reader=yes
+    dnl Model-file code is compiled if this macro is not defined
+    AC_DEFINE(DISABLE_MODEL_FILES)
+fi
+
+LIV_ARG_ENABLE(names2ids,
+[  --enable-names2ids      build a flight-like executable],
+no)
+if test $enable_names2ids = yes ; then
+    require_debuggers=yes
+    require_engine=yes
+    NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/readers/names2ids"
+fi
+
+LIV_ARG_ENABLE(xmpl2l2,
+[  --enable-xmpl2l2        build the xmpl2l2 executable],
+no)
+if test $enable_xmpl2l2 = yes ; then
+    require_livingstone_reader=yes
+    require_to_l2=yes
+    require_to_bin=yes
+    NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/readers/xmpl2l2"
+fi
+
+
+LIV_ARG_ENABLE(jni,
+[  --disable-jni           don't include the Java Native Interface stub],
+yes)
+if test $enable_jni = yes ; then
+    dnl Java requires a dynamic object.  While Java won't be able to
+    dnl load this library, it'll compile and link anyway.
+    if test $enable_shared = no ; then
+        AC_MSG_WARN(--enable-jni is useless with --disable-shared)
+        sleep 5
+    fi
+
+    require_from_xmpl=yes
+    require_to_t_system=yes
+    require_engine=yes
+    require_debuggers=yes
+
+    dnl This adds to the library, unlike the others above
+    FEATURE_DIRS="${FEATURE_DIRS} src/${L2LIB}"
+fi
+
+
+LIV_ARG_ENABLE(summarize-conflicts,
+[  --disable-summarize-conflicts  don't try to summarize truncated conflicts],
+yes)
+if test x$enable_summarize_conflicts = xyes ; then
+    AC_DEFINE(ENABLE_SUMMARIZE_CONFLICTS)
+fi
+
+
+LIV_ARG_ENABLE(optimizer,
+[  --disable-optimizer     disable the -O command-line switch],
+yes)
+if test $enable_optimizer = no ; then
+    AC_DEFINE(DISABLE_OPTIMIZER)
+fi
+
+dnl ******************************
+dnl Interpret macros for lots of other requires.
+
+dnl class Livingstone_debug requires class Livingstone
+if test $require_debuggers = yes ; then
+    require_engine=yes
+fi
+
+dnl class Livingstone requires class Livingstone_reader
+if test $require_engine = yes ; then
+    require_livingstone_reader=yes
+fi
+
+if test $require_livingstone_reader = yes ; then
+    require_from_any=yes
+    require_to_t_system=yes
+
+    dnl Then, a bunch of translations, unless disabled.
+    if test $enable_optimizer = yes ; then
+        require_xlate_merge_eq_vars=yes
+        require_xlate_remove_duplicates=yes
+        require_xlate_strip=yes
+        require_xlate_sort_props=yes
+    fi
+fi
+
+
+dnl Now we've set them all, so it's safe to be reading them.
+SAFE_TO_READ_DIRECTIONS=yes
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl File formats.
+dnl If the formats are explicitely disabled, directions relating to them
+dnl are illegal.
+dnl If not, they are legal.  Stronger, the from_any direction enables
+dnl all formats not explicitely disabled.
+LIV_ARG_ENABLE(xmpl-format,
+[  --disable-xmpl-format   disallow anything from reading xmpl],
+yes)
+if test $enable_xmpl_format = yes ; then
+    if test $require_from_any = yes ; then
+        require_from_xmpl=yes
+        AC_DEFINE(ENABLE_XMPL_FORMAT)
+    fi
+else
+    if test $require_from_xmpl = yes ; then
+        AC_MSG_ERROR(--disable-xmpl-format incompatible with --enable-jni)
+    fi
+fi
+
+LIV_ARG_ENABLE(l2-format,
+[  --disable-l2-format     disallow anything from reading or writing l2],
+yes)
+if test $enable_l2_format = yes ; then
+    if test $require_from_any = yes ; then
+        require_from_l2=yes
+        AC_DEFINE(ENABLE_L2_FORMAT)
+    fi
+else
+    dnl Check we don't read L2
+    if test $require_from_l2 = yes ; then
+        AC_MSG_ERROR(--disable-l2-format and reading it are incompatible)
+    fi
+
+    dnl Check we don't write L2
+    if test $require_to_l2 = yes ; then
+        test "x$enable_xmpl2l2" = "xyes" && whoset=xmpl2l2
+        if test ${whoset-unset} = unset ; then
+            AC_MSG_ERROR(--disable-l2-format and writing L2 are incompatible)
+        else
+            AC_MSG_ERROR(--disable-l2-format and --enable-$whoset are incompatible)
+        fi
+    fi
+fi
+
+LIV_ARG_ENABLE(l2bin-format,
+[  --disable-l2bin-format  disallow anything from reading or writing binary l2],
+yes)
+if test $enable_l2bin_format = yes ; then
+    if test $require_from_any = yes ; then
+        require_from_bin=yes
+        AC_DEFINE(ENABLE_L2BIN_FORMAT)
+    fi
+else
+    dnl Check we don't read L2
+    if test $require_from_bin = yes ; then
+        AC_MSG_ERROR(--disable-l2bin-format and reading it are incompatible)
+    fi
+
+    dnl Check we don't write L2
+    if test $require_to_bin = yes ; then
+        AC_MSG_ERROR(--disable-l2bin-format and writing it are incompatible)
+    fi
+fi
+
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl Interpret what to do with all the enabled directions.
+
+dnl No matter what, we'll have some directions installed.
+dnl After all, we can't do anything if we can't read.
+FEATURE_DIRS="${FEATURE_DIRS} src/readers"
+
+
+dnl If any translator is enabled, we need L2_file_translator
+for x in $conf_xlators ; do
+    if eval test $`echo require_$x` = yes ; then
+        require_L2_file_translator=yes
+    fi
+done
+
+dnl from_bin uses from_memory
+
+if test $require_from_bin = yes ; then
+    require_from_memory=yes
+fi
+
+dnl Add the directions we need.
+AC_SUBST(L2_TRANSLATIONS)
+for x in $xlate_dirs ; do
+    if eval test $`echo require_$x` = yes ; then
+        L2_TRANSLATIONS="${L2_TRANSLATIONS} $x"
+    fi
+done
+LIV_STRIPWS(L2_TRANSLATIONS)
+
+dnl Done interpreting the directions.  Now they're read-only.
+
+
+
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl Additional features:
+
+
+dnl ******************************
+dnl verbosity
+LIV_ARG_ENABLE(verbose,
+[  --disable-verbose       don't allow verbose printout],
+yes)
+if test $enable_verbose = yes ; then
+    AC_DEFINE(ENABLE_L2_VERBOSE)
+fi
+
+
+
+dnl ******************************
+dnl Whether debugging sections can
+dnl be read by from_l2.
+LIV_ARG_ENABLE(debug-sections,
+[  --disable-debug-sections    don't allow debug sections in l2 files],
+yes)
+if test $enable_debug_sections = yes ; then
+    AC_DEFINE(ENABLE_L2_DEBUG_SECTIONS)
+else
+    dnl check for illegal combinations:
+    dnl         xmpl requires debug sections
+    dnl         strip can deal without, but is useless
+    if test $require_from_xmpl = yes ; then
+        dnl who set from_xmpl ?
+        test $enable_xmpl2l2 = yes && whoset=xmpl2l2
+        test $enable_l2test  = yes && whoset=l2test
+        if test ${whoset-unset} = unset ; then
+            AC_MSG_ERROR(--disable-debug-sections and XMPL are incompatible)
+        else
+            AC_MSG_ERROR(--disable-debug-sections and --enable-$whoset are incompatible)
+        fi
+    fi
+
+    dnl Check for xlate_strip ? Seems more bother than it's worth.
+fi
+
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl Engine-only features
+
+if test $require_engine = yes ; then
+    dnl If we need the engine, we need these directories.
+    FEATURE_DIRS="${FEATURE_DIRS} src/tms"
+    FEATURE_DIRS="${FEATURE_DIRS} src/conflict_db"
+    FEATURE_DIRS="${FEATURE_DIRS} src/transition"
+    FEATURE_DIRS="${FEATURE_DIRS} src/api"
+
+    dnl ******************************
+    dnl Whether we need to include the debuggers.
+    if test $require_debuggers = yes ; then
+        FEATURE_DIRS="${FEATURE_DIRS} src/debuggers"
+    fi
+
+
+
+    dnl ******************************
+    dnl Which search methods to allow.
+    LIV_ARG_ENABLE(cover,
+    [  --disable-cover         disable the cover search algorithm],
+    yes)
+    LIV_ARG_ENABLE(cbfs,
+    [  --disable-cbfs          disable the cbfs search algorithm],
+    yes)
+
+    if test $enable_cover = no && test $enable_cbfs = no ; then
+        AC_MSG_ERROR(can't disable both cover and cbfs)
+    fi
+
+    if test $enable_cover = "yes" ; then
+        FEATURE_DIRS="${FEATURE_DIRS} src/cover"
+    else
+        AC_DEFINE(DISABLE_COVER)
+    fi
+
+    if test $enable_cbfs = "yes" ; then
+        FEATURE_DIRS="${FEATURE_DIRS} src/opsat"
+    else
+        AC_DEFINE(DISABLE_CBFS)
+    fi
+
+
+    dnl ******************************
+    dnl Whether or not to compile the system for recovery rather
+    dnl than diagnosis.  This is temporary, as we will eventually
+    dnl have to allow both diagnosis & recovery in the same image.
+    LIV_ARG_ENABLE(recovery,
+	[  --enable-recovery       build l2 executable for recovery instead of diagnosis],
+	no)
+    if test $enable_recovery = "yes" ; then
+        if test $enable_l2test = no ; then
+           AC_MSG_ERROR(l2test is required for recovery)
+        fi
+        AC_DEFINE(ENABLE_RECOVERY)
+    fi
+
+
+    dnl ******************************
+    dnl Which progress methods to allow.
+    LIV_ARG_ENABLE(min-progress,
+    [  --disable-min-progress  disable the min-progress functionality],
+    yes)
+    LIV_ARG_ENABLE(full-progress,
+    [  --disable-full-progress disable the full-progress functionality],
+    yes)
+
+    if test $enable_min_progress = no && test $enable_full_progress = no ; then
+        AC_MSG_ERROR(can't disable both min-progress and full-progress)
+    fi
+    if test $enable_min_progress = "no" ; then
+        AC_DEFINE(DISABLE_MIN_PROGRESS)
+    fi
+    if test $enable_full_progress = "no" ; then
+        AC_DEFINE(DISABLE_FULL_PROGRESS)
+    fi
+
+    dnl ******************************
+    dnl Checkpointing.
+    LIV_ARG_ENABLE(checkpoint,
+    [  --disable-checkpoint    disable the checkpoint functionality],
+    yes)
+    if test $enable_checkpoint = yes ; then
+        FEATURE_DIRS="${FEATURE_DIRS} src/checkpoint"
+        AC_DEFINE(ENABLE_CHECKPOINT)
+    fi
+
+    dnl ******************************
+    dnl Serializing a checkpoint to an XML file
+    LIV_ARG_ENABLE(checkpoint-serialize,
+    [  --enable-checkpoint-serialize  allow writing checkpoints as XML files],
+    no)
+    if test $enable_checkpoint_serialize = yes ; then
+        if test $enable_checkpoint = yes ; then
+            require_checkpoint_serialize=yes
+            AC_DEFINE(ENABLE_CHECKPOINT_SERIALIZE)
+        else
+            AC_MSG_ERROR(--enable-checkpoint-serialize incompatible with --disable-checkpoint)
+        fi
+    fi
+
+    dnl ******************************
+    dnl The RTI requires a pthread library,
+    dnl and adding the src/realtime_api directory.
+
+    dnl TODO: currently, this is incompatible with disable-shared; it shouldn't
+    dnl be too hard to fix that.  The easiest fix would be to make it a static
+    dnl object as well; currently it fails because it links without -shared,
+    dnl and thus gcc thinks it's an executable missing some symbols.
+
+    LIV_ARG_ENABLE(rti,
+    [  --enable-rti            enable the real-time interface],
+    no)
+
+    if test $enable_rti = yes ; then
+        dnl TODO: remove this requirement
+        if test $enable_shared = no ; then
+            AC_MSG_ERROR(--enable-rti is incompatible with --disable-shared)
+        fi
+
+        dnl We need both directories.
+        NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/realtime_api"
+        NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/realtime_api/posix"
+
+        dnl Also create a directory for tests.
+        NOLIB_FEATURE_DIRS="${NOLIB_FEATURE_DIRS} src/test"
+    fi
+
+fi      # done with engine-only features
+
+
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl More global features.
+
+
+
+dnl ******************************
+dnl Error handling.
+dnl We can disable exceptions, and if we do, we can also disable the large
+dnl amount of code needed to print the exception (about 30% of the entire
+dnl code size), and instead print a small amount of information.
+LIV_ARG_ENABLE(exceptions,
+[  --disable-exceptions    print and exit rather than throw exceptions],
+yes)
+if test $enable_exceptions = yes ; then
+    AC_DEFINE(ENABLE_EXCEPTIONS)
+else
+    dnl Exceptions require RTTI. Without exceptions, there is no need for RTTI.
+    CXXFLAGS="${CXXFLAGS} -fno-rtti"
+    echo "    compile with -fno-rtti"
+    LIV_ARG_ENABLE(print-error,
+    [  --disable-print-error   save code: print a much shorter error message],
+    yes)
+
+    if test $enable_print_error = yes ; then
+        AC_DEFINE(ENABLE_PRINT_ERROR)
+    fi
+fi
+
+
+dnl ******************************
+dnl Warning options.  Only works with gcc.
+dnl --without-warnings	add -w flag
+dnl --without-Wall	turn off -Wall flag (all warnings)
+dnl --with-Werror	add -Werror flag (warnings as errors)
+dnl without-warnings trumps the other two.
+LIV_ARG_WITH(Wall,
+[  --without-Wall          don't warn about absolutely everything ],
+yes)
+LIV_ARG_WITH(Werror,
+[  --with-Werror           treat warnings as errors],
+no)
+LIV_ARG_WITH(warnings,
+[  --without-warnings      turn off all warnings],
+yes)
+if test "x$GXX" = "xyes" ; then
+    test $with_Wall = "yes" && CXXFLAGS="$CXXFLAGS -Wall -Wno-non-virtual-dtor"
+    dnl must be after -Wall
+    CXXFLAGS="$CXXFLAGS -Wno-non-template-friend"
+    test $with_Werror   = "yes" && CXXFLAGS="$CXXFLAGS -Werror"
+    test $with_warnings = "no"  && CXXFLAGS="$CXXFLAGS -w"
+fi
+if test "x$SUNCXX" = "xyes" ; then
+    test $with_warnings = "no"  && CXXFLAGS="$CXXFLAGS -w"
+fi
+if test "x$GCC" = "xyes" ; then
+    test $with_Wall     = "yes" && CFLAGS="$CFLAGS -Wall"
+    test $with_Werror   = "yes" && CFLAGS="$CFLAGS -Werror"
+    test $with_warnings = "no"  && CFLAGS="$CFLAGS -w"
+fi
+
+
+dnl ******************************
+dnl Profiler options.
+dnl Currently doesn't work with shared objects; must link statically.
+dnl If we find a way to do it, we might add a --with-profile-allow-shared
+dnl option to force allowing the combination.
+LIV_ARG_WITH(profile,
+[  --with-profile[=-pg]    compile with a switch to get profiler information],
+no)
+
+if test "$with_profile" != "no" && test "$enable_shared" = "yes" ; then
+    AC_MSG_ERROR(--with-profile is incompatible with --enable-shared)
+fi
+case "$with_profile" in
+    no) ;;
+    yes)
+        CFLAGS="$CFLAGS -pg"
+        CXXFLAGS="$CXXFLAGS -pg"
+        ;;
+    *)
+        CFLAGS="$CFLAGS $with_profile"
+        CXXFLAGS="$CXXFLAGS $with_profile"
+        ;;
+esac
+
+
+dnl ******************************
+dnl Using purify.
+LIV_ARG_WITH(purify,
+[  --with-purify           compile with purify],
+no)
+
+AC_SUBST(PURIFY)
+if test $with_purify != "no" ; then
+    if test "x$GXX" = "xyes" && test `basename $CXX` != "g++" ; then
+        AC_MSG_WARN(purify requires the name 'g++' for a GCC compiler;)
+        AC_MSG_ERROR(try setting CXX)
+    fi
+    if test $require_from_xmpl = yes ; then
+        LIV_ARG_WITH(purify-despite-threads,
+[  --with-purify-despite-threads   ignore the warning about purify and threads]
+        ,no)
+        AC_MSG_WARN(purify doesn't seem to handle threads very well)
+        if test $with_purify_despite_threads != yes ; then
+            AC_MSG_WARN(use --with-purify-despite-threads to try anyway, or)
+            AC_MSG_ERROR(use --disable-xmpl-format to sidestep the problem)
+        fi
+    fi
+
+    dnl Disable array_allocator's fancy mechanisms, since purify only groks
+    dnl malloc/free.
+    AC_DEFINE(DISABLE_L2_ALLOCATORS)
+
+    dnl Use purify by default; or X if --with-purify=X
+    if test $with_purify = yes ; then
+        with_purify=purify
+    fi
+    PURIFY="$with_purify"
+fi
+
+
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl Memory-related features.
+
+dnl Whether to output counts of the number of elements allocated.
+LIV_ARG_ENABLE(count-allocated,
+[  --enable-count-allocated    report the max number of allocated items at any time],
+no)
+if test $enable_count_allocated = yes ; then
+    AC_DEFINE(ENABLE_COUNT_MAX_POOL_SIZE)
+fi
+
+dnl ******************************
+dnl Whether to allow dynamically allocating items if we run out
+dnl of room in our static buffers.
+LIV_ARG_ENABLE(dynamic-memory,
+[  --disable-dynamic-memory    don't allocate more memory if we run out],
+yes)
+if test $enable_dynamic_memory = no ; then
+    AC_DEFINE(DISABLE_DYNAMIC_MEMORY)
+fi
+
+
+dnl ******************************
+dnl Whether to enable some inexpensive tests.
+LIV_ARG_ENABLE(cheap-memory-tests,
+[  --disable-cheap-memory-tests    disable even the cheapest memory tests],
+yes)
+if test $enable_cheap_memory_tests = yes ; then
+    AC_DEFINE(ENABLE_MEMORY_CHECKS_1)
+fi
+
+LIV_ARG_ENABLE(prohibitive-memory-tests,
+[  --enable-prohibitive-memory-tests   enable some very slow memory tests],
+no)
+if test $enable_prohibitive_memory_tests = yes ; then
+    AC_DEFINE(ENABLE_MEMORY_CHECKS_2)
+    AC_DEFINE(ENABLE_MEMORY_CHECKS_3)
+fi
+
+
+dnl **********************************************************************
+dnl **********************************************************************
+dnl Set the flags for Xerces support, or for not having it.
+dnl These are empty unless set in the 'then' clause.
+AC_SUBST(lXERCES)
+AC_SUBST(loc_libXERCES)
+AC_SUBST(libXERCES)
+
+if test $require_from_xmpl = yes || $require_checkpoint_serialize = yes ; then
+    dnl ******************************
+    dnl Where xerces is.  By default, ../../support/xerces-unix-src ;
+    dnl but it can be elsewhere too.  By default, the library is xerces-c1_2
+    dnl (so use libxerces-c1_2.so and -lxerces-c1_2)
+    AC_SUBST(XERCESCROOT)
+    LIV_ARG_WITH(xerces,
+    [  --with-xerces=[PATH]    specify path to xerces],
+    ../../support/xerces-unix-src)
+    if test -d "$with_xerces" ; then
+	XERCESCROOT=`cd "$with_xerces" && pwd`
+    else
+	AC_MSG_ERROR(xerces directory '$with_xerces' doesn't exist)
+    fi
+
+    LIV_ARG_WITH(xerces-lib,
+    [  --with-xerces-lib=[name]  specify library name (default xerces-c1_2)],
+    xerces-c1_2)
+    XERCES="$with_xerces_lib"
+    lXERCES="-l$XERCES"
+    loc_libXERCES="\$(loc_libdir)/lib${XERCES}.so"
+    libXERCES="\$(libdir)/lib${XERCES}.so"
+
+    dnl **********************************************************************
+    dnl Remember to configure the xml directory.  We can't use the
+    dnl AC_CONFIG_SUBDIRS because the xml stuff is not autoconf, unlike
+    dnl what they would have you believe.
+
+    dnl Required for our makefiles
+    AC_SUBST(XERCESENV)
+    XERCESENV="XERCESCROOT=${XERCESCROOT}"
+
+    # Xerces assumes g++ is GNU, and otherwise isn't.  I hates it.
+    # The fix, if we're using GNU but not g++:
+    #  (1) find the full path to $CXX
+    #  (2) link ./g++ to $CXX ; actually, make it a script that sets
+    #      the run-path (since we know g++ needs this; it's in LDFLAGS).
+    #  (3) add the current directory to the path when running xerces
+    #  (4) use g++ for xerces
+    if test "x$GXX" = xyes && test "x$CXX" != xg++ ; then
+	rm -f g++
+	echo "#! /bin/sh" >> g++
+	echo "$CXX_FULL_PATH" `eval "echo $LDFLAGS"` '"$@"' >> g++
+	chmod a+x g++
+	XERCESCXX=g++
+	XERCESENV="PATH=`pwd`:\${PATH} $XERCESENV"
+	xerces_hack_path=yes
+    fi
+
+    # Similarly for gcc
+    if test "x$GCC" = xyes && test "x$GCC" != xgcc ; then
+	rm -f gcc
+	$LN_S $CC_FULL_PATH gcc
+	XERCESCC=gcc
+	if test "x$xerces_hack_path" != xyes ; then
+	    XERCESENV="PATH=`pwd`:\${PATH} $XERCESENV"
+	    xerces_hack_path=yes
+	fi
+    fi
+
+    case $host in
+	*solaris*)
+	    XERCES_PLATFORM="solaris";;
+	*linux*)
+	    XERCES_PLATFORM="linux";;
+	*irix*)
+	    XERCES_PLATFORM="irix"
+	    AC_DEFINE(IRIX);;
+	*)
+	    echo "Unknown system type $host."
+	    if test -f ${XERCESCROOT}/config.cache ; then
+		echo "config.cache found; trusting xerces has been configured."
+	    else
+		echo "Configure XML manually and try again."
+		exit 1
+	    fi
+    esac
+
+    dnl Configure XML unless we don't know how to do it automatically.
+    dnl Also don't recur if we got a --no-recursion (which sets
+    dnl no_recursion=yes)
+    if test "x$no_recursion" != xyes && test "x$XERCES_PLATFORM" != x ; then
+	HERE=`pwd`
+	OLDCXX=$CXX
+	OLDCC=$CC
+
+	cd ${XERCESCROOT}/src
+	# if we're hacking with CXX to make it become g++, do this
+	if test ${XERCESCXX-unset} != unset ; then
+	    CXX=$XERCESCXX
+	fi
+	if test ${XERCESCC-unset} != unset ; then
+	    CC=$XERCESCC
+	fi
+
+	# these, remarkably, are not the default in the distribution!
+	chmod a+x config.guess config.sub configure install-sh runConfigure
+
+	# specify the C and C++ compilers and the platform.  Never mind about
+	# prefix as we don't let Xerces install itself, just compile.
+	eval $XERCESENV ./runConfigure -x${CXX} -c${CC} -p${XERCES_PLATFORM}
+	cd ${HERE}
+	CXX=$OLDCXX
+	CC=$OLDCC
+    fi
+fi
+
+
+dnl **********************************************************************
+dnl All hacking with substitutions is done; strip leading, trailing, and
+dnl multiple spaces.
+dnl Do NOT strip CXXRFLAG! It may _require_ a trailing whitespace
+LIV_STRIPWS(CFLAGS CXXFLAGS CPPFLAGS LDFLAGS LIBS)
+
+dnl SRCDIRS is the list of directories we dump into the library;
+dnl SRCDIR_OBJECTS is the same, with 'objects' appended to each dirname,
+dnl     which makes the makefile simpler to write
+dnl SUBDIRS is the list of directories we recur into but don't include
+dnl     in livdll
+AC_SUBST(SRCDIRS)
+AC_SUBST(SRCDIR_OBJECTS)
+AC_SUBST(SUBDIRS)
+SRCDIRS=
+SRCDIR_OBJECTS=
+SUBDIRS=
+for x in ${FEATURE_DIRS} ; do
+    SRCDIRS="${SRCDIRS} $x"
+    SRCDIR_OBJECTS="${SRCDIR_OBJECTS} $x/objects"
+done
+for x in ${NOLIB_FEATURE_DIRS} ; do
+    SUBDIRS="${SUBDIRS} $x"
+done
+LIV_STRIPWS(SRCDIRS SUBDIRS SRCDIR_OBJECTS)
+
+dnl **********************************************************************
+dnl Set the list of makefiles that we create
+
+dnl If we need XML support, use the xerces makefile; else
+dnl use the no-xerces one.
+if test $require_from_xmpl = yes ; then
+    OUTPUT_ARG="Makefile:top.mk:xerces.mk:Makefile.in"
+else
+    OUTPUT_ARG="Makefile:top.mk:noxerces.mk:Makefile.in"
+fi
+
+for x in $FEATURE_DIRS $NOLIB_FEATURE_DIRS ; do
+    OUTPUT_ARG="${OUTPUT_ARG} ${x}/Makefile:top.mk:${x}/Makefile.in:bot.mk"
+done
+
+dnl **********************************************************************
+dnl Finally, output the makefiles.
+AC_OUTPUT(${OUTPUT_ARG},
+    # this test allows running config.status from another directory
+    if test ${CONFIG_HEADERS} ; then
+        echo timestamp > stamp-h.in
+    fi
+)

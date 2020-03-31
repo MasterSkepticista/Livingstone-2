@@ -1,0 +1,9 @@
+scenario pv03StuckClosed mainPropulsionSystem
+assign test.pv03.openMicroSwitch=notOpen
+assign test.pv03.closedMicroSwitch=closed
+assign test.mpre107p.pressureReading.rg02.upperBound=belowThreshold
+assign test.mpre107p.pressureReading.rg02.lowerBound=belowThreshold
+assign test.mpre107p.pressureReading.rg21.upperBound=belowThreshold
+assign test.mpre107p.pressureReading.rg21.lowerBound=aboveThreshold
+progress test.sv33.valveCmdIn=open
+fc

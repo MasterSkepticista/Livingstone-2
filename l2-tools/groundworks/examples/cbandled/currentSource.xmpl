@@ -1,0 +1,22 @@
+<xmpl>
+    <componentinstance type="currentSource" name="test">
+        <ci:attributetype name="currentSource.ModeType" members="nominal"/>
+        <ci:attributetype name="onOffState" members="on off"/>
+        <ci:component type="currentSource" name="test">
+            <ci:statevector vars="mode"/>
+            <ci:attribute type="onOffState" name="currentOut"/>
+            <ci:attribute type="currentSource.ModeType" name="mode"/>
+            <ci:clause>
+                <ci:term>!mode=nominal</ci:term>
+                <ci:term>currentOut=on</ci:term>
+            </ci:clause>
+            <ci:transition to="nominal" from="nominal">
+                <ci:clause/>
+            </ci:transition>
+        </ci:component>
+    </componentinstance>
+    <mplHarness name="test" version="1.00"/>
+    <mplInit name="test" version="1.00">
+        <assign eq="test.mode=nominal"/>
+    </mplInit>
+</xmpl>

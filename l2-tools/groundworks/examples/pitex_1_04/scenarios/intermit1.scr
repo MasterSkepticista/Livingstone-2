@@ -1,0 +1,6 @@
+scenario intermit1 pressureSensor
+assign test.ambientPressure=nominal
+fc
+assign test.reportedPressure=low
+assign test.reportedPressure=nominal
+fc

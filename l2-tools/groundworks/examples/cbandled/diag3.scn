@@ -1,0 +1,13 @@
+/// ********** DIAGNOSTIC TEST 3 **********************
+progress test.cb15.cmdIn=on
+progress test.cb14.cmdIn=on
+progress test.cb12.cmdIn=on
+progress test.cb11.cmdIn=on
+progress test.cb8.cmdIn=on
+progress test.cb7.cmdIn=on
+progress test.cb6.cmdIn=on
+assign test.led8.ledState=off
+assign test.led7.ledState=on
+assign test.led6.ledState=off
+fc
+

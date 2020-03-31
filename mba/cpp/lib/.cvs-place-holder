@@ -1,0 +1,10 @@
+Placeholder so update -P doesn't remove this directory.
+
+Used to be necessary when lib wasn't correctly automatically created.  
+
+Now necessary because CVS expects the directory to either not exist, or
+exist with a CVS subdirectory.  It finds a directory without a CVS
+subdirectory because the update removes it, then a make install creates it.
+
+Simply removing the lib directory from the repository would mean ancient
+versions of L2 won't compile.

@@ -1,0 +1,83 @@
+/*      Schematic for Circuit Breaker model    
+
+  This class creates a pyramid of circuit breakers
+  as illustrated below, with 8 LEDs (light emitting
+  diodes, basically light bulbs) at the leaves.
+
+                                           ---- 1
+                                  ----  9 <
+                                /           ---- 2
+                       ---- 13 <
+                      /         \           ---- 3
+                     /            ---- 10 <
+                    /                       ---- 4
+    source ---- 15 <
+                    \                       ---- 5
+                     \            ---- 11 <
+                      \         /           ---- 6
+                       ---- 14 <
+                                \           ---- 7
+                                  ---- 12 <
+                                            ---- 8
+*/
+
+
+class cbAndLeds {
+
+	// --- structure --- 
+	led led1;
+	led led2;
+	led led3;
+	led led4;
+	led led5;
+	led led6;
+	led led7;
+	led led8;
+
+
+	currentSource source;
+
+	cb cb1;
+	cb cb2;	
+	cb cb3;
+	cb cb4;
+	cb cb5;
+	cb cb6;
+	cb cb7;
+	cb cb8;
+	cb cb11;
+	cb cb12;
+	cb cb13;
+	cb cb14;
+	cb cb15;
+	cb cb9;
+	cb cb10;
+
+	{
+
+	cb4.currentOut = led4.currentIn; 
+	cb5.currentOut = led5.currentIn; 
+	cb11.currentOut = cb5.currentIn; 
+	cb15.currentOut = cb13.currentIn; 
+	source.currentOut = cb15.currentIn; 
+	cb14.currentOut = cb12.currentIn; 
+	cb14.currentOut = cb11.currentIn; 
+	cb15.currentOut = cb14.currentIn; 
+	cb12.currentOut = cb8.currentIn; 
+	cb12.currentOut = cb7.currentIn; 
+	cb11.currentOut = cb6.currentIn; 
+	cb1.currentOut = led1.currentIn; 
+	cb3.currentOut = led3.currentIn; 
+	cb2.currentOut = led2.currentIn; 
+	cb6.currentOut = led6.currentIn; 
+	cb7.currentOut = led7.currentIn; 
+	cb8.currentOut = led8.currentIn; 
+	cb9.currentOut = cb2.currentIn; 
+	cb9.currentOut = cb1.currentIn; 
+	cb13.currentOut = cb9.currentIn; 
+	cb10.currentOut = cb3.currentIn; 
+	cb10.currentOut = cb4.currentIn; 
+	cb13.currentOut = cb10.currentIn; 
+	}
+}
+

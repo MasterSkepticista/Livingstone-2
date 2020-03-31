@@ -1,0 +1,44 @@
+# See the file "mba/disclaimers-and-notices-L2.txt" for
+# information on usage and redistribution of this file,
+# and for a DISCLAIMER OF ALL WARRANTIES.
+
+# $Id: Makefile.in,v 1.23 2001/11/16 23:53:01 lbrown Exp $
+# Allowable targets are:
+#	l2test-rt	-- test the RTI
+#	install		-- install several files for RTI testing
+
+CLEANFILES+=l2test-rt
+
+####################
+# build a test of the RTI
+
+# We use l2test-rt.mk to compile.  This requires us to hack a bit, since that
+# makefile assumes things are installed.  Hence the -o flags to make it ignore
+# the fact that the makefile and rtapi.cpp aren't in fact installed; and
+# the setting of LDFLAGS to find the locally installed library (which the LIBS
+# prereq creates so at least we know that much).
+# These hacks, and the fact that l2test-rt.mk doesn't have rtapi.o depend on
+# the headers, mean we need to make clean.
+L2TEST_RT_C=rtapi.cpp
+L2TEST_RT_L=-llivrti -llivdll -l$(XERCES)
+L2TEST_RT_LIBS=$(L2TEST_RT_L:-l%=${loc_libdir}/lib%.so)
+L2TEST_RT_MAKE=\
+	$(MAKE) -f l2test-rt.mk -o rtapi.cpp -o l2test-rt.mk \
+	    LDFLAGS="-L$(loc_libdir)"
+l2test-rt: $(L2TEST_RT_LIBS) $(L2TEST_RT_C) l2test-rt.mk \
+    enumapi.h time_delays.h
+	$(L2TEST_RT_MAKE) clean
+	$(L2TEST_RT_MAKE) l2test-rt
+
+####################
+# dependencies: intersection of all the _L above.  We can set this to
+# anything; only the ones we need are built.
+DEPS=${loc_libdir}/liblivrti.so ${loc_libdir}/$(L2LIB_FILE) \
+     ${loc_libdir}/$(XERCES_SO)
+
+####################
+# data files to install
+DATATARGET=rtapi.cpp rti_user/userfcns.cpp rti_user/userfcns_debug.cpp l2test-rt.mk
+
+l2test-rt.mk: l2test-rt.mk.in
+	CONFIG_HEADERS= CONFIG_FILES=$@ ${top_srcdir}/config.status

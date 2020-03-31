@@ -1,0 +1,395 @@
+$Id: flight_files,v 1.1 2001/07/16 23:28:37 bhudson Exp $
+This file describes which files are flight code and which aren't.
+It should be updated as needed when new files are added.
+It describes a mix of current state and what-should-be state.
+It also describes what configure options to give for flight code.
+Probably this should be moved to somewhere in doc/
+
+How to hack this
+----------------
+
+Configure is a Unix beast; typically you'll be compiling L2 on a non-Unix
+host like VxWorks etc.  The answer is to:
+        (1)  Run configure with the options given below on a Unix host.
+             This creates include/livingstone/gnu_conf.h
+        (2)  Run 'make objects'
+             This creates the 'objects' file which is a list of .o files to
+             link together.
+        (3)  Run:
+            sed -e 's%src/livingstone/version.o%src/livingstone/version.c%' \
+                -e 's%\([^/]\)\.o%\1.cpp%g' objects > files_to_compile
+             This creates a 'files_to_compile' file which is a list of
+             source files.  The script is complicated by the fact that
+             version.c is C, not C++.  That should probably be fixed.
+        (4)  Inspect include/livingstone/gnu_conf.h ; the first few
+             defines (before any called DISABLE_X or ENABLE_X) depend on
+             the target platform rather than the configure options.
+             Since the real target is your non-Unix host, you may need
+             to adjust these values.  See the comments therein.
+        (5)  Create a project in your target build environment (like
+             Tornado under VxWorks).  Tell it to compile the list of files
+             in 'files_to_compile' ; and tell it to define the preprocessor
+             macro 'HAVE_CONFIG_H'.
+
+
+Configure options
+-----------------
+
+--enable-l2flight
+        There should actually be an option enable-engine, which does
+        everything l2flight does except the NOLIB.  Regardless, the NOLIB
+        doesn't add any files to 'objects'.
+
+--disable-l2test
+--disable-jni
+--disable-optimizer
+--disable-xmpl-format
+--disable-l2-format
+--disable-verbose
+--disable-debug-sections
+--disable-cover
+        These are certain, for every flight mission.
+
+--disable-full-progress
+        Or disable-min-progress.
+
+--disable-checkpoint
+        Unless you want checkpoints.
+
+--disable-exceptions
+--disable-print-error
+        Error handling is still a mess.  These make it possible, if you
+        remove L2_error.o from the list of objects, to define your own
+        error function with the prototype:
+                extern "C" void L2_error_function(const char *xcp_name,
+                        const char *filename,
+                        unsigned linenum)
+
+--disable-dynamic-memory
+        Probably want this, since malloc is slightly unsafe (you might
+        allocate all the memory in the system).
+        Certainly it's a requirement on X-37.
+
+--disable-cheap-memory-tests
+        Debatable.  The tests are cheap, but the cost is of course
+        non-zero.
+
+
+
+Files
+-----
+
+./doc/...
+        All non-flight.  This is just the documentation.
+
+./include/api/livingstone.h
+./include/api/parameters.h
+./src/api/livingstone.cpp
+./src/api/parameters.cpp
+        This should be made flyable.
+        There should be an option to _not_ load params from file.
+        Also, there should be an option to disable load_file() and
+        instead use load_from_memory() -- see livingstone_reader.
+
+./include/checkpoint/checkpoint.h
+./src/checkpoint/checkpoint.cpp
+        Flight, disablable.
+
+./include/conflict_db/assignable.h
+./include/conflict_db/assignment.h
+./include/conflict_db/assumption.h
+./include/conflict_db/candidate.h
+./include/conflict_db/conflict.h
+./include/conflict_db/conflict_db.h
+./include/conflict_db/dependent.h
+./include/conflict_db/variable.h
+./src/conflict_db/assignable.cpp
+./src/conflict_db/assignment.cpp
+./src/conflict_db/assumption.cpp
+./src/conflict_db/candidate.cpp
+./src/conflict_db/conflict.cpp
+./src/conflict_db/conflict_db.cpp
+./src/conflict_db/dependent.cpp
+./src/conflict_db/variable.cpp
+        Flight, required.
+
+./include/conflict_db/conflict_db_listener.h
+        Flight, should be disablable.
+
+./include/cover/cover.h
+./include/cover/cover_tracker.h
+./src/cover/cover.cpp
+./src/cover/cover_tracker.cpp
+        Non-flight.
+
+./include/cover/cover_tracker_debug.h
+./src/cover/cover_tracker_debug.cpp
+        Non-flight.  Move to debuggers directory.
+
+./include/debuggers/L2_string_map.h
+./include/debuggers/L2_string_map_listener.h
+./include/debuggers/T_system_debug.h
+./include/debuggers/conflict_db_debug.h
+./include/debuggers/domain.h
+./include/debuggers/livingstone_debug.h
+./include/debuggers/ltms_debug.h
+./include/debuggers/tracker_debug.h
+./include/debuggers/trajectory.h
+./src/debuggers/L2_string_map.cpp
+./src/debuggers/L2_string_map_listener.cpp
+./src/debuggers/T_system_debug.cpp
+./src/debuggers/conflict_db_debug.cpp
+./src/debuggers/domain.cpp
+./src/debuggers/livingstone_debug.cpp
+./src/debuggers/ltms_debug.cpp
+./src/debuggers/tracker_debug.cpp
+./src/debuggers/trajectory.cpp
+        Non-flight.
+
+./include/jdk1.3/linux/jawt_md.h
+./include/jdk1.3/linux/jni_md.h
+./include/jdk1.3/jawt.h
+./include/jdk1.3/jni.h
+./include/jdk1.3/jvmdi.h
+./include/jdk1.3/jvmpi.h
+./include/jdk1.3/solaris/jawt_md.h
+./include/jdk1.3/solaris/jni_md.h
+./include/jdk1.3/win32/jawt_md.h
+./include/jdk1.3/win32/jni_md.h
+        Non-flight.  This is just the header files to be able to use JNI.
+
+./src/liv_utils/api_gen/api_gen.cpp
+./src/liv_utils/api_scr/api_scr.cpp
+        Non-flight.
+
+./src/dlltest/dlltest-mof.cpp
+        Non-flight.  What is this?
+
+./include/livdll/StdAfx.h
+./include/livdll/livdll.h
+./src/livdll/LivingstoneEngine.h
+./src/livdll/StdAfx.cpp
+./src/livdll/livdll.cpp
+        Non-flight.  This is the JNI stuff.
+
+./include/livingstone/gnu_conf.h
+./include/livingstone/l2conf.h
+        gnu_conf should be modified appropriately (use configure as above).
+        Make sure to compile with HAVE_CONFIG_H
+
+./include/livingstone/def_conf.h
+        Non-flight.
+
+./include/livingstone/L2_assert.h
+./src/livingstone/L2_assert.cpp
+        Should be made to work for flight.  Currently, L2_assert.cpp
+        defines a non-flight method for error handling; we should do
+        better.
+
+./include/livingstone/version.h
+./src/livingstone/version.c
+        Flight.   We could remove it easily enough if needed, but I'd
+        rather guarantee that we have a version number.
+
+./include/mba_utils/MBA_string.h
+./src/mba_utils/MBA_string.cpp
+./src/mba_utils/stringops.cpp
+./include/mba_utils/array_dict.h
+./include/mba_utils/hash_table.h
+./src/mba_utils/hash_table.cpp
+./include/mba_utils/prime.h
+./include/mba_utils/stringops.h
+        Non-flight.  hash_table can be made flyable easily enough, it just
+        isn't needed right now.
+        Note that all of these are currently included by the configure
+        options listed above.
+
+./include/mba_utils/algos.h
+./include/mba_utils/array.h
+./include/mba_utils/pair.h
+./include/mba_utils/slist.h
+./include/mba_utils/slist_item.h
+./include/mba_utils/slist_iterator.h
+        Flight.
+
+./include/mba_utils/utils.h
+        Some of this is scary!
+        Should likely be made flyable.  Possibly should move most of it
+        to l2conf.h
+
+./include/mba_utils/array_allocator.h
+./src/mba_utils/array_allocator.cpp
+./include/mba_utils/pooled.h
+        Flight.  This is the memory allocation stuff and needs special
+        attention.
+
+./include/mba_utils/list_parser.h
+./src/mba_utils/list_parser.cpp
+        Non-flight.  What is this?
+
+./include/opsat/agenda_types.h
+./include/opsat/binaryheap.h
+./include/opsat/cbfs_agenda.h
+./include/opsat/cbfs_tracker.h
+./include/opsat/opsat.h
+./src/opsat/agenda_types.cpp
+./src/opsat/cbfs_tracker.cpp
+./src/opsat/opsat.cpp
+        Flight.
+
+./include/opsat/cbfs_tracker_debug.h
+./src/opsat/cbfs_tracker_debug.cpp
+        Non-flight; should be moved to debuggers.
+
+./include/readers/L2_file.h
+./src/readers/L2_file.cpp
+./include/readers/clause.h
+./include/readers/common.h
+./include/readers/enumeration.h
+./include/readers/L2_file_reader.h
+./include/readers/L2_file_writer.h
+./include/readers/modes.h
+./include/readers/proposition.h
+./include/readers/to_t_system.h
+./include/readers/transition.h
+./include/readers/variable.h
+./include/readers/varkind.h
+./src/readers/clause.cpp
+./src/readers/enumeration.cpp
+./src/readers/modes.cpp
+./src/readers/proposition.cpp
+./src/readers/to_t_system.cpp
+./src/readers/transition.cpp
+./src/readers/variable.cpp
+        Flight, as long as DISABLE_L2_VERBOSE and
+        DISABLE_L2_DEBUG_SECTIONS (as per the configure options above).
+        Required.
+
+./include/readers/to_t_system_listener.h
+        Flight, should be disablable.
+
+./include/readers/livingstone_reader.h
+./src/readers/livingstone_reader.cpp
+        This should be made flyable.  See livingstone.
+
+./include/readers/from_any.h
+./src/readers/from_any.cpp
+        Questionable.  Probably should be circumvented rather than trying
+        to #define the bad parts away.
+
+./include/readers/L2_file_translator.h
+./include/readers/from_bin.h
+./include/readers/from_l2.h
+./include/readers/from_xmpl.h
+./include/readers/options.h
+./include/readers/to_bin.h
+./include/readers/to_graphviz.h
+./include/readers/to_l2.h
+./include/readers/xlate_merge_eq_vars.h
+./include/readers/xlate_remove_duplicates.h
+./include/readers/xlate_sort_props.h
+./include/readers/xlate_strip.h
+./src/readers/L2_file_translator.cpp
+./src/readers/from_bin.cpp
+./src/readers/from_l2.cpp
+./src/readers/from_xmpl.cpp
+./src/readers/options.cpp
+./src/readers/to_bin.cpp
+./src/readers/to_graphviz.cpp
+./src/readers/to_l2.cpp
+./src/readers/xlate_merge_eq_vars.cpp
+./src/readers/xlate_remove_duplicates.cpp
+./src/readers/xlate_sort_props.cpp
+./src/readers/xlate_strip.cpp
+./src/readers/l2test/l2test.cpp
+./src/readers/l2test/vxmain.cpp
+./src/readers/names2ids/names2ids.cpp
+./src/readers/xmpl2l2/xmpl2l2.cpp
+./src/readers/l2flight/l2flight.cpp
+        Non-flight, although l2flight is similar to flight.
+
+./include/realtime_api/posix/guardedqueue.h
+./include/realtime_api/posix/livapi_rt.h
+./include/realtime_api/posix/livapi_rt_debug.h
+./include/realtime_api/posix/livingstone_dispatcher.h
+./include/realtime_api/posix/threadobject.h
+./include/realtime_api/L2_queue.h
+./include/realtime_api/livingstonemessage.h
+./include/realtime_api/reporter.h
+./include/realtime_api/userfcns.h
+./include/realtime_api/userfcns_debug.h
+./include/realtime_api/vxworks/livapi_rt.h
+./include/realtime_api/vxworks/livapi_rt_debug.h
+./include/realtime_api/vxworks/livingstone_dispatcher.h
+./include/realtime_api/vxworks/queues.h
+./src/realtime_api/posix/guardedqueue.cpp
+./src/realtime_api/posix/livapi_rt.cpp
+./src/realtime_api/posix/livapi_rt_debug.cpp
+./src/realtime_api/posix/livingstone_dispatcher.cpp
+./src/realtime_api/posix/threadobject.cpp
+./src/realtime_api/posix/timeout_handlers.cpp
+./src/realtime_api/vxworks/livapi_rt.cpp
+./src/realtime_api/vxworks/livapi_rt_debug.cpp
+./src/realtime_api/vxworks/livingstone_dispatcher.cpp
+./src/realtime_api/vxworks/monitorStub.cpp
+./src/realtime_api/vxworks/posixqueue.cpp
+./src/realtime_api/vxworks/timeout_handlers.cpp
+./src/realtime_api/vxworks/timer.cpp
+./src/realtime_api/vxworks/vxworksQueue.cpp
+        Not X-37; but maybe on some platforms.  Probably should be
+        rewritten to use the API, or just require the user to handle this.
+
+./include/realtime_api/win32/dataguard.h
+./include/realtime_api/win32/guardcondition.h
+./include/realtime_api/win32/guardedqueue.h
+./include/realtime_api/win32/livapi_rt.h
+./include/realtime_api/win32/livingstone_dispatcher.h
+./include/realtime_api/win32/threadobject.h
+./src/realtime_api/win32/guardcondition.cpp
+./src/realtime_api/win32/guardedqueue.cpp
+./src/realtime_api/win32/livapi_rt.cpp
+./src/realtime_api/win32/livingstone_dispatcher.cpp
+./src/realtime_api/win32/threadobject.cpp
+./src/realtime_api/win32/timeout_handlers.cpp
+        I'm guessing non-flight given the OS name.
+
+./include/test/apitest.h
+./src/test/rti_user/userfcns.cpp
+./src/test/rti_user/userfcns_debug.cpp
+./src/test/enumapi.h
+./src/test/rtapi.cpp
+./src/test/test-mof.cpp
+./src/test/testL2realTime.cpp
+./src/test/testMOFVxWorks.cpp
+./src/test/time_delays.h
+./src/test/x34_enumapi.h
+./src/test/x34_time_delays.h
+        Non-flight.  Not sure any of this works anymore.
+
+./include/tms/clause.h
+./include/tms/ltms.h
+./include/tms/proposition.h
+./include/tms/ptheory.h
+./include/tms/theory.h
+./src/tms/clause.cpp
+./src/tms/ltms.cpp
+./src/tms/proposition.cpp
+./src/tms/ptheory.cpp
+        Flight, required.
+
+./include/tms/ptheory_listener.h
+        Flight, should be disablable.
+
+./include/transition/T_system.h
+./include/transition/termination.h
+./include/transition/tracker.h
+./include/transition/transitioned.h
+./src/transition/T_system.cpp
+./src/transition/tracker.cpp
+./src/transition/transitioned.cpp
+        Flight, required.  Some pieces can but needn't be disabled
+        (min or full progress).
+
+./include/transition/T_system_listener.h
+./include/transition/tracker_listener.h
+        Flight, should be disablable.

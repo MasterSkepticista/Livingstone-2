@@ -1,0 +1,235 @@
+<xmpl xmlns:ci="http://www.w3.org/1999/XSL/Format">
+    <project name="cbAndLeds" projectFileName="C:\cbmodel\cb.smpl">
+        <attributetype filename="cb.jmpl" column="6" name="cbCmd" line="5">
+            <at:value filename="cb.jmpl" column="14" name="on" line="5"/>
+            <at:value filename="cb.jmpl" column="18" name="off" line="5"/>
+            <at:value filename="cb.jmpl" column="23" name="reset" line="5"/>
+            <at:value filename="cb.jmpl" column="30" name="noCommand" line="5"/>
+        </attributetype>
+        <attributetype filename="cb.jmpl" column="6" name="onOffState" line="6">
+            <at:value filename="cb.jmpl" column="19" name="on" line="6"/>
+            <at:value filename="cb.jmpl" column="23" name="off" line="6"/>
+        </attributetype>
+        <componenttype filename="cb.jmpl" column="7" name="currentSource" line="8">
+            <ct:attribute filename="cb.jmpl" type="onOffState" column="16" name="currentOut" line="11"/>
+            <ct:attributetype filename="cb.jmpl" modifiers="private" column="18" name="ModeType" line="14">
+                <ct:value filename="cb.jmpl" column="28" name="nominal" line="14"/>
+            </ct:attributetype>
+            <ct:attribute modifiers="private" name="mode" line="15" column="22" type="ModeType" filename="cb.jmpl"/>
+            <ct:statevector filename="cb.jmpl" column="18" vars="mode" line="16"/>
+            <ex:group filename="cb.jmpl" column="2" line="20">
+                <ex:switch filename="cb.jmpl" column="10" key="mode" line="20">
+                    <ex:case names="nominal" filename="cb.jmpl" column="7" line="21">
+                        <ex:group filename="cb.jmpl" column="6" line="22">
+                            <ex:equals filename="cb.jmpl" arguments="currentOut on" column="6" line="22"/>
+                        </ex:group>
+                    </ex:case>
+                </ex:switch>
+            </ex:group>
+            <gr:promotion name="currentOut" angle="149"/>
+            <gr:initialValues>
+                <gr:initialValue name="mode" value="nominal"/>
+            </gr:initialValues>
+            <gr:image src="&quot;battery.gif&quot;"/>
+        </componenttype>
+        <componenttype filename="cb.jmpl" column="7" name="cb" line="36">
+            <ct:attribute filename="cb.jmpl" type="cbCmd" column="11" name="cmdIn" line="39"/>
+            <ct:attribute filename="cb.jmpl" type="onOffState" column="16" name="currentIn" line="40"/>
+            <ct:attribute filename="cb.jmpl" type="onOffState" column="16" name="currentOut" line="44"/>
+            <ct:attributetype filename="cb.jmpl" modifiers="private" column="18" name="ModeType" line="46">
+                <ct:value filename="cb.jmpl" column="28" name="on" line="46"/>
+                <ct:value filename="cb.jmpl" column="32" name="off" line="46"/>
+                <ct:value filename="cb.jmpl" column="37" name="tripped" line="46"/>
+                <ct:value filename="cb.jmpl" column="46" name="blown" line="46"/>
+                <ct:value filename="cb.jmpl" column="53" name="unknownCbFault" line="46"/>
+            </ct:attributetype>
+            <ct:attribute modifiers="private" name="mode" line="47" column="22" type="ModeType" filename="cb.jmpl"/>
+            <ct:statevector filename="cb.jmpl" column="18" vars="mode" line="48"/>
+            <ex:group filename="cb.jmpl" column="2" line="51">
+                <ex:switch filename="cb.jmpl" column="10" key="mode" line="51">
+                    <ex:case names="on" filename="cb.jmpl" column="7" line="53">
+                        <ex:group filename="cb.jmpl" column="6" line="54">
+                            <ex:equals filename="cb.jmpl" arguments="currentOut currentIn" column="6" line="54"/>
+                        </ex:group>
+                    </ex:case>
+                    <ex:case names="off" filename="cb.jmpl" column="7" line="56">
+                        <ex:group filename="cb.jmpl" column="6" line="57">
+                            <ex:equals filename="cb.jmpl" arguments="currentOut off" column="6" line="57"/>
+                        </ex:group>
+                    </ex:case>
+                    <ex:case names="tripped" filename="cb.jmpl" column="7" line="60">
+                        <ex:group filename="cb.jmpl" column="6" line="61">
+                            <ex:equals filename="cb.jmpl" arguments="currentOut off" column="6" line="61"/>
+                        </ex:group>
+                    </ex:case>
+                    <ex:case names="blown" filename="cb.jmpl" column="7" line="64">
+                        <ex:group filename="cb.jmpl" column="6" line="65">
+                            <ex:equals filename="cb.jmpl" arguments="currentOut off" column="6" line="65"/>
+                        </ex:group>
+                    </ex:case>
+                    <ex:case names="unknownCbFault" filename="cb.jmpl" column="7" line="68">
+                        <ex:group filename="cb.jmpl" column="6" line="69"/>
+                    </ex:case>
+                </ex:switch>
+            </ex:group>
+            <ct:transition name="turnOn" line="75" to="on" from="off" column="16" filename="cb.jmpl">
+                <ex:group filename="cb.jmpl" column="35" line="75">
+                    <ex:equals filename="cb.jmpl" arguments="cmdIn on" column="35" line="75"/>
+                </ex:group>
+            </ct:transition>
+            <ct:transition name="turnOff" line="76" to="off" from="on" column="16" filename="cb.jmpl">
+                <ex:group filename="cb.jmpl" column="36" line="76">
+                    <ex:equals filename="cb.jmpl" arguments="cmdIn off" column="36" line="76"/>
+                </ex:group>
+            </ct:transition>
+            <ct:transition name="performReset" line="77" to="off" from="tripped" column="16" filename="cb.jmpl">
+                <ex:group filename="cb.jmpl" column="45" line="77">
+                    <ex:equals filename="cb.jmpl" arguments="cmdIn reset" column="45" line="77"/>
+                </ex:group>
+            </ct:transition>
+            <ct:failure name="tripped" probability="unlikely" line="80" to="tripped" from="*" column="13" filename="cb.jmpl">
+                <ex:group/>
+            </ct:failure>
+            <ct:failure name="blown" probability="rare" line="81" to="blown" from="*" column="13" filename="cb.jmpl">
+                <ex:group/>
+            </ct:failure>
+            <ct:failure name="unknownCbFault" probability="rare" line="82" to="unknownCbFault" from="*" column="13" filename="cb.jmpl">
+                <ex:group/>
+            </ct:failure>
+            <gr:promotion name="currentOut" angle="102"/>
+            <gr:promotion name="currentIn" angle="280"/>
+            <gr:harnessValues>
+                <gr:harnessValue name="cmdIn" value="Commandable"/>
+            </gr:harnessValues>
+            <gr:initialValues>
+                <gr:initialValue name="mode" value="off"/>
+            </gr:initialValues>
+            <gr:image src="if(state==null) { &quot;cb_unknown.gif&quot; } var mode=state.get(&quot;test.&quot;+instance.name+&quot;.mode&quot;);  if(mode==null) { &quot;cb_unknown.gif&quot; } if(mode==&quot;on&quot;)  {     &quot;cb_on.gif&quot;; } else if(mode==&quot;off&quot;) {     &quot;cb_off.gif&quot;; } else if(mode==&quot;tripped&quot;) {     &quot;cb_tripped.gif&quot;; } else if(mode==&quot;blown&quot;) {     &quot;cb_blown.gif&quot;; } else if(mode==&quot;unknownCbFault&quot;) {     &quot;cb_blown.gif&quot;; }"/>
+        </componenttype>
+        <componenttype filename="cb.jmpl" column="7" name="led" line="86">
+            <ct:attribute filename="cb.jmpl" type="onOffState" column="16" name="currentIn" line="89"/>
+            <ct:attribute filename="cb.jmpl" type="onOffState" column="16" name="ledState" line="92"/>
+            <ct:attributetype filename="cb.jmpl" modifiers="private" column="18" name="ModeType" line="95">
+                <ct:value filename="cb.jmpl" column="28" name="nominal" line="95"/>
+            </ct:attributetype>
+            <ct:attribute modifiers="private" name="mode" line="96" column="22" type="ModeType" filename="cb.jmpl"/>
+            <ct:statevector filename="cb.jmpl" column="18" vars="mode" line="97"/>
+            <ex:group filename="cb.jmpl" column="2" line="100">
+                <ex:switch filename="cb.jmpl" column="10" key="mode" line="100">
+                    <ex:case names="nominal" filename="cb.jmpl" column="7" line="102">
+                        <ex:group filename="cb.jmpl" column="6" line="103">
+                            <ex:equals filename="cb.jmpl" arguments="ledState currentIn" column="6" line="103"/>
+                        </ex:group>
+                    </ex:case>
+                </ex:switch>
+            </ex:group>
+            <gr:promotion name="currentIn" angle="267"/>
+            <gr:initialValues>
+                <gr:initialValue name="mode" value="nominal"/>
+            </gr:initialValues>
+            <gr:harnessValues>
+                <gr:harnessValue name="ledState" value="Observable"/>
+            </gr:harnessValues>
+            <gr:image src="if(state==null) { &quot;bulb_unknown.gif&quot;; } var mode=state.get(&quot;test.&quot;+instance.name+&quot;.ledState&quot;); if(mode==null) { &quot;bulb_unknown.gif&quot; } if(mode==&quot;on&quot;)  {     &quot;bulb_on.gif&quot;; }  else if(mode==&quot;off&quot;) {     &quot;bulb_off.gif&quot;; }"/>
+        </componenttype>
+        <componenttype filename="cbAndLeds.jmpl" column="7" name="cbAndLeds" line="25" compiledFileName="C:\cygwin\home\Administrator\L2Root\l2-tools\groundworks\examples\cbandled\cbAndLeds.xmpl" compiledFileModifiedDate="1564827355073">
+            <ct:attribute filename="cbAndLeds.jmpl" type="led" column="6" name="led1" line="28" x="500" y="5"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="led" column="6" name="led2" line="29" x="430" y="5"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="led" column="6" name="led3" line="30" x="360" y="5"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="led" column="6" name="led4" line="31" x="290" y="5"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="led" column="6" name="led5" line="32" x="220" y="5"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="led" column="6" name="led6" line="33" x="150" y="5"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="led" column="6" name="led7" line="34" x="80" y="5"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="led" column="6" name="led8" line="35" x="10" y="5"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="currentSource" column="16" name="source" line="38" x="385" y="475"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb1" line="40" x="500" y="110"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb2" line="41" x="430" y="110"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb3" line="42" x="360" y="110"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb4" line="43" x="290" y="110"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb5" line="44" x="220" y="110"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb6" line="45" x="150" y="110"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb7" line="46" x="80" y="110"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb8" line="47" x="10" y="110"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb11" line="48" x="185" y="205"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb12" line="49" x="45" y="205"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb13" line="50" x="395" y="300"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb14" line="51" x="115" y="300"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb15" line="52" x="255" y="395"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb9" line="53" x="465" y="205"/>
+            <ct:attribute filename="cbAndLeds.jmpl" type="cb" column="5" name="cb10" line="54" x="325" y="205"/>
+            <ex:group filename="cbAndLeds.jmpl" column="5" line="58">
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb4.currentOut led4.currentIn" column="5" line="58">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb5.currentOut led5.currentIn" column="5" line="59">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb11.currentOut cb5.currentIn" column="6" line="60">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb15.currentOut cb13.currentIn" column="6" line="61">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="source.currentOut cb15.currentIn" column="8" line="62">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb14.currentOut cb12.currentIn" column="6" line="63">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb14.currentOut cb11.currentIn" column="6" line="64">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb15.currentOut cb14.currentIn" column="6" line="65">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb12.currentOut cb8.currentIn" column="6" line="66">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb12.currentOut cb7.currentIn" column="6" line="67">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb11.currentOut cb6.currentIn" column="6" line="68">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb1.currentOut led1.currentIn" column="5" line="69">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb3.currentOut led3.currentIn" column="5" line="70">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb2.currentOut led2.currentIn" column="5" line="71">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb6.currentOut led6.currentIn" column="5" line="72">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb7.currentOut led7.currentIn" column="5" line="73">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb8.currentOut led8.currentIn" column="5" line="74">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb9.currentOut cb2.currentIn" column="5" line="75">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb9.currentOut cb1.currentIn" column="5" line="76">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb13.currentOut cb9.currentIn" column="6" line="77">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb10.currentOut cb3.currentIn" column="6" line="78">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb10.currentOut cb4.currentIn" column="6" line="79">
+                    <gr:line/>
+                </ex:equals>
+                <ex:equals filename="cbAndLeds.jmpl" arguments="cb13.currentOut cb10.currentIn" column="6" line="80">
+                    <gr:line/>
+                </ex:equals>
+            </ex:group>
+            <gr:initialValues/>
+        </componenttype>
+        <gr:globalImageJavascript src=""/>
+    </project>
+</xmpl>

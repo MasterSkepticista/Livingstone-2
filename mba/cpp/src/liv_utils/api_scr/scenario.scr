@@ -1,0 +1,9 @@
+cmdt	cbAndLed.cb1.cmdIn	on
+cmdt	cbAndLed.cb9.cmdIn	on
+cmdt	cbAndLed.cb13.cmdIn	on
+cmdt	cbAndLed.cb15.cmdIn	on
+wait 	1	
+obs		cbAndLed.led1.ledState	on
+wait 	4
+obs		cbAndLed.led2.ledState	off
+

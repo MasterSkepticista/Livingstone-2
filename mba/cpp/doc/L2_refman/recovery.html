@@ -1,0 +1,325 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Mode Recovery</title>
+  </head>
+
+ <body bgcolor="#FFFFEE">
+ <h1 align="center">Mode Recovery (Reconfiguration)</h1>
+
+ <hr>
+ <p>Recovery allows L2 to find an action sequence that will put the modeled
+ system into a desired state.</p>
+
+ <p>During diagnosis, L2 searches for the assmptions of mode failure
+ transitionsthat will make the state of the system consistent with the
+ observations that have been received and the command that were issued.</p>
+
+ <p>During recovery, the user assigns the observations they would like to be
+ true. L2 then searches for the commands that will make those observations
+ true.</p>
+
+ <h2>Enabling Recovery</h2>
+
+ <p>A restricted form of recovery was implemented in Livingstone 2 starting
+ with version 2.4. Versions 2.4 to 2.7.1 required the L2 library (and hence the
+ executables) to be compiled either for diagnosis or for recovery.
+ <ul>
+   <li>On Unix, configure with the <code>--enable-recovery option.</code></li>
+   <li>On Windows, ensure the macro <code>ENABLE_RECOVERY</code> is defined in
+       the project files for readers, debuggers and transition.</li>
+ </ul></p>
+
+ <p>Starting with version 2.7.2, Livingstone does not have to be re-compiled.
+ A run-time flag specifies whether a Livingstone instance is being used for
+ diagnosis or recovery. To set this flag, call
+ <code>LTMS::set_planning()</code> as the first operation. The
+ <a href="#LowLevelCLI">low-level command-line interface</a>, described below,
+ allows this to be accomplished with a command-line option. The
+ <a href="#HighLevelAPI">high-level API</a>, described below, takes care of
+ this automatically.</p>
+
+ <h2>Interfaces</h2>
+
+ <a name="LowLevelCLI"></a>
+ <h4>Low-Level Command-Line Interface</h4>
+
+ <p>An instance of Livingstone can run either in diagnosis mode or in recovery
+ mode. An instance of Livingstone starts in diagnosis mode. If recovery mode is
+ enabled, it must be done before any observation/assign or command/progress,
+ using <code>LTMS::set_planning()</code>. Pass the command-line option "-r" or
+ "-recovery" to <code>l2test</code> to put Livingstone into recovery mode.</p>
+
+ <p>Set the initial state of your system in the .ini file and load the model.
+ Use the command
+ <pre>
+  plan-steps {n}
+ </pre>
+ to set the maximium number of time steps your plan will require. This will set
+ up a model structure very similar to that used during diagnosis.</p>
+
+ <p>If your plan will require two actions that may be performed at the same
+ time (for example, opening two valves), it requires 1 time step. If it
+ requires two actions in sequence (for example power cycling a device by
+ turning it off then on) it requires two time steps.</p>
+
+ <p>Now, set the observations that you require in the final state of your plan
+ using
+ <pre>
+  assign {variable}={value}
+ </pre></p>
+
+ <p>Finally, call <code>find-candidates</code>. Each Candidate is a recovery
+ plan. That is, each of its Assignments is to a Command at a specific time
+ step. If there are no Candidates, no plan could be found. Consider increasing
+ the number of plan steps allowed.</p>
+
+ <a name="HighLevelAPI"></a>
+ <h4>High-Level API</h4>
+
+ <p>This interface supplies an operation that creates a new temporary instance
+ of the the Livingstone engine, puts it in recovery mode, passes it a planning 
+ problem, and packages up the result. Because this approach makes a copy of
+ the Livingstone engine, it could be termed a "clone" implmentation.</p>
+
+ <p>The API is a single method, Livingstone::reconfigure().Method
+ <code>Livingstone::reconfigure()</code> allows a program to describe
+ a recovery/reconfiguration problem as the maximum number of plan steps, the
+ initial mode assignments and the goal observations; the result is returned
+ as a set of commands to perform at each time step.</p>
+
+ <p>To set up a planning problem, you have to specify values for the first
+ four parameters. The plan is returned in the fifth parameter. The boolean
+ return value specifies whether a plan was found. The parameters are as
+ follows:
+ <dl>
+   <dt>L2_file* l2_file</dt>
+   <dd>This is the object into which Livingstone has read the model file. To
+       avoid having to read in the model again, this object is passed to the
+       planning clone. The pointer can be retrieved with the accessor 
+       <code>Livingstone_reader::get_file()</code>; since both 
+       <code>Livingstone</code> and <code>Livingstone_debug</code> are
+       subclasses of <code>Livingstone_reader</code>, this method can be
+       called on your Livingstone object.</dd>
+
+   <dt>unsigned planSteps</dt>
+   <dd>This is the maximum length of the plan in plan steps. Actions for the
+       same time step may be perfomed in any order. If it is too small, no
+       plan will be found. If it is too large, the plan may be longer than
+       necessary.</dd>
+
+   <dt>Array&lt; pair&lt;unsigned, unsigned&gt; &gt;& initialModes</dt>
+   <dd>Each element is a <code>pair</code> object, the first element of which
+       is the Variable ID of a mode Variable and the second element of which
+       is the index of a value in its domain.</dd>
+
+   <dt>Array&lt; pair&lt;unsigned, unsigned&gt; &gt;& goalObservations</dt>
+   <dd>Each element is a <code>pair</code> object, the first element of which
+       is the Variable ID of an Observable Variable and the second element of
+       which is the index of a value in its domain.</dd>
+
+   <dt>Array&lt;Action *&gt;& plan</dt>
+   <dd>Each element is a pointer to an object of class Livingstone::Action. Use
+       the accessors 
+       <ul>
+         <li><code>unsigned getVariableID()</code></li>
+         <li><code>unsigned getValueIndex()</code></li>
+         <li><code>unsigned getPlanStep()</code></li>
+       </ul>
+       The caller is responsible for deleting these action objects.</dd>
+
+ </dl></p>
+ 
+ <h3>High-Level Command-Line Interface</h3>
+
+ <p>A higher-level command-line interface is being designed. It will supply
+ commands to 
+ <ul>
+   <li>set the start state (a set of mode assignments),
+   <li>set the goal state (a set of observation assignments)
+   <li>set the maximum length of the plan
+   <li>create the plan and
+   <li>access the plan's actions.
+ </ul></p>
+
+ <h2>A recovery example</h2>
+
+<h3>Using the Low-Level Command-Line Interface</h3>
+
+<p>Below is a recovery example using the circuit breaker model from
+<code>mba/cpp/tests/cb</code>.</p>
+
+<p>We set the plan steps to 1. This is because all circuit breakers may be
+turned on and off in parallel.</p>
+
+<p>We then assign the output of led8 to on.   In order to achieve this, we
+must turn on the 4 circuit breakers between led8 and the power source.  The
+first fc returns this answer.</p>
+
+<p>Next, we also assign the output of led1 to on.  In order to achieve led8
+and led1 on, our recovery must be augmented to turn on additional circuit
+breakers.</p>
+
+
+<pre>
+       L2> plan-steps 1
+       L2> assign cbAndLed.led8.ledState=on
+       L2> fc
+       Step 2; 197 variables; 0 conflicts before; 12 after.
+       CBFS: exhaustive search, returned fewer than 5 candidate(s)
+       The 1 candidates are:
+         Candidate 0)
+              1#cbAndLed.cb8.cmdIn=on :1
+              1#cbAndLed.cb12.cmdIn=on :1
+              1#cbAndLed.cb14.cmdIn=on :1
+              1#cbAndLed.cb15.cmdIn=on :1
+
+      L2> assign cbAndLed.led1.ledState=on
+      L2> fc
+      Step 2; 197 variables; 12 conflicts before; 21 after.
+      CBFS: exhaustive search, returned fewer than 5 candidate(s)
+
+      The 1 candidates are:
+      Candidate 0)
+              1#cbAndLed.cb8.cmdIn=on :1
+              1#cbAndLed.cb12.cmdIn=on :1
+              1#cbAndLed.cb14.cmdIn=on :1
+              1#cbAndLed.cb15.cmdIn=on :1
+              1#cbAndLed.cb1.cmdIn=on :1
+              1#cbAndLed.cb9.cmdIn=on :1
+              1#cbAndLed.cb13.cmdIn=on :1
+ </pre>
+
+ <h3>Using the High-Level API</h3>
+
+ <p>The following is a complete program for exercising the high-level API. If
+ you want to copy this code, take care of the '&lt;' and '&gt;' characters,
+ which had to be escaped for HTML.</p>
+
+ <p>This example assumes a particular model, with a particular integer mapping
+ for the model Variables and their values. You can get this mapping for any
+ model from the utility <code>mba/cpp/bin/api_gen</code>.</p>
+
+ <pre>
+#include &lt;api/livingstone.h&gt;
+#include &lt;mba_utils/pair.h&gt;
+
+/*
+ * Set up the led8 reconfiguration problem.
+ */
+void setupLed8(Array&lt; pair&lt;unsigned, unsigned&gt; &gt;& initialModes,
+	       Array&lt; pair&lt;unsigned, unsigned&gt; &gt;& goalObservations) {
+  const unsigned ON = 0; // "on"
+  initialModes.erase();
+  goalObservations.erase();
+  // assign cbAndLed.led8.ledState=on; use bin/api_gen to make enumapi.h
+  {
+    unsigned variableID = 9; // "cbAndLed.led8.ledState"
+    pair&lt;unsigned, unsigned> thePair(variableID, ON);
+    goalObservations.push_back(thePair); // copy!
+  }
+}
+
+/*
+ * Set up the led178 reconfiguration problem.
+ */
+void setupLed178(Array&lt; pair&lt;unsigned, unsigned&gt; &gt;& initialModes,
+		 Array&lt; pair&lt;unsigned, unsigned&gt; &gt;& goalObservations) {
+  const unsigned ON = 0; // "on"
+  initialModes.erase();
+  goalObservations.erase();
+  // assign cbAndLed.led1.ledState=on; use bin/api_gen to make enumapi.h
+  {
+    unsigned variableID = 32; // "cbAndLed.led1.ledState"
+    pair&lt;unsigned, unsigned&gt; thePair(variableID, ON);
+    goalObservations.push_back(thePair); // copy!
+  }
+  // assign cbAndLed.led7.ledState=on; use bin/api_gen to make enumapi.h
+  {
+    unsigned variableID = 12; // "cbAndLed.led7.ledState"
+    pair&lt;unsigned, unsigned&gt; thePair(variableID, ON);
+    goalObservations.push_back(thePair); // copy!
+  }
+  // assign cbAndLed.led8.ledState=on; use bin/api_gen to make enumapi.h
+  {
+    unsigned variableID = 9; // "cbAndLed.led8.ledState"
+    pair&lt;unsigned, unsigned&gt; thePair(variableID, ON);
+    goalObservations.push_back(thePair); // copy!
+  }
+}
+
+/**
+ * Since reconfigure() creates new Action objects, the caller has to delete
+ * them. That is done here, as soon as the object is printed out. The plan
+ * is also emptied.
+ */
+void printAndDelete(Array&lt;Livingstone::Action *>& plan) {
+  cout << endl;
+  // Print out the plan, deleting as we go
+  for (Array&lt;Livingstone::Action *>::iterator it = plan.begin();
+       it != plan.end(); ++it) {
+    Livingstone::Action* pAction = *it;
+    cout << "Plan step = " << pAction->getPlanStep()
+	 << " ID = "    << pAction->getVariableID()
+	 << " Index = " << pAction->getValueIndex()
+	 << endl;
+    delete pAction;
+  }
+  plan.erase();
+}
+
+/*
+ * The entry point. No command-line options are used.
+ */
+
+int main(int argc, char** argv) {
+  const char *modelFilePathname = "/home/lbrown/l2-regress/tests/cb/cb";
+  const unsigned planSteps = 1;
+
+  // Parameters of the planning problem
+  Array&lt; pair&lt;unsigned, unsigned&gt; &gt; initialModes;
+  Array&lt; pair&lt;unsigned, unsigned&gt; &gt; goalObservations;
+  // The resultant plan
+  Array&lt;Livingstone::Action *> plan;
+
+  // Make the Livingstone diagnosis engine. It reads in the model file.
+  Livingstone livingstone;
+  livingstone.set_filename(modelFilePathname);
+  if (livingstone.read_file()) {
+    livingstone.create_tracker();
+    if (!livingstone.initialize_tracker()) {
+      cerr << "Failed to initialize tracker" << endl;
+      return false;
+    }
+  } else {
+    cerr << "Failed to read file" << endl;
+    return false;
+  }
+
+  // Here go arbitrary Livingstone operations, presumably diagnosis.
+
+  // Set up and solve the led8 planning problem
+  setupLed8(initialModes, goalObservations);
+  
+  livingstone.reconfigure(livingstone.get_file(), planSteps, initialModes,
+			  goalObservations, plan);
+  printAndDelete(plan);
+
+  // Set up and solve the led178 planning problem
+  setupLed178(initialModes, goalObservations);
+  livingstone.reconfigure(livingstone.get_file(), planSteps, initialModes,
+			  goalObservations, plan);
+  printAndDelete(plan);
+
+  // Here go arbitrary Livingstone operations
+}
+
+ </pre>
+    <hr>
+    <address><a href="mailto:lbrown@ptolemy.arc.nasa.gov">Lee Brownston</a></address>
+<!-- Created: Thu Jun 14 10:20:35 PDT 2001 -->
+<!-- hhmts start -->
+Last modified: Wed May 22 08:52:00 PDT 2002
+<!-- hhmts end -->
+  </body>
+</html>

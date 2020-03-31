@@ -1,0 +1,6 @@
+scenario rg11RegulatingLow mainPropulsionSystem
+assign test.mpre103p.pressureReading.rg01.upperBound=belowThreshold test.mpre103p.pressureReading.rg01.lowerBound=belowThreshold test.mpre103p.pressureReading.rg11.upperBound=belowThreshold test.mpre103p.pressureReading.rg11.lowerBound=belowThreshold test.mpre103p.pressureReading.ambient.upperBound=aboveThreshold test.mpre103p.pressureReading.ambient.lowerBound=aboveThreshold
+progress test.sv03.valveCmdIn=open
+assign test.sv03.openMicroSwitch=open
+assign test.mpre104p.pressureReading.pr02Crack=belowThreshold test.mpre104p.pressureReading.pressurizationRate.upperBound=belowThreshold test.mpre104p.pressureReading.pressurizationRate.lowerBound=belowThreshold test.mpre104p.pressureReading.heatingRate.upperBound=unknown test.mpre104p.pressureReading.heatingRate.lowerBound=unknown test.mpre104p.pressureReading.bleedRate.upperBound=unknown test.mpre104p.pressureReading.bleedRate.lowerBound=unknown test.mpre104p.pressureReading.ventingRate.upperBound=unknown test.mpre104p.pressureReading.ventingRate.lowerBound=unknown test.mpre104p.pressureReading.controllerPressureBias=unknown
+fc
