@@ -1,5 +1,12 @@
 # Livingstone-2
-Repackaged NASA Livingstone-2 Oliver and L2 engine in Java and C++
+Repackaged NASA Livingstone-2 Oliver and L2 engine in Java and C++.
+
+If you're here, you must know what this package is all about. If you're building it, this repo should be very helpful.
+Links to get you started:
+
+Livingstone 2 (System for Automated Diagnosis and Discrete Control of Complex Systems) and Skunkworks (Suite of Supporting Development and Runtime Tools): https://software.nasa.gov/software/ARC-14725-1
+
+Source repo: http://ti.arc.nasa.gov/opensource/projects/livingstone2/
 
 ## Installing Livingstone 2 and Oliver Package(s)
 
@@ -51,3 +58,5 @@ The package is standalone, it should work without any dependencies.
 
 Still doesn't work? Let me know at karanshah1698[at]gmail[dot]com
 I'll be glad to get back to your problems.
+
+Please feel free to cite this work if it helped you anyway.
