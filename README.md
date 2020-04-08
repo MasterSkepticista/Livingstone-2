@@ -34,33 +34,24 @@ entry SIMILAR to this:
 	OR
 1. You could make your own model, from the documentation given in the official
 L2 package by NASA.
-
 2. After it is ready, right-click on the main component on left column, click
 "Make Root Component"
-
 3. Right click again on the main component and press "Compile"
 4. Right click again and press RUN.
 
 
 ## Scenario Manager
 
-Will open.
-
-Open a scenario file from the File -> Open Scenario.
-
-These files have extension .scr and can be made in accordance to the docs.
-
-Press STEP/RUN/SINGLE depending on how many instructions you want to execute at a time.
+1. Will open. After the previous step.
+2. Open a scenario file from the File -> Open Scenario.
+3. These files have extension .scr and can be made in accordance to the docs.
+4. Press STEP/RUN/SINGLE depending on how many instructions you want to execute at a time.
 
 ## Troubleshooting
 
-Most likely, it closed without any error trace.
+Most likely, it closed without any error trace. Only thing to go wrong here, is incorrect Environment Variable setting.
 
-Only thing to go wrong here, is incorrect Environment Variable setting.
-
-Did you choose the second section "System Paths" in step 2.? 
-
-Don't choose "User Paths"
+Did you choose the second section "System Paths" in step 2.? Don't choose "User Paths".
 
 The package is standalone, it should work without any dependencies (except for the JDK which I assume you read earlier).
 
