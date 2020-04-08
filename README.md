@@ -54,12 +54,17 @@ Press STEP/RUN/SINGLE depending on how many instructions you want to execute at 
 
 ## Troubleshooting
 
+Most likely, it closed without any error trace.
 
 Only thing to go wrong here, is incorrect Environment Variable setting.
-Did you choose the second section "System Paths" in step 2.? Don't choose "User Paths"
-The package is standalone, it should work without any dependencies.
 
-Still doesn't work? Let me know at karanshah1698[at]gmail[dot]com
+Did you choose the second section "System Paths" in step 2.? 
+
+Don't choose "User Paths"
+
+The package is standalone, it should work without any dependencies (except for the JDK which I assume you read earlier).
+
+Still doesn't work? Open an issue.
 I'll be glad to get back to your problems.
 
 Please feel free to cite this work if it helped you anyway.
